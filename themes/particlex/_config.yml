@@ -24,15 +24,15 @@ colors:
 
 # Main menu navigation
 menu:
-    Home:
+    主页:
         name: house
         theme: solid
         link: /
-    About:
+    关于:
         name: id-card
         theme: solid
         link: /about
-    Archives:
+    文章:
         name: box-archive
         theme: solid
         link: /archives
@@ -40,10 +40,14 @@ menu:
     #    name: bookmark
     #    theme: solid
     #    link: /categories
-    Tags:
+    分类:
         name: tags
         theme: solid
         link: /tags
+    友链:
+        name: id-card
+        theme: solid
+        link: /友链
 
 # Side info card
 card:
@@ -53,11 +57,6 @@ card:
         —— 楽しいよ、たきなといれはさ。
     iconLinks:
     friendLinks:
-        Luogu: https://www.luogu.com.cn
-        llingy: https://llingy.top
-        CyberAngel(whhsteven): https://cyberangel-6gfv3c4g543a05f3-1255714490.ap-shanghai.app.tcloudbase.com/
-        NightmareAlita: https://www.nightmarealita.top
-        nalemy: https://nalemy.github.io
 
 # Footer info
 footer:
