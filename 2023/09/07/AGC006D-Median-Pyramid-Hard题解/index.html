@@ -171,7 +171,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #ff7d73">题解</a>
+                <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #ffa2c4">题解</a>
             </span>
             
         </span>
@@ -179,35 +179,38 @@
     </div>
     
     <div class="content" v-pre>
-        <h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>先考虑一下这个问题的简化版，如果最下面的数不是排列，而是 $01$ 串，应该怎么做。</p>
+        <h3 id="引入">引入</h3>
+<p>先考虑一下这个问题的简化版，如果最下面的数不是排列，而是 $01$ 串，应该怎么做。</p>
 <p>比如：</p>
 <img src="https://pic.imgdb.cn/item/64f92e01661c6c8e542f807b.jpg" style="zoom: 10%;" />
-
 <p>我们发现，最顶上的那个数字是底部 <strong>离中心（位置 $n$）最近的两个相同的数字</strong>。</p>
-<p>证明如下（方便起见，<strong>记这两个数字的位置分别是</strong> $i,j(i&lt;j)$ <strong>且</strong> $i,j\ge n,a[i]&#x3D;a[j]&#x3D;0$）：</p>
+<p>证明如下（方便起见，<strong>记这两个数字的位置分别是</strong> $i,j(i&lt;j)$ <strong>且</strong> $i,j\ge n,a[i]=a[j]=0$）：</p>
 <ul>
-<li><p>若 $i&#x3D;n$ 或 $j&#x3D;n$，则 $i,j$ 正上方的两列都将一直是 $0$，直到顶端。</p>
+<li>
+<p>若 $i=n$ 或 $j=n$，则 $i,j$ 正上方的两列都将一直是 $0$，直到顶端。</p>
 </li>
-<li><p>若 $i\not&#x3D;n$ 且 $j\not&#x3D;n$，$则 i&gt;n$，小于同理。那么由 ”$i,j$ 上的数字是离位置 $n$ 最近的两个相同的数字“ 可以知道：</p>
+<li>
+<p>若 $i\not=n$ 且 $j\not=n$，$则 i&gt;n$，小于同理。那么由 ”$i,j$ 上的数字是离位置 $n$ 最近的两个相同的数字“ 可以知道：</p>
 <ol>
-<li>子串 $[n-(i-n),i-1]$ 是 $0&#x2F;1$ 交错出现组成的。</li>
+<li>子串 $[n-(i-n),i-1]$ 是 $0/1$ 交错出现组成的。</li>
 <li>$i-1$ 上的数是 $1$。</li>
 </ol>
 <p>那么对于从下往上数第二行：</p>
 <ol>
 <li>$i-1$ 和 $i$ 上的数字都将是 $0$</li>
-<li>若$i-1&#x3D;n$，则可以一直通到顶端，否则由于最下面一行子串 $[n-(i-n),i-1]$ 是 $0&#x2F;1$ 交错出现组成的，第二行的 $[n-(i-1-n),i-2]$ 一定是 $0&#x2F;1$ 交错出现组成的。</li>
+<li>若$i-1=n$，则可以一直通到顶端，否则由于最下面一行子串 $[n-(i-n),i-1]$ 是 $0/1$ 交错出现组成的，第二行的 $[n-(i-1-n),i-2]$ 一定是 $0/1$ 交错出现组成的。</li>
 </ol>
 </li>
 </ul>
-<p>于是问题又回到了上述的两种情况之一，且 $i,j$ 均减小 $1$，于是重复若干次后一定会使得 $i&#x3D;n$。$i,j\le n$ 与上述情况类似。</p>
+<p>于是问题又回到了上述的两种情况之一，且 $i,j$ 均减小 $1$，于是重复若干次后一定会使得 $i=n$。$i,j\le n$ 与上述情况类似。</p>
 <p>于是我们证明了：<strong>最顶上的那个数字是底部离中心（位置 $n$）最近的两个相同的数字</strong>。</p>
 <p>若不存在两个相同且相邻的数，则对于从下往上数第 $i$ 行，最中间的数字 $x$ 为第 $i-1$ 行的数 $y\operatorname{xor} 1$，简单计算一下即可。</p>
-<h3 id="Sol"><a href="#Sol" class="headerlink" title="Sol"></a>Sol</h3><p>对于这个问题，考虑二分答案。对于二分到的 $x$，我们需要判断最后顶端的数 $k\ge x$ 或 $k&lt;x$。</p>
+<h3 id="Sol">Sol</h3>
+<p>对于这个问题，考虑二分答案。对于二分到的 $x$，我们需要判断最后顶端的数 $k\ge x$ 或 $k&lt;x$。</p>
 <p>我们遍历整个 $a$ 数组，将大于等于 $x$ 的数的值变成 $1$，小于 $x$ 的数的值变成 $0$，于是问题转化成了对于上述的弱化版问题，判断顶端的数是否是 $1$。扫一遍即可。</p>
 <p>总时间复杂度 $O(n\log n)$。</p>
 <p>AC Code：</p>
-<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;
+<pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
 using namespace std;
 namespace Slongod&#123;
 const int N = 3e5+7;
@@ -238,7 +241,7 @@ int main()
             l = mid + 1;
             ans = mid;
         &#125;
-    &#125; cout &lt;&lt; ans &lt;&lt; &#39;\n&#39;;
+    &#125; cout &lt;&lt; ans &lt;&lt; '\n';
     return 0;
 &#125;
 &#125;int main()
