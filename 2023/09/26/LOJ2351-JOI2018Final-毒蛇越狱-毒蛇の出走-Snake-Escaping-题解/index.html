@@ -3,7 +3,7 @@
 <html lang="zh-CN">
     <head>
         <meta charset="utf-8" />
-        <title>P5283 [十二省联考 2019] 异或粽子 题解 | LycoReco SN 支部</title>
+        <title>LOJ2351_JOI2018Final 毒蛇越狱_毒蛇の出走_Snake Escaping 题解 | LycoReco SN 支部</title>
         <meta name="author" content="Slongod" />
         <meta name="description" content="SlongodのBlog" />
         <meta name="keywords" content="" />
@@ -152,14 +152,14 @@
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
                 <div class="article">
     <div>
-        <h1>P5283 [十二省联考 2019] 异或粽子 题解</h1>
+        <h1>LOJ2351_JOI2018Final 毒蛇越狱_毒蛇の出走_Snake Escaping 题解</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2023/9/25
+            2023/9/26
         </span>
         
         
@@ -171,7 +171,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #00a596">题解</a>
+                <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #03a9f4">题解</a>
             </span>
             
         </span>
@@ -179,92 +179,37 @@
     </div>
     
     <div class="content" v-pre>
-        <p>根据题目可知，答案是若干个区间异或和的和。若进行异或前缀和，记 $sum_i=\operatorname{xor}_{i=1}^{i}a_i,sum_0=0$ 则 $\operatorname{xor}_{i=l}^{r}a_i=sum_r\operatorname{xor}sum_{l-1}$。于是问题转化为找到 $k$ 个不重复的二元组 $(l,r)$，满足 $l\le r$，且 $\sum sum_r-sum_{l-1}$ 最大。</p>
-<p>首先，对于每个右端点 $r$ ，$l$ 的取值范围是 $[1,r-1]$，于是可以使用 <strong>可持久化</strong>$\text{01Trie}$ 找出使得 $sum_r-sum_{l-1}$ 最大的 $l$ ，并记录下当前选的 $l$ 是什么，$l$ 的取值范围是什么，然后把这些东西扔到堆里面，每次弹出一个 $sum_r-sum_{l-1}$ 最大的，然后再在 $l$ 两侧取值范围内找两个最大的，再扔到堆里面，和 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2048">超级钢琴</a> 差不多。</p>
-<p>然后就做完了。</p>
-<p>AC Code:</p>
-<pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
-using namespace std;
-namespace Slongod&#123;
-using uint = unsigned int;
-using ll = long long int;
-const int N = 5e5+7;
-
-//可持久化tri树
-#define ls tree[ro].son[1]
-#define rs tree[ro].son[0]
-struct TREE&#123;int size , id , son[2];&#125;tree[N*33];
-int cnt , head[N];
-int copyfrom(int ro)&#123;cnt++; tree[cnt] = tree[ro]; return cnt;&#125;
-void check(int &amp;ro)&#123;ro = (!ro ? ++cnt : copyfrom(ro));&#125;
-void update(int ro , uint x , int id , int d=31)
-&#123;
-    if (d &lt; 0)&#123;tree[ro].size++; tree[ro].id = id; return;&#125;
-    int c = ((x&gt;&gt;d)&amp;1);
-    check(tree[ro].son[c]);
-    update(tree[ro].son[c] , x , id , d-1);
-    tree[ro].size = tree[ls].size + tree[rs].size;
-&#125;
-pair&lt;uint,int&gt; query(int lo , int ro , uint x , int d=31)
-&#123;
-    if (d &lt; 0)&#123;return &#123;0,tree[ro].id&#125;;&#125;
-    int c = ((x&gt;&gt;d)&amp;1);
-    if (tree[ro].son[!c] and tree[tree[ro].son[!c]].size - tree[tree[lo].son[!c]].size) &#123;
-        auto t = query(tree[lo].son[!c] , tree[ro].son[!c] , x , d-1);
-        return &#123;(uint(1)&lt;&lt;d)|(t.first) , t.second&#125;;
-    &#125; else &#123;
-        return query(tree[lo].son[c] , tree[ro].son[c] , x , d-1);
-    &#125;
-&#125;
-#undef ls
-#undef rs
-struct node
-&#123;
-    uint val , op; int l , r , c;
-    friend bool operator &lt; (node a , node b)&#123;return a.val &lt; b.val;&#125;
-&#125;;
-
-int n , k; uint a[N]; ll ans;
-int main()
-&#123;
-    cin &gt;&gt; n &gt;&gt; k; n++; for (int i = 2; i &lt;= n; i++)&#123;cin &gt;&gt; a[i]; a[i] ^= a[i-1];&#125;
-
-    priority_queue &lt;node&gt; q;
-    for (int i = 1; i &lt;= n; i++) &#123;
-        head[i] = copyfrom(head[i-1]);
-        update(head[i] , a[i] , i);
-        if (i &gt; 1) &#123;
-            auto t = query(head[0] , head[i-1] , a[i]);
-            q.push(&#123;.val=t.first , .op=a[i] , .l=1 , .r=i-1 , .c=t.second&#125;);
-        &#125;
-    &#125;
-
-    for (int i = 1; i &lt;= k; i++) &#123;
-        auto t = q.top(); q.pop();
-        ans += t.val;
-
-        if (t.c != t.l) &#123;
-            auto tmp = query(head[t.l-1] , head[t.c-1] , t.op);
-            q.push(&#123;.val=tmp.first , .op=t.op , .l=t.l , .r=t.c-1 , .c=tmp.second&#125;);
-        &#125;
-        if (t.c != t.r) &#123;
-            auto tmp = query(head[t.c] , head[t.r] , t.op);
-            q.push(&#123;.val=tmp.first , .op=t.op , .l=t.c+1 , .r=t.r , .c=tmp.second&#125;);
-        &#125;
-    &#125;
-    cout &lt;&lt; ans &lt;&lt; '\n';
-    return 0;
-&#125;
-&#125;int main()
-&#123;
-    #ifndef ONLINE_JUDGE
-    freopen(&quot;in.in&quot; , &quot;r&quot; , stdin);
-    #endif
-    ios :: sync_with_stdio(0);
-    cin.tie(0) , cout.tie(0);
-    return Slongod :: main();
-&#125;
-</code></pre>
+        <h3 id="题意">题意</h3>
+<p>给你 $2^L$ 个长为 $L$ 的 $0/1$ 串，第 $i$ 个串为 $i$ 的二进制表达，每个串有权值 $a_i$。$q$ 次询问，每次给你一个长为 $L$ 的串，其由 $0/1/?$ 构成。求将 $?$ 换成任意的 $0/1$ 之后，所有 可能与给定的询问串相同的串 的权值之和。</p>
+<h3 id="题解">题解</h3>
+<p>本文中的 $\&amp;,|$ 分别表示二进制与运算，二进制或运算。</p>
+<p>考虑一个给定的询问串。</p>
+<p>记 $cnt_0,cnt_1,cnt_2$ 分别表示 $0,1,?$ 在询问串的个数，$all_0,all_1,all_2$ 表示询问串中 $0,1,?$ 的位置，如 $L=3$，询问串为 $01?$，则 $all_0=100,all_1=010,all_2=001$。由于 $cnt_0+cnt_1+cnt_2\le 20$，所以 $\min\{cnt_0 , cnt_1 , cnt_2\} \le 6$，对这三种情况分类讨论。</p>
+<ul>
+<li>
+<p>若 $cnt_2\le 6$</p>
+<p>直接暴力枚举每一个 $?$ 填什么，给总答案加上对应的 $0/1$ 串的权值。时间复杂度 $O(2^{cnt_2})$。</p>
+</li>
+<li>
+<p>若 $cnt_0\le 6$</p>
+<p>记 $f1_i=\sum_{i|j=j}a_j$。此时：</p>
+<ul>
+<li>若 $cnt_0=0$，则答案为 $f1_{all_1}$。</li>
+<li>若 $cnt_0=1$，则答案为 $f1_{all_1}-f1_{all_1|all_0}$，即用钦定 $all_1$ 的所有位置填 $1$ 的方案数减去本来是 $0$ 的位置填了 $1$ 的方案数。</li>
+</ul>
+<p>这启示我们考虑容斥，用钦定 $all_1$ 的位置填 $1$ 的方案数，减去 $all_0$ 的位置填了 $1$ 的方案数。因为 $cnt_0\le 6$ 所以直接枚举哪些本来是 $0$ 的位置填了 $1$ 即可，即枚举 $all_0$  的子集。即答案为：</p>
+$$\displaylines{\sum_{i|all_0=all_0,popcount(i)\&amp;1=0} f1_{all_1|i}-\sum_{i|all_0=all_0,popcount(i)\&amp;1=1}f1_{all_1|i}
+}$$<p>时间复杂度 $O(2^{cnt_0})$。</p>
+</li>
+<li>
+<p>若 $cnt_1\le 6$</p>
+<p>同 $cnt_0\le 6$，记 $f0_i\sum_{j|i=i}a_j$ ，即 $f0_i$ 表示所有串 $j$ 满足其所有 $0$ 的位置构成的集合是 $i$ 中 $0$ 的位置构成的集合的超集的串 $j$ 的权值和，则答案为：</p>
+$$\displaylines{\sum_{i|all_1=all_1,popcount(i)\&amp;1=0} f0_{all_0|i}-\sum_{i|all_1=all_1,popcount(i)\&amp;1=1}f0_{all_0|i}
+}$$<p>时间复杂度 $O(2^{cnt_1})$。</p>
+</li>
+</ul>
+<p>综上所述，单次询问的时间复杂度为 $O(2^{\lfloor\frac{L}{3}\rfloor})$，考虑上述的 $f0,f1$ 实际上就是一个高维前缀和，预处理的时间复杂度为 $O(2^LL)$，所以总时间复杂度为 $O(2^LL+q2^{\lfloor\frac{L}{3}\rfloor})$，可以通过。</p>
+<p><a target="_blank" rel="noopener" href="https://atcoder.jp/contests/joi2018ho/submissions/45954278">AC 记录及 Code</a>。</p>
 
     </div>
     
