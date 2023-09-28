@@ -3,7 +3,7 @@
 <html lang="zh-Hans">
     <head>
         <meta charset="utf-8" />
-        <title>P5283 [十二省联考 2019] 异或粽子 题解 | LycoReco SN 支部</title>
+        <title> | LycoReco SN 支部</title>
         <meta name="author" content="Slongod" />
         <meta name="description" content="SlongodのBlog" />
         <meta name="keywords" content="" />
@@ -34,14 +34,6 @@
 
 <script src="/js/lib/preview.js"></script>
 
-
-
-
-
-
-<script src="https://cdn.staticfile.org/waline/2.15.5/waline.min.js"></script>
-<link rel="stylesheet" href="https://cdn.staticfile.org/waline/2.15.5/waline.min.css" />
-<link rel="stylesheet" href="https://cdn.staticfile.org/waline/2.15.5/waline-meta.min.css" />
 
 
 
@@ -156,130 +148,23 @@
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
                 <div class="article">
     <div>
-        <h1>P5283 [十二省联考 2019] 异或粽子 题解</h1>
+        <h1></h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2023/9/25
+            2023/9/28
         </span>
         
-        
-        <span class="tags">
-            <span class="icon">
-                <i class="fa-solid fa-tags fa-fw"></i>
-            </span>
-            
-            
-            <span class="tag">
-                
-                <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #03a9f4">题解</a>
-            </span>
-            
-        </span>
         
     </div>
     
     <div class="content" v-pre>
-        <p>根据题目可知，答案是若干个区间异或和的和。若进行异或前缀和，记 $sum_i&#x3D;xor_{i&#x3D;1}^{i}a_i,sum_0&#x3D;0$ 则 $xor_{i&#x3D;l}^{r}a_i&#x3D;sum_r \enspace xor \enspace sum_{l-1}$。于是问题转化为找到 $k$ 个不重复的二元组 $(l,r)$，满足 $l\le r$，且 $\sum sum_r\enspace xor \enspace sum_{l-1}$ 最大。</p>
-<p>首先，对于每个右端点 $r$ ，$l$ 的取值范围是 $[1,r-1]$，于是可以使用 <strong>可持久化</strong>$\text{01Trie}$ 找出使得 $sum_r\enspace xor \enspace sum_{l-1}$ 最大的 $l$ ，并记录下当前选的 $l$ 是什么，$l$ 的取值范围是什么，然后把这些东西扔到堆里面，每次弹出一个 $sum_r\enspace xor \enspace sum_{l-1}$ 最大的，然后再在 $l$ 两侧取值范围内找两个最大的，再扔到堆里面，和 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2048">超级钢琴</a> 差不多。</p>
-<p>然后就做完了。</p>
-<p>AC Code:</p>
-<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;
-using namespace std;
-namespace Slongod&#123;
-using uint = unsigned int;
-using ll = long long int;
-const int N = 5e5+7;
-
-//可持久化tri树
-#define ls tree[ro].son[1]
-#define rs tree[ro].son[0]
-struct TREE&#123;int size , id , son[2];&#125;tree[N*33];
-int cnt , head[N];
-int copyfrom(int ro)&#123;cnt++; tree[cnt] = tree[ro]; return cnt;&#125;
-void check(int &amp;ro)&#123;ro = (!ro ? ++cnt : copyfrom(ro));&#125;
-void update(int ro , uint x , int id , int d=31)
-&#123;
-    if (d &lt; 0)&#123;tree[ro].size++; tree[ro].id = id; return;&#125;
-    int c = ((x&gt;&gt;d)&amp;1);
-    check(tree[ro].son[c]);
-    update(tree[ro].son[c] , x , id , d-1);
-    tree[ro].size = tree[ls].size + tree[rs].size;
-&#125;
-pair&lt;uint,int&gt; query(int lo , int ro , uint x , int d=31)
-&#123;
-    if (d &lt; 0)&#123;return &#123;0,tree[ro].id&#125;;&#125;
-    int c = ((x&gt;&gt;d)&amp;1);
-    if (tree[ro].son[!c] and tree[tree[ro].son[!c]].size - tree[tree[lo].son[!c]].size) &#123;
-        auto t = query(tree[lo].son[!c] , tree[ro].son[!c] , x , d-1);
-        return &#123;(uint(1)&lt;&lt;d)|(t.first) , t.second&#125;;
-    &#125; else &#123;
-        return query(tree[lo].son[c] , tree[ro].son[c] , x , d-1);
-    &#125;
-&#125;
-#undef ls
-#undef rs
-struct node
-&#123;
-    uint val , op; int l , r , c;
-    friend bool operator &lt; (node a , node b)&#123;return a.val &lt; b.val;&#125;
-&#125;;
-
-int n , k; uint a[N]; ll ans;
-int main()
-&#123;
-    cin &gt;&gt; n &gt;&gt; k; n++; for (int i = 2; i &lt;= n; i++)&#123;cin &gt;&gt; a[i]; a[i] ^= a[i-1];&#125;
-
-    priority_queue &lt;node&gt; q;
-    for (int i = 1; i &lt;= n; i++) &#123;
-        head[i] = copyfrom(head[i-1]);
-        update(head[i] , a[i] , i);
-        if (i &gt; 1) &#123;
-            auto t = query(head[0] , head[i-1] , a[i]);
-            q.push(&#123;.val=t.first , .op=a[i] , .l=1 , .r=i-1 , .c=t.second&#125;);
-        &#125;
-    &#125;
-
-    for (int i = 1; i &lt;= k; i++) &#123;
-        auto t = q.top(); q.pop();
-        ans += t.val;
-
-        if (t.c != t.l) &#123;
-            auto tmp = query(head[t.l-1] , head[t.c-1] , t.op);
-            q.push(&#123;.val=tmp.first , .op=t.op , .l=t.l , .r=t.c-1 , .c=tmp.second&#125;);
-        &#125;
-        if (t.c != t.r) &#123;
-            auto tmp = query(head[t.c] , head[t.r] , t.op);
-            q.push(&#123;.val=tmp.first , .op=t.op , .l=t.c+1 , .r=t.r , .c=tmp.second&#125;);
-        &#125;
-    &#125;
-    cout &lt;&lt; ans &lt;&lt; &#39;\n&#39;;
-    return 0;
-&#125;
-&#125;int main()
-&#123;
-    #ifndef ONLINE_JUDGE
-    freopen(&quot;in.in&quot; , &quot;r&quot; , stdin);
-    #endif
-    ios :: sync_with_stdio(0);
-    cin.tie(0) , cout.tie(0);
-    return Slongod :: main();
-&#125;
-</code></pre>
+        <h1 id="催更成功！！！！！！"><a href="#催更成功！！！！！！" class="headerlink" title="催更成功！！！！！！"></a>催更成功！！！！！！</h1><p><del>虽然没什么用就是了</del></p>
 
     </div>
-    
-    
-    
-    
-    
-    <div id="comment">
-        <div id="waline-container"></div>
-    </div>
-    
     
     
 </div>
@@ -312,29 +197,6 @@ int main()
             
         </div>
         <script src="/js/main.js"></script>
-        
-        
-
-
-<script>
-    Waline.init({
-        el: "#waline-container",
-        serverURL: "https://blog-waline-kkoscc7ga-slongods-projects.vercel.app/",
-        commentCount: true,
-        pageview: false,
-        emoji: "https://unpkg.com/@waline/emojis@1.2.0/weibo,https://unpkg.com/@waline/emojis@1.2.0/alus,https://unpkg.com/@waline/emojis@1.2.0/bilibili,https://unpkg.com/@waline/emojis@1.2.0/qq,https://unpkg.com/@waline/emojis@1.2.0/tieba,https://unpkg.com/@waline/emojis@1.2.0/tw-emoji".split(","),
-        meta: "nick,mail,link".split(","),
-        requiredMeta: "nick".split(","),
-        lang: "zh-CN",
-        wordLimit: 0,
-        pageSize: "10",
-        login: "enable",
-        
-    });
-</script>
-
-
-
         
     </body>
 </html>
