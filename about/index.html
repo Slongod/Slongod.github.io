@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hans">
     <head>
         <meta charset="utf-8" />
         <title> | LycoReco SN 支部</title>
@@ -38,6 +38,10 @@
 
 
 
+
+<script src="https://cdn.staticfile.org/waline/2.15.5/waline.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/waline/2.15.5/waline.min.css" />
+<link rel="stylesheet" href="https://cdn.staticfile.org/waline/2.15.5/waline-meta.min.css" />
 
 
 
@@ -159,29 +163,30 @@
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2023/9/26
+            2023/9/28
         </span>
         
         
     </div>
     
     <div class="content" v-pre>
-        <p>你好呀，欢迎来到 <a href="https://www.slongod.top">LycoReco SN 支部</a>！</p>
-<h3 id="个人介绍">个人介绍</h3>
-<p><img src="/about/toux.jpg" alt=""></p>
+        <p>你好呀，欢迎来到 <a target="_blank" rel="noopener" href="https://www.slongod.top/">LycoReco SN 支部</a>！</p>
+<h3 id="个人介绍"><a href="#个人介绍" class="headerlink" title="个人介绍"></a>个人介绍</h3><p><img src="/about/toux.jpg"></p>
 <p>童年的小翼龙。</p>
-<p>成分复杂，主要成分是 <a target="_blank" rel="noopener" href="https://www.noi.cn">$\text{OI}$</a>，<a target="_blank" rel="noopener" href="https://www.csgo.com.cn">$\text{CS:GO}$</a>，和 <a target="_blank" rel="noopener" href="https://lycoris-recoil.com">$\text{LycoReco}$</a>。</p>
-<h3 id="技能">技能</h3>
-<p>吃饭、睡觉、学习、追番、打游戏。</p>
-<h3 id="联系方式">联系方式</h3>
-<p><strong>洛谷：</strong><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/user/522885">童年的小翼龙</a></p>
-<p><strong>邮箱：</strong> <a href="mailto:TongnianSlongod@outlook.com">TongnianSlongod@outlook.com</a></p>
+<p>成分复杂，主要成分是 <a target="_blank" rel="noopener" href="https://www.noi.cn/">$\text{OI}$</a>，<a target="_blank" rel="noopener" href="https://www.csgo.com.cn/">$\text{CS:GO}$</a>，和 <a target="_blank" rel="noopener" href="https://lycoris-recoil.com/">$\text{LycoReco}$</a>。</p>
+<h3 id="技能"><a href="#技能" class="headerlink" title="技能"></a>技能</h3><p>吃饭、睡觉、学习、追番、打游戏。</p>
+<h3 id="联系方式"><a href="#联系方式" class="headerlink" title="联系方式"></a>联系方式</h3><p><strong>洛谷：</strong><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/user/522885">童年的小翼龙</a></p>
+<p><strong>邮箱：</strong> <a href="mailto:&#x54;&#x6f;&#x6e;&#x67;&#x6e;&#105;&#97;&#x6e;&#83;&#108;&#111;&#x6e;&#103;&#111;&#x64;&#64;&#x6f;&#x75;&#116;&#x6c;&#111;&#x6f;&#107;&#46;&#99;&#x6f;&#x6d;">&#x54;&#x6f;&#x6e;&#x67;&#x6e;&#105;&#97;&#x6e;&#83;&#108;&#111;&#x6e;&#103;&#111;&#x64;&#64;&#x6f;&#x75;&#116;&#x6c;&#111;&#x6f;&#107;&#46;&#99;&#x6f;&#x6d;</a></p>
 
     </div>
     
     
     
     
+    
+    <div id="comment">
+        <div id="waline-container"></div>
+    </div>
     
     
     
@@ -218,6 +223,23 @@
         
         
 
+
+<script>
+    Waline.init({
+        el: "#waline-container",
+        serverURL: "https://blog-waline-kkoscc7ga-slongods-projects.vercel.app/",
+        commentCount: true,
+        pageview: false,
+        emoji: "https://unpkg.com/@waline/emojis@1.2.0/weibo,https://unpkg.com/@waline/emojis@1.2.0/alus,https://unpkg.com/@waline/emojis@1.2.0/bilibili,https://unpkg.com/@waline/emojis@1.2.0/qq,https://unpkg.com/@waline/emojis@1.2.0/tieba,https://unpkg.com/@waline/emojis@1.2.0/tw-emoji".split(","),
+        meta: "nick,mail,link".split(","),
+        requiredMeta: "nick".split(","),
+        lang: "zh-CN",
+        wordLimit: 0,
+        pageSize: "10",
+        login: "enable",
+        
+    });
+</script>
 
 
 

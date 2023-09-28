@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hans">
     <head>
         <meta charset="utf-8" />
         <title>LOJ2351_JOI2018Final 毒蛇越狱_毒蛇の出走_Snake Escaping 题解 | LycoReco SN 支部</title>
@@ -38,6 +38,10 @@
 
 
 
+
+<script src="https://cdn.staticfile.org/waline/2.15.5/waline.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/waline/2.15.5/waline.min.css" />
+<link rel="stylesheet" href="https://cdn.staticfile.org/waline/2.15.5/waline-meta.min.css" />
 
 
 
@@ -171,7 +175,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #00a596">题解</a>
+                <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #03a9f4">题解</a>
             </span>
             
         </span>
@@ -179,33 +183,24 @@
     </div>
     
     <div class="content" v-pre>
-        <h3 id="题意">题意</h3>
-<p>给你 $2^L$ 个长为 $L$ 的 $0/1$ 串，第 $i$ 个串为 $i$ 的二进制表达，每个串有权值 $a_i$。$q$ 次询问，每次给你一个长为 $L$ 的串，其由 $0/1/?$ 构成。求将 $?$ 换成任意的 $0/1$ 之后，所有 可能与给定的询问串相同的串 的权值之和。</p>
-<h3 id="题解">题解</h3>
-<p>本文中的 $\&amp;,|$ 分别表示二进制与运算，二进制或运算。</p>
+        <h3 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h3><p>给你 $2^L$ 个长为 $L$ 的 $0&#x2F;1$ 串，第 $i$ 个串为 $i$ 的二进制表达，每个串有权值 $a_i$。$q$ 次询问，每次给你一个长为 $L$ 的串，其由 $0&#x2F;1&#x2F;?$ 构成。求将 $?$ 换成任意的 $0&#x2F;1$ 之后，所有 可能与给定的询问串相同的串 的权值之和。 </p>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><p>本文中的 $&amp;,|$ 分别表示二进制与运算，二进制或运算。</p>
 <p>考虑一个给定的询问串。</p>
-<p>记 $cnt_0,cnt_1,cnt_2$ 分别表示 $0,1,?$ 在询问串的个数，$all_0,all_1,all_2$ 表示询问串中 $0,1,?$ 的位置，如 $L=3$，询问串为 $01?$，则 $all_0=100,all_1=010,all_2=001$。由于 $cnt_0+cnt_1+cnt_2\le 20$，所以 $\min\{cnt_0 , cnt_1 , cnt_2\} \le 6$，对这三种情况分类讨论。</p>
+<p>记 $cnt_0,cnt_1,cnt_2$ 分别表示 $0,1,?$ 在询问串的个数，$all_0,all_1,all_2$ 表示询问串中 $0,1,?$ 的位置，如 $L&#x3D;3$，询问串为 $01?$，则 $all_0&#x3D;100,all_1&#x3D;010,all_2&#x3D;001$。由于 $cnt_0+cnt_1+cnt_2\le 20$，所以 $\min{cnt_0 , cnt_1 , cnt_2} \le 6$，对这三种情况分类讨论。</p>
 <ul>
-<li>
-<p>若 $cnt_2\le 6$</p>
-<p>直接暴力枚举每一个 $?$ 填什么，给总答案加上对应的 $0/1$ 串的权值。时间复杂度 $O(2^{cnt_2})$。</p>
+<li><p>若 $cnt_2\le 6$</p>
+<p>直接暴力枚举每一个 $?$ 填什么，给总答案加上对应的 $0&#x2F;1$ 串的权值。时间复杂度 $O(2^{cnt_2})$。</p>
 </li>
-<li>
-<p>若 $cnt_0\le 6$</p>
-<p>记 $f1_i=\sum_{i|j=j}a_j$。此时：</p>
+<li><p>若 $cnt_0\le 6$</p>
+<p>记 $f1_i&#x3D;\sum_{i|j&#x3D;j}a_j$。此时：</p>
 <ul>
-<li>若 $cnt_0=0$，则答案为 $f1_{all_1}$。</li>
-<li>若 $cnt_0=1$，则答案为 $f1_{all_1}-f1_{all_1|all_0}$，即用钦定 $all_1$ 的所有位置填 $1$ 的方案数减去本来是 $0$ 的位置填了 $1$ 的方案数。</li>
+<li>若 $cnt_0&#x3D;0$，则答案为 $f1_{all_1}$。</li>
+<li>若 $cnt_0&#x3D;1$，则答案为 $f1_{all_1}-f1_{all_1|all_0}$，即用钦定 $all_1$ 的所有位置填 $1$ 的方案数减去本来是 $0$ 的位置填了 $1$ 的方案数。</li>
 </ul>
-<p>这启示我们考虑容斥，用钦定 $all_1$ 的位置填 $1$ 的方案数，减去 $all_0$ 的位置填了 $1$ 的方案数。因为 $cnt_0\le 6$ 所以直接枚举哪些本来是 $0$ 的位置填了 $1$ 即可，即枚举 $all_0$  的子集。即答案为：</p>
-$$\displaylines{\sum_{i|all_0=all_0,popcount(i)\&amp;1=0} f1_{all_1|i}-\sum_{i|all_0=all_0,popcount(i)\&amp;1=1}f1_{all_1|i}
-}$$<p>时间复杂度 $O(2^{cnt_0})$。</p>
+<p>这启示我们考虑容斥，用钦定 $all_1$ 的位置填 $1$ 的方案数，减去 $all_0$ 的位置填了 $1$ 的方案数。因为 $cnt_0\le 6$ 所以直接枚举哪些本来是 $0$ 的位置填了 $1$ 即可，即枚举 $all_0$  的子集。即答案为：<br>$$<br>\sum_{i|all_0&#x3D;all_0,popcount(i)&amp;1&#x3D;0} f1_{all_1|i}-\sum_{i|all_0&#x3D;all_0,popcount(i)&amp;1&#x3D;1}f1_{all_1|i}<br>$$<br>时间复杂度 $O(2^{cnt_0})$。</p>
 </li>
-<li>
-<p>若 $cnt_1\le 6$</p>
-<p>同 $cnt_0\le 6$，记 $f0_i\sum_{j|i=i}a_j$ ，即 $f0_i$ 表示所有串 $j$ 满足其所有 $0$ 的位置构成的集合是 $i$ 中 $0$ 的位置构成的集合的超集的串 $j$ 的权值和，则答案为：</p>
-$$\displaylines{\sum_{i|all_1=all_1,popcount(i)\&amp;1=0} f0_{all_0|i}-\sum_{i|all_1=all_1,popcount(i)\&amp;1=1}f0_{all_0|i}
-}$$<p>时间复杂度 $O(2^{cnt_1})$。</p>
+<li><p>若 $cnt_1\le 6$</p>
+<p>同 $cnt_0\le 6$，记 $f0_i\sum_{j|i&#x3D;i}a_j$ ，即 $f0_i$ 表示所有串 $j$ 满足其所有 $0$ 的位置构成的集合是 $i$ 中 $0$ 的位置构成的集合的超集的串 $j$ 的权值和，则答案为：<br>$$<br>\sum_{i|all_1&#x3D;all_1,popcount(i)&amp;1&#x3D;0} f0_{all_0|i}-\sum_{i|all_1&#x3D;all_1,popcount(i)&amp;1&#x3D;1}f0_{all_0|i}<br>$$<br>时间复杂度 $O(2^{cnt_1})$。</p>
 </li>
 </ul>
 <p>综上所述，单次询问的时间复杂度为 $O(2^{\lfloor\frac{L}{3}\rfloor})$，考虑上述的 $f0,f1$ 实际上就是一个高维前缀和，预处理的时间复杂度为 $O(2^LL)$，所以总时间复杂度为 $O(2^LL+q2^{\lfloor\frac{L}{3}\rfloor})$，可以通过。</p>
@@ -216,6 +211,10 @@ $$\displaylines{\sum_{i|all_1=all_1,popcount(i)\&amp;1=0} f0_{all_0|i}-\sum_{i|a
     
     
     
+    
+    <div id="comment">
+        <div id="waline-container"></div>
+    </div>
     
     
     
@@ -252,6 +251,23 @@ $$\displaylines{\sum_{i|all_1=all_1,popcount(i)\&amp;1=0} f0_{all_0|i}-\sum_{i|a
         
         
 
+
+<script>
+    Waline.init({
+        el: "#waline-container",
+        serverURL: "https://blog-waline-kkoscc7ga-slongods-projects.vercel.app/",
+        commentCount: true,
+        pageview: false,
+        emoji: "https://unpkg.com/@waline/emojis@1.2.0/weibo,https://unpkg.com/@waline/emojis@1.2.0/alus,https://unpkg.com/@waline/emojis@1.2.0/bilibili,https://unpkg.com/@waline/emojis@1.2.0/qq,https://unpkg.com/@waline/emojis@1.2.0/tieba,https://unpkg.com/@waline/emojis@1.2.0/tw-emoji".split(","),
+        meta: "nick,mail,link".split(","),
+        requiredMeta: "nick".split(","),
+        lang: "zh-CN",
+        wordLimit: 0,
+        pageSize: "10",
+        login: "enable",
+        
+    });
+</script>
 
 
 
