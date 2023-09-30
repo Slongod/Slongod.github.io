@@ -12,6 +12,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v2
+      - uses: nikeee/setup-pandoc@v1
       - name: Use Node.js 18.x
         uses: actions/setup-node@v2
         with:
