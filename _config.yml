@@ -112,3 +112,16 @@ archive_generator:
     yearly: false
     monthly: false
     daily: false
+
+pandoc:
+    extra:
+        - no-highlight:
+    extensions:
+        - +abbreviations
+        - +autolink_bare_uris
+        - +emoji
+        - +hard_line_breaks
+        - -implicit_figures
+        - +mark
+        - +short_subsuperscripts
+
