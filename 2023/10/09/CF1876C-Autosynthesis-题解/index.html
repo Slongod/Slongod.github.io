@@ -3,7 +3,7 @@
 <html lang="zh-Hans">
     <head>
         <meta charset="utf-8" />
-        <title> | LycoReco SN 支部</title>
+        <title>CF1876C Autosynthesis 题解 | LycoReco SN 支部</title>
         <meta name="author" content="Slongod" />
         <meta name="description" content="SlongodのBlog" />
         <meta name="keywords" content="" />
@@ -33,6 +33,10 @@
 
 
 <script src="/js/lib/preview.js"></script>
+
+
+
+
 
 
 
@@ -146,45 +150,151 @@
 </transition>
 
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
-                <div id="archives">
-    
-    <div class="categories-tags">
-        
-        
-        
-        <span>
-            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="background: #00a596">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                题解
-            </a>
+                <div class="article">
+    <div>
+        <h1>CF1876C Autosynthesis 题解</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/10/9
         </span>
         
         
-        
-        <span>
-            <a href="/tags/%E5%85%AC%E5%91%8A/" style="background: #00bcd4">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                公告
-            </a>
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #03a9f4">题解</a>
+            </span>
+            
         </span>
-        
-        
-        
-        <span>
-            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="background: #03a9f4">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                小故事
-            </a>
-        </span>
-        
         
     </div>
+    
+    <div class="content" v-pre>
+        <h2 id="题意">题意</h2>
+<p>给你一个长度为 <span class="math inline">\(n\)</span> 的序列 <span
+class="math inline">\(\{a_1,a_2\dots a_n\}\)</span>，满足 <span
+class="math inline">\(\forall 1\le i\le n,1\le a_i\le
+n\)</span>。你要将这个序列划分成两个不交的子序列，满足其中一个子序列的下标构成的集合<strong>等于</strong>另一个子序列的值构成的集合。输出作为值的那一个子序列。</p>
+<h2 id="题解">题解</h2>
+<p>将每个位置看做一个点，<span class="math inline">\(i\)</span> 向 <span
+class="math inline">\(a_i\)</span>
+连一条有向边，由于每个点只有一个出度，所以整张图是一棵基环树，且根的位置是一个环。</p>
+<p>我们将作为值的点称作 <span class="math inline">\(1\)</span>
+类点，将作为下标的点称作 <span class="math inline">\(0\)</span>
+类点。我们可以得到以下结论：</p>
+<ul>
+<li>一个点是 <span class="math inline">\(0\)</span>
+类点，当且仅当它有一个直接儿子是 <span class="math inline">\(1\)</span>
+类点。</li>
+<li>一个点没有直接儿子是 <span class="math inline">\(1\)</span>
+类点，则它是 <span class="math inline">\(1\)</span> 类点。</li>
+<li>一个点是 <span class="math inline">\(1\)</span>
+类点，则它的父亲一定是 <span class="math inline">\(0\)</span>
+类点。</li>
+</ul>
+<p>则叶子处的点必定是 <span class="math inline">\(1\)</span>
+类点。于是，我们可以对这张图进行拓扑排序，从叶子开始，考虑每个点对它父亲的影响，并将所有儿子都考虑完的点放到队列中。最后，我们只可能剩下若干个环没有考虑。这时候剩下的环分为一下几种情况：</p>
+<ul>
+<li>若这个环中有已经确定了的 <span class="math inline">\(0\)</span>
+类点，则这个环中的点一定可以合法分类。具体地：
+<ul>
+<li>如果一个点 <span class="math inline">\(i\)</span> 是 <span
+class="math inline">\(0\)</span> 类点，则当 <span
+class="math inline">\(a_i\)</span> 是 <span
+class="math inline">\(0\)</span> 类点的时候，说明 <span
+class="math inline">\(a_i\)</span> 有一个在环外面的直接儿子是 <span
+class="math inline">\(1\)</span> 类点，合法；当 <span
+class="math inline">\(a_i\)</span> 没有被确定的时候，将<span
+class="math inline">\(a_i\)</span> 变为 <span
+class="math inline">\(1\)</span> 类点。</li>
+<li>如果一个点 <span class="math inline">\(i\)</span> 是 <span
+class="math inline">\(1\)</span> 类点，则 <span
+class="math inline">\(a_i\)</span> 是 <span
+class="math inline">\(0\)</span> 类点的时候合法；当 <span
+class="math inline">\(a_i\)</span> 未确定的时候将 <span
+class="math inline">\(a_i\)</span> 变为 <span
+class="math inline">\(0\)</span> 类点。</li>
+</ul></li>
+<li>若这个环中没有已经确定了的 <span class="math inline">\(0\)</span>
+类点，则当环的大小是偶数的时候交叉分类，奇数无解。</li>
+</ul>
+<p>然后输出就行了。</p>
+<p>AC Code:</p>
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+using namespace std;
+namespace Slongod&#123;
+const int N = 2e5+7;
+int n , a[N] , f[N] , rd[N];
+int main()
+&#123;
+    cin &gt;&gt; n; for (int i = 1; i &lt;= n; i++)&#123;cin &gt;&gt; a[i]; rd[a[i]]++;&#125;
+    for (int i = 1; i &lt;= n; i++)&#123;f[i] = 1;&#125;
+    queue &lt;int&gt; q; for (int i = 1; i &lt;= n; i++)&#123;if (!rd[i])&#123;q.push(i);&#125;&#125;
+    while(!q.empty()) &#123;
+        int u = q.front(); q.pop();
+        if (f[u])&#123;f[a[u]] = 0;&#125;
+        rd[a[u]]--;
+        if (!rd[a[u]]) &#123;
+            q.push(a[u]);
+        &#125;
+    &#125;
+    for (int i = 1; i &lt;= n; i++) &#123;
+        if (rd[i] and !f[i]) &#123;
+            int x = !f[i] , t = i;
+            rd[i]--;
+            do &#123;
+                t = a[t];
+                if (x != f[t]) &#123;
+                    if (x == 1)&#123;x = f[t];&#125;
+                    else &#123;f[t] = x;&#125;
+                &#125; rd[t]--; x ^= 1;
+            &#125; while(t != i);
+        &#125;
+    &#125;
+    for (int i = 1; i &lt;= n; i++) &#123;
+        if (rd[i] == 1) &#123;
+            rd[i]--; int x = 0;
+            for (int t = a[i]; t != i; t = a[t] , x ^= 1) &#123;
+                rd[t]--; f[t] = x;
+            &#125; if (f[i] != x) &#123;
+                cout &lt;&lt; &quot;-1\n&quot;;
+                return 0;
+            &#125;
+        &#125;
+    &#125;
+    int cnt = 0;
+    for (int i = 1; i &lt;= n; i++)&#123;cnt += (f[i] == 1);&#125;
+    cout &lt;&lt; cnt &lt;&lt; &#39;\n&#39;;
+    for (int i = 1; i &lt;= n; i++) &#123;
+        if (f[i] == 1) &#123;
+            cout &lt;&lt; a[i] &lt;&lt; &#39; &#39;;
+        &#125;
+    &#125; cout &lt;&lt; &#39;\n&#39;;
+    return 0;
+&#125;
+&#125;int main()
+&#123;
+    ios :: sync_with_stdio(0);
+    cin.tie(0) , cout.tie(0);
+    return Slongod :: main();
+&#125;</code></pre>
+
+    </div>
+    
+    
+    
+    
+    
+    
     
 </div>
 
@@ -216,6 +326,12 @@
             
         </div>
         <script src="/js/main.js"></script>
+        
+        
+
+
+
+
         
     </body>
 </html>
