@@ -1,0 +1,389 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+    <head>
+        <meta charset="utf-8" />
+        <title>【项目】代码混淆器 | LycoReco SN 支部</title>
+        <meta name="author" content="Slongod" />
+        <meta name="description" content="SlongodのBlog" />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <link rel="icon" href="/images/toux.jpg" />
+        <script src="https://cdn.staticfile.org/vue/3.3.4/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="/css/fonts.min.css" />
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://cdn.staticfile.org/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.staticfile.org/highlight.js/11.8.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+<script src="https://cdn.staticfile.org/KaTeX/0.16.8/katex.min.js"></script>
+<script src="https://cdn.staticfile.org/KaTeX/0.16.8/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/KaTeX/0.16.8/katex.min.css" />
+<script src="/js/lib/math.js"></script>
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+    <meta name="generator" content="Hexo 6.3.0"></head>
+    <body>
+        <div id="layout">
+            <transition name="fade">
+                <div id="loading" v-show="loading">
+                    <div id="loading-circle">
+                        <h2>LOADING</h2>
+                        <p>加载过慢请开启缓存 浏览器默认开启</p>
+                        <img src="/images/LD.gif" />
+                    </div>
+                </div>
+            </transition>
+            <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>LYCORECO SN 支部</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;主页</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;关于</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;文章</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;分类</span>
+        </a>
+        
+        <a href="/%E5%8F%8B%E9%93%BE">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;友链</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;LYCORECO SN 支部</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">主页</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">关于</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">文章</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">分类</div>
+                    </div>
+                </a>
+                
+                <a href="/%E5%8F%8B%E9%93%BE">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">友链</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+            <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+                <div class="article">
+    <div>
+        <h1>【项目】代码混淆器</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/10/11
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/%E5%85%B6%E4%BB%96%E3%80%81/" style="color: #ffa2c4">其他、</a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p>在打 CF
+时，你有没有过拿小号交代码过了再用大号交以逃避罚时的想法？</p>
+<p>又有没有过实践了上述想法导致 skip 一场比赛的经历？</p>
+<p>如果有，那么你需要这款代码混淆器！</p>
+<p>基于<a
+target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/skz/post-xiang-mu-dai-ma-hun-xiao-qi">【项目】代码混淆器
+by _sunkuangzheng_</a> 二次开发。</p>
+<p><strong>【功能介绍】</strong></p>
+<p>代码混淆器可以将你的变量名全部改成随机字符串，同时添加一些随机注释，并保证代码还能正常运行。通过它，CF
+将不能识别你的大小号代码是否雷同！</p>
+<p><strong>【使用说明】</strong></p>
+<p>需要在 WindowsWindows 环境下运行。</p>
+<ol type="1">
+<li><a
+target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/U336560">点击此处</a>下载附件中的
+code_maker.execode_maker.exe。</li>
+<li>创建一个文件
+code.incode.in，存储你需要混淆的代码。请将这个文件和上面的 .exe.exe
+文件放在同一目录下。</li>
+<li>运行 code_maker.execode_maker.exe，得到文件
+code.cppcode.cpp，即混淆好的代码。</li>
+</ol>
+<p><strong>【已知 BUG】</strong></p>
+<p>目前对字符串的处理有问题，会将你输出的字符串替换为随机字符（</p>
+<p><strong>【源代码】</strong></p>
+<p>请自行编译使用：</p>
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+using namespace std;
+namespace Code_Maker&#123;
+
+vector&lt;string&gt; Key_Word&#123;&quot;auto&quot;,&quot;bool&quot;,&quot;char&quot;,&quot;int&quot;,&quot;short&quot;,&quot;long&quot;,&quot;float&quot;,&quot;double&quot;,
+&quot;signed&quot;,&quot;unsigned&quot;,&quot;false&quot;,&quot;true&quot;,&quot;enum&quot;,&quot;struct&quot;,&quot;class&quot;,&quot;namespace&quot;,&quot;std&quot;,&quot;using&quot;,
+&quot;cin&quot;,&quot;for&quot;,&quot;while&quot;,&quot;main&quot;,&quot;const&quot;,&quot;map&quot;,&quot;set&quot;,&quot;vector&quot;,&quot;pair&quot;,&quot;queue&quot;,&quot;stack&quot;,
+&quot;priority&quot;,&quot;do&quot;,&quot;if&quot;,&quot;else&quot;,&quot;inline&quot;,&quot;register&quot;,&quot;void&quot;,&quot;operator&quot;,&quot;break&quot;,&quot;continue&quot;,&quot;return&quot;,
+&quot;scanf&quot;,&quot;printf&quot;,&quot;floor&quot;,&quot;ceil&quot;,&quot;size&quot;,&quot;top&quot;,&quot;front&quot;,&quot;pop&quot;,&quot;bitset&quot;,&quot;cin&quot;,&quot;cout&quot;,&quot;push&quot;,&quot;back&quot;,
+&quot;clear&quot;,&quot;endl&quot;,&quot;string&quot;,&quot;swap&quot;,&quot;define&quot;,&quot;min&quot;,&quot;max&quot;,&quot;rand&quot;,&quot;sort&quot;,&quot;ios&quot;,&quot;sync&quot;,&quot;with&quot;,&quot;stdio&quot;,&quot;tie&quot;,
+&quot;sqrt&quot;,&quot;make&quot;,&quot;emplace&quot;,&quot;gcd&quot;,&quot;isdigit&quot;,&quot;getchar&quot;,&quot;first&quot;,&quot;second&quot;,&quot;memset&quot;,&quot;sizeof&quot;,&quot;begin&quot;,&quot;end&quot;,
+&quot;lower_bound&quot;,&quot;upper_bound&quot;,&quot;bound&quot;,&quot;unique&quot;,&quot;abs&quot;,&quot;lcm&quot;,&quot;__gcd&quot;,&quot;and&quot;,&quot;or&quot;,&quot;xor&quot;&#125;;
+vector&lt;string&gt; Bianliang_Name&#123;&quot;answer&quot;,&quot;result&quot;,&quot;lengthh&quot;,&quot;sizee&quot;,&quot;father&quot;,&quot;depth&quot;,&quot;value&quot;,&quot;valve&quot;,&quot;csgo&quot;,&quot;cs2&quot;,&quot;counter_strike2&quot;,
+&quot;nic&quot;,&quot;tuoc&quot;,&quot;ftnirp&quot;,&quot;kcuf&quot;,&quot;deg&quot;,&quot;LycoReco&quot;,&quot;NishikigiChisato&quot;,&quot;InoueTakina&quot;,&quot;omen&quot;,&quot;luogu&quot;,&quot;kkksb03&quot;,&quot;shen_bhe&quot;,&quot;BianLiang&quot;,
+&quot;Waccepted&quot;,&quot;AcrongAnswer&quot;,&quot;baoling&quot;,&quot;IAKIOI&quot;,&quot;jc&quot;,&quot;spfa&quot;,&quot;tarjan&quot;,&quot;SPFA&quot;,&quot;dfs1&quot;,&quot;dfs2&quot;,&quot;dfs3&quot;,&quot;dfs4&quot;,&quot;dfs5&quot;,&quot;dfs6&quot;,&quot;dfs114514&quot;,
+&quot;bfs1&quot;,&quot;bfs2&quot;,&quot;bfs3&quot;,&quot;bfs1919810&quot;,&quot;read&quot;,&quot;write&quot;,&quot;calc&quot;,&quot;solve&quot;,&quot;work&quot;,&quot;vscode&quot;,&quot;vim&quot;,&quot;dev_c__&quot;,&quot;dinic&quot;,&quot;This_Is_A_Value&quot;,
+&quot;This_Is_Also_A_Value&quot;,&quot;IDontKnow&quot;&#125;;
+vector&lt;string&gt; Zhushi_Name&#123;&quot;using dfs to get the Ans&quot;,&quot;I Love Coding&quot;,&quot;I want to AK IOI&quot;,
+&quot;I Don&#39;t Want to AK IOI&quot;,&quot;I Love Money&quot;,&quot;Codeforces is my favourite OJ&quot;,&quot;ATCoder is my favourite OJ&quot;,
+&quot;Luogu is my favourite OJ&quot;,&quot;Hydro is my favourite OJ&quot;&#125;;
+
+
+mt19937 rd(time(nullptr));
+ifstream fin;
+ofstream fout;
+map &lt;string,string&gt; mymap;
+int bianliang_cnt , zhushi_cnt;
+bool is_val(char c , bool flag)
+&#123;
+    return (&#39;a&#39; &lt;= c and &#39;z&#39; &gt;= c) or (&#39;A&#39; &lt;= c and &#39;Z&#39; &gt;= c) or (flag and &#39;0&#39; &lt;= c and &#39;9&#39; &gt;= c);
+&#125;
+string get_next_word(string s , int &amp;pos)
+&#123;
+    string re = &quot;&quot;; int len = s.length() , now;
+    for (now = pos; now &lt; len;) &#123;
+        if (!is_val(s[now] , now&gt;pos))&#123;break;&#125;
+        re += s[now]; now++;
+    &#125;
+    if (now == pos)&#123;re += s[now++];&#125;
+    pos = now;
+    return re;
+&#125;
+string rd_name()
+&#123;
+    int len = rd() % 15 + 1;
+    string s = &quot;&quot;;
+    for (int i = 0; i &lt; len; i++)&#123;s += char(rd()%26+&#39;a&#39;);&#125;
+    return s;
+&#125;
+string rd_zhushi()
+&#123;
+    int len = rd() % 15 + 15;
+    string s = &quot;&quot;;
+    for (int i = 0; i &lt; len; i++)&#123;s += char(rd()%26+&#39;a&#39;);&#125;
+    return s;
+&#125;
+string new_bianliang()
+&#123;
+    if (++bianliang_cnt &lt; Bianliang_Name.size())&#123;return Bianliang_Name[bianliang_cnt];&#125;
+    else&#123;return rd_name();&#125;
+&#125;
+string new_zhushi()
+&#123;
+    if (++zhushi_cnt &lt; Zhushi_Name.size())&#123;return Zhushi_Name[zhushi_cnt];&#125;
+    else&#123;return rd_zhushi();&#125;
+&#125;
+void try_output_zhushi()
+&#123;
+    if (rd() % 20 == 0) &#123;
+        fout &lt;&lt; &quot;\/\/&quot; &lt;&lt; new_zhushi() &lt;&lt; &#39;\n&#39;;
+    &#125;
+&#125;
+void main()
+&#123;
+    shuffle(Bianliang_Name.begin() , Bianliang_Name.end() , rd);
+    shuffle(Zhushi_Name.begin() , Zhushi_Name.end() , rd);
+    for (auto i : Key_Word)&#123;mymap[i] = i;&#125;
+
+    string in_file_name;
+    cout &lt;&lt; &quot;Pls Enter the File Name of Your Code: &quot;;
+    cin &gt;&gt; in_file_name;
+    cout &lt;&lt; &quot;In Processing. Pls Wait...\n&quot;;
+    fin.open(in_file_name); fout.open(&quot;Code.cpp&quot;);
+
+    string s;
+    while(getline(fin , s)) &#123;
+        int cnt = 0;
+        while(!s.empty() and s[0] == &#39; &#39;)&#123;s.erase(0,1); cnt++;&#125;
+        if (s.empty())&#123;continue;&#125;
+
+        int len = s.length();
+        if (s[0] == &#39;#&#39;) &#123;
+            int i = 1;
+            if (get_next_word(s , i) != &quot;define&quot;) &#123;
+                fout &lt;&lt; s;
+            &#125; else &#123;
+                string ans = &quot;#define&quot;;
+                while(i &lt; len) &#123;
+                    if (!is_val(s[i] , 0))&#123;ans += s[i++];&#125;
+                    else &#123;
+                        string tmp = get_next_word(s , i);
+                        if (!mymap.count(tmp))&#123;mymap.insert(&#123;tmp , new_bianliang()&#125;);&#125;
+                        ans += mymap[tmp];
+                    &#125;
+                &#125; fout &lt;&lt; ans;
+            &#125;
+        &#125; else &#123;
+            while(cnt--)&#123;fout &lt;&lt; &#39; &#39;;&#125;
+            int i = 0;
+            string ans = &quot;&quot;;
+            while(i &lt; len) &#123;
+                if (!is_val(s[i] , 0)) &#123;
+                    if (&#39;0&#39; &lt;= s[i] and &#39;9&#39; &gt;= s[i]) &#123;
+                        while(i &lt; len and is_val(s[i] , 1)) &#123;
+                            ans += s[i++];
+                        &#125;
+                    &#125; else &#123;
+                        ans += s[i++];
+                    &#125;
+                &#125; else &#123;
+                    string tmp = get_next_word(s , i);
+                    if (!mymap.count(tmp))&#123;mymap.insert(&#123;tmp , new_bianliang()&#125;);&#125;
+                    ans += mymap[tmp];
+                &#125;
+            &#125; fout &lt;&lt; ans;
+        &#125;
+        
+        try_output_zhushi();
+        fout &lt;&lt; &#39;\n&#39;;
+        try_output_zhushi();
+    &#125;
+&#125;
+
+&#125;int main()&#123;Code_Maker :: main(); return 0;&#125;</code></pre>
+
+    </div>
+    
+    
+    
+    
+    
+    
+    
+</div>
+
+                <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2023 LycoReco SN 支部
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;Slongod
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+            </div>
+            
+            <transition name="fade">
+                <div id="preview" ref="preview" v-show="previewShow">
+                    <img id="preview-content" ref="previewContent" />
+                </div>
+            </transition>
+            
+        </div>
+        <script src="/js/main.js"></script>
+        
+        
+
+
+
+
+        
+    </body>
+</html>
