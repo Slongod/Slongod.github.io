@@ -189,16 +189,16 @@ id="代码混淆器让你放心小号逃罚时">代码混淆器，让你放心�
 target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/skz/post-xiang-mu-dai-ma-hun-xiao-qi">【项目】代码混淆器
 by _sunkuangzheng_</a> 二次开发。</p>
 <p><strong>【功能介绍】</strong></p>
-<p>代码混淆器可以将你的变量名全部改成随机字符串，同时添加一些随机注释，并保证代码还能正常运行。通过它，CF
+<p>代码混淆器可以将你的变量名全部改成常见或随机字符串，同时添加一些随机注释，并保证代码还能正常运行。通过它，CF
 将不能识别你的大小号代码是否雷同！</p>
 <p><strong>【使用说明】</strong></p>
 <p>测试环境为 Windows10, MinGW-GCC13。<br />
 请自行编译使用。</p>
 <p><strong>【已知 BUG】</strong></p>
-<p>目前对字符串的处理有问题，会将你输出的字符串替换为随机字符，预计 0.2
-版本修复。</p>
+<p><del>目前对字符串的处理有问题，会将你输出的字符串替换为随机字符，预计
+0.2 版本修复。</del> （已修复）</p>
 <p><strong>【版本号】</strong><br />
-0.1</p>
+0.2</p>
 <p><strong>【源代码】</strong></p>
 <p>请自行编译使用：</p>
 <pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
@@ -270,7 +270,7 @@ string new_zhushi()
 void try_output_zhushi()
 &#123;
     if (rd() % 20 == 0) &#123;
-        fout &lt;&lt; &quot;\/\/&quot; &lt;&lt; new_zhushi() &lt;&lt; &#39;\n&#39;;
+        fout &lt;&lt; &quot;/\/&quot; &lt;&lt; new_zhushi() &lt;&lt; &#39;\n&#39;;
     &#125;
 &#125;
 void main()
@@ -317,6 +317,12 @@ void main()
                         while(i &lt; len and is_val(s[i] , 1)) &#123;
                             ans += s[i++];
                         &#125;
+                    &#125; else if (s[i] == &#39;\&quot;&#39;) &#123;
+                        ans += s[i++];
+                        while(i &lt; len and s[i] != &#39;\&quot;&#39;) &#123;
+                            ans += s[i++];
+                        &#125;
+                        if (i &lt; len)&#123;ans += s[i++];&#125;
                     &#125; else &#123;
                         ans += s[i++];
                     &#125;
