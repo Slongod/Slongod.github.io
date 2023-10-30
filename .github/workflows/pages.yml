@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - master # default branch
+      
+permissions: write-all
+permissions: read-all
+
 
 jobs:
   build:
