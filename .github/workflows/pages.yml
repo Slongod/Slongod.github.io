@@ -6,7 +6,6 @@ on:
       - master # default branch
       
 permissions: write-all
-permissions: read-all
 
 
 jobs:
