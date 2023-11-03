@@ -6,6 +6,8 @@ on:
 jobs:
   pages:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v2
       - uses: nikeee/setup-pandoc@v1
