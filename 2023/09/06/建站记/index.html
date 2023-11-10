@@ -39,6 +39,10 @@
 
 
 
+<script src="https://cdn.staticfile.org/waline/2.15.5/waline.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/waline/2.15.5/waline.min.css" />
+<link rel="stylesheet" href="https://cdn.staticfile.org/waline/2.15.5/waline-meta.min.css" />
+
 
 
 
@@ -171,7 +175,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/%E5%85%AC%E5%91%8A/" style="color: #03a9f4">公告</a>
+                <a href="/tags/%E5%85%AC%E5%91%8A/" style="color: #00a596">公告</a>
             </span>
             
         </span>
@@ -201,6 +205,10 @@ target="_blank" rel="noopener" href="https://llingy.top">llingy</a> 提供的经
     
     
     
+    
+    <div id="comment">
+        <div id="waline-container"></div>
+    </div>
     
     
     
@@ -237,6 +245,23 @@ target="_blank" rel="noopener" href="https://llingy.top">llingy</a> 提供的经
         
         
 
+
+<script>
+    Waline.init({
+        el: "#waline-container",
+        serverURL: "https://blog-waline-kkoscc7ga-slongods-projects.vercel.app/",
+        commentCount: true,
+        pageview: false,
+        emoji: "https://unpkg.com/@waline/emojis@1.2.0/weibo,https://unpkg.com/@waline/emojis@1.2.0/alus,https://unpkg.com/@waline/emojis@1.2.0/bilibili,https://unpkg.com/@waline/emojis@1.2.0/qq,https://unpkg.com/@waline/emojis@1.2.0/tieba,https://unpkg.com/@waline/emojis@1.2.0/tw-emoji".split(","),
+        meta: "nick,mail,link".split(","),
+        requiredMeta: "nick".split(","),
+        lang: "zh-CN",
+        wordLimit: 0,
+        pageSize: "10",
+        login: "enable",
+        
+    });
+</script>
 
 
 
