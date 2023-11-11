@@ -2,11 +2,11 @@
 # https://github.com/theme-particlex/hexo-theme-particlex
 
 # Avatar image
-avatar: /images/toux.jpg
+avatar: https://cdn.luogu.com.cn/upload/image_hosting/dnunbxm4.png
 
 # Home page background image
 background:
-    - /images/background.png
+    - https://cdn.luogu.com.cn/upload/image_hosting/q4thcnk2.png
 
 # Loading image
 loading: /images/LD.gif
