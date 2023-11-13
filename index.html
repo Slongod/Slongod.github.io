@@ -313,7 +313,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="color: #00bcd4">小故事</a>
+            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="color: #03a9f4">小故事</a>
         </span>
         
     </div>
@@ -353,11 +353,157 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="color: #00bcd4">小故事</a>
+            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="color: #ff7d73">小故事</a>
         </span>
         
     </div>
     <a href="/2023/09/07/%E5%BD%BC%E5%B2%B8%E8%8A%B1%E4%B8%8E%E4%BC%9A%E8%AF%B4%E8%AF%9D%E7%9A%84%E9%87%91%E8%A1%A8-%E5%BA%8F%E7%AB%A0/" class="go-post">阅读全文</a>
+</div>
+
+<div class="post">
+    <a href="/2023/11/13/SP29458-AROPE2-Alphabetic-Rope2-%E9%A2%98%E8%A7%A3/">
+        <h2 class="post-title">SP29458 AROPE2 - Alphabetic Rope2 题解</h2>
+    </a>
+    <div class="category-and-date">
+        
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/11/13
+        </span>
+        
+        
+    </div>
+    <div class="description">
+        <div class="content" v-pre>
+            
+            <p>不需要可持久化。</p>
+<p>题目并没有强制在线，这启示我们可以直接将询问离线下来，每次处理到某个版本的时候回答这个版本的询问。</p>
+<p>对于字符串的维护，我们可以使用 FHQ-Treap。</p>
+<p>对于第一种操作，我们可以 <code>split</code> 出三部分，分别是 <span
+class="math inline">\([1,l-1],[l,r],[r+1,n]\)</span>，当然有些部分可能并不存在（如
+<span class="math inline">\(l=1\)</span> 的时候 <span
+class="math inline">\([1,l-1]\)</span> 就不存在）。然后再按照 <span
+class="math inline">\([l,r],[1,l-1],[r+1,n]\)</span> 的顺序
+<code>merge</code> 回去。具体见代码中的 <code>change_to_front()</code>
+函数。</p>
+<p>对于第二种操作，我们也是 <code>split</code> 出 <span
+class="math inline">\([1,l-1],[l,r],[r+1,n]\)</span> 三部分，然后按照
+<span class="math inline">\([1,l-1],[r+1,n],[l,r]\)</span> 的顺序
+<code>merge</code> 回去。具体见代码中的 <code>change_to_end()</code>
+函数。</p>
+<p>对于第三、四种操作，我们直接按照查询排名为 <span
+class="math inline">\(k\)</span> 的数的方法查询即可。具体见代码中的
+<code>find()</code> 函数。</p>
+<p>然后就做完了，比较好写，跑得也不慢。</p>
+<p>AC Code :</p>
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+using namespace std;
+namespace Slongod&#123;
+const int N = 1e4+7;
+
+//fhq-treap
+int root , cnt , son[N][2] , size[N]; char val[N]; mt19937 rd(time(nullptr));
+void update(int ro)&#123;size[ro] = 1 + size[son[ro][1]] + size[son[ro][0]];&#125;
+int merge(int x , int y)
+&#123;
+    if (!x or !y)&#123;return x^y;&#125;
+    if (rd() % 2) &#123;
+        son[y][1] = merge(x , son[y][1]);
+        update(y); return y;
+    &#125; else &#123;
+        son[x][0] = merge(son[x][0] , y);
+        update(x); return x;
+    &#125;
+&#125;
+pair &lt;int,int&gt; split(int ro , int x) //将 size&lt;=x 放到 first
+&#123;
+    if (!ro)&#123;return &#123;0 , 0&#125;;&#125;
+    if (size[son[ro][1]] &gt;= x) &#123;
+        auto p = split(son[ro][1] , x);
+        son[ro][1] = p.second; update(ro);
+        return &#123;p.first , ro&#125;;
+    &#125; else &#123;
+        auto p = split(son[ro][0] , x-size[son[ro][1]]-1);
+        son[ro][0] = p.first; update(ro);
+        return &#123;ro , p.second&#125;;
+    &#125;
+&#125;
+void change_to_front(int l , int r)
+&#123;
+    auto p = split(root , l-1);
+    auto sdp = split(p.second , r-l+1);
+    root = merge(merge(sdp.first , p.first) , sdp.second);
+&#125;
+void change_to_end(int l , int r)
+&#123;
+    auto p = split(root , l-1);
+    auto sdp = split(p.second , r-l+1);
+    root = merge(merge(p.first , sdp.second) , sdp.first);
+&#125;
+char find(int ro , int x)
+&#123;
+    if (size[son[ro][1]] &gt;= x)&#123;return find(son[ro][1] , x);&#125;
+    if (size[son[ro][1]] + 1 == x)&#123;return val[ro];&#125;
+    return find(son[ro][0] , x - size[son[ro][1]] - 1);
+&#125;
+int build(int l , int r , const char s[])
+&#123;
+    if (l &gt; r)&#123;return 0;&#125;
+    int mid = (r - l) / 2 + l;
+    int ro = ++cnt; val[ro] = s[mid];
+    son[ro][1] = build(l , mid-1 , s);
+    son[ro][0] = build(mid+1 , r , s);
+    update(ro); return ro;
+&#125;
+
+string s; int q , opt[N] , l[N] , r[N]; vector &lt;pair&lt;int,int&gt;&gt; que[N];
+void main()
+&#123;
+    cin &gt;&gt; s &gt;&gt; q;
+    root = build(0 , s.length()-1 , s.c_str());
+    
+    for (int i = 1; i &lt;= q; i++) &#123;
+        cin &gt;&gt; opt[i];
+        if (opt[i] &lt;= 2)&#123;cin &gt;&gt; l[i] &gt;&gt; r[i]; l[i]++; r[i]++;&#125;
+        if (opt[i] == 3)&#123;cin &gt;&gt; l[i]; que[i].push_back(&#123;l[i]+1 , i&#125;);&#125;
+        if (opt[i] == 4)&#123;cin &gt;&gt; l[i] &gt;&gt; r[i]; que[l[i]].push_back(&#123;r[i]+1 , i&#125;);&#125;
+    &#125;
+
+    for (auto p : que[0])&#123;r[p.second] = find(root , p.first);&#125;
+    for (int i = 1; i &lt;= q; i++) &#123;
+        if (opt[i] == 1)&#123;change_to_front(l[i] , r[i]);&#125;
+        if (opt[i] == 2)&#123;change_to_end(l[i] , r[i]);&#125;    
+        for (auto p : que[i])&#123;r[p.second] = find(root , p.first);&#125;
+        if (opt[i] &gt;= 3)&#123;cout &lt;&lt; char(r[i]) &lt;&lt; &#39;\n&#39;;&#125;
+    &#125;
+&#125;
+&#125;int main()
+&#123;
+    ios :: sync_with_stdio(0);
+    cin.tie(0) , cout.tie(0);
+    return Slongod :: main(),0;
+&#125;</code></pre>
+
+            
+        </div>
+    </div>
+    <div class="post-tags">
+        
+        <span class="icon">
+            <i class="fa-solid fa-tags fa-fw"></i>
+        </span>
+        
+        
+        
+        <span class="tag">
+            
+            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #00bcd4">题解</a>
+        </span>
+        
+    </div>
+    <a href="/2023/11/13/SP29458-AROPE2-Alphabetic-Rope2-%E9%A2%98%E8%A7%A3/" class="go-post">阅读全文</a>
 </div>
 
 <div class="post">
@@ -393,7 +539,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #00a596">其他</a>
+            <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #00bcd4">其他</a>
         </span>
         
     </div>
@@ -433,7 +579,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #00bcd4">题解</a>
+            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #03a9f4">题解</a>
         </span>
         
     </div>
@@ -473,7 +619,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #ffa2c4">题解</a>
+            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #ff7d73">题解</a>
         </span>
         
     </div>
@@ -513,7 +659,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #00bcd4">题解</a>
+            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #ff7d73">题解</a>
         </span>
         
     </div>
@@ -553,7 +699,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #ffa2c4">题解</a>
+            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #03a9f4">题解</a>
         </span>
         
     </div>
@@ -608,7 +754,7 @@ target="_blank" rel="noopener" href="https://llingy.top">llingy</a> 提供的经
         
         <span class="tag">
             
-            <a href="/tags/%E5%85%AC%E5%91%8A/" style="color: #03a9f4">公告</a>
+            <a href="/tags/%E5%85%AC%E5%91%8A/" style="color: #ffa2c4">公告</a>
         </span>
         
     </div>
