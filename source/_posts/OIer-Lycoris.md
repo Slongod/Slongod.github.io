@@ -2,6 +2,7 @@
 title: OIer Lycoris
 date: 2023-11-14 17:50:27
 tags: 其他
+description: 锦木千束和井上泷奈是 西工大附中 的 OI 选手
 ---
 
 锦木千束和井上泷奈是 西工大附中 的 OI 选手，这是她们今天写的代码：
