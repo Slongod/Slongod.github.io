@@ -313,7 +313,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="color: #ffa2c4">小故事</a>
+            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="color: #00bcd4">小故事</a>
         </span>
         
     </div>
@@ -353,11 +353,151 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="color: #00a596">小故事</a>
+            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="color: #ffa2c4">小故事</a>
         </span>
         
     </div>
     <a href="/2023/09/07/%E5%BD%BC%E5%B2%B8%E8%8A%B1%E4%B8%8E%E4%BC%9A%E8%AF%B4%E8%AF%9D%E7%9A%84%E9%87%91%E8%A1%A8-%E5%BA%8F%E7%AB%A0/" class="go-post">阅读全文</a>
+</div>
+
+<div class="post">
+    <a href="/2023/11/14/OIer-Lycoris/">
+        <h2 class="post-title">OIer Lycoris</h2>
+    </a>
+    <div class="category-and-date">
+        
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/11/14
+        </span>
+        
+        
+    </div>
+    <div class="description">
+        <div class="content" v-pre>
+            
+            <p>锦木千束和井上泷奈是 西工大附中 的 OI
+选手，这是她们今天写的代码：</p>
+<pre class="cpp"><code>/*
+
+没有补题😒
+
+*/
+
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+namespace 🤣&#123;
+using ll = long long;
+const int N = 2e4+7 , M = 505 , mod = 998244353 , mt = 500 , inf = 0x3f3f3f3f;
+int n , q , w[N] , lp[N] , rp[N] , mp[N] , as[N];
+int v[N] , ans[N*10] , f[N][M] , id[N][M];
+vector &lt;int&gt; ps[N];
+int pmod(int x)&#123;return x &gt;= mod ? x - mod : x;&#125;
+void solve(int lt , int rt)
+&#123;
+    if (lt &gt;= rt) &#123;
+        for (auto p : ps[lt]) &#123;
+            if (lp[p] == rp[p]) &#123;
+                if (mp[p] &gt;= w[lt]) &#123;
+                    ans[p] = v[lt];
+                    as[p] = 1;
+                &#125; else &#123;
+                    ans[p] = 0;
+                    as[p] = 0;
+                &#125;
+            &#125;
+        &#125;
+        return;
+    &#125;
+    int mid = (rt - lt) / 2 + lt;
+    solve(lt , mid); solve(mid+1 , rt);
+    
+    //left
+    for (int i = 0; i &lt;= mt; i++)&#123;f[mid][i] = -inf; id[mid][i] = 0;&#125;
+    f[mid][0] = 0; id[mid][0] = 1; f[mid][w[mid]] = v[mid]; id[mid][w[mid]] = 1;
+    for (int i = mid-1; i &gt;= lt; i--) &#123;
+        for (int j = 0; j &lt;= mt; j++) &#123;
+            f[i][j] = f[i+1][j];
+            id[i][j] = id[i+1][j];
+            if (j &gt;= w[i]) &#123;
+                if (f[i][j] &lt; f[i+1][j-w[i]] + v[i]) &#123;
+                    f[i][j] = f[i+1][j-w[i]] + v[i];
+                    id[i][j] = id[i+1][j-w[i]];
+                &#125; else if (f[i][j] == f[i+1][j-w[i]] + v[i]) &#123;
+                    id[i][j] = pmod(id[i][j] + id[i+1][j-w[i]]);
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+    //right
+    for (int i = 0; i &lt;= mt; i++)&#123;f[mid+1][i] = 0; id[mid+1][i] = 1;&#125;
+    for (int i = w[mid+1]; i &lt;= mt; i++)&#123;f[mid+1][i] = v[mid+1]; id[mid+1][i] = 1;&#125;
+    for (int i = mid+2; i &lt;= rt; i++) &#123;
+        for (int j = 0; j &lt;= mt; j++) &#123;
+            f[i][j] = f[i-1][j];
+            id[i][j] = id[i-1][j];
+            if (j &gt;= w[i]) &#123;
+                if (f[i][j] &lt; f[i-1][j-w[i]] + v[i]) &#123;
+                    f[i][j] = f[i-1][j-w[i]] + v[i];
+                    id[i][j] = id[i-1][j-w[i]];
+                &#125; else if (f[i][j] == f[i-1][j-w[i]] + v[i]) &#123;
+                    id[i][j] = pmod(id[i][j] + id[i-1][j-w[i]]);
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+    //merge
+    for (int i = mid+1; i &lt;= rt; i++) &#123;
+        for (auto p : ps[i]) &#123;
+            int l = lp[p] , r = i , m = mp[p];
+            if (l &lt;= mid and l &gt;= lt) &#123;
+                for (int j = 0; j &lt;= m; j++) &#123;
+                    if (f[l][j] + f[r][m-j] &gt; ans[p]) &#123;
+                        ans[p] = f[l][j] + f[r][m-j];
+                        as[p] = 1ll * id[l][j] * id[r][m-j] % mod;
+                    &#125; else if (f[l][j] + f[r][m-j] == ans[p] and ans[p]) &#123;
+                        as[p] = pmod(1ll * id[l][j] * id[r][m-j] % mod + as[p]);
+                    &#125;
+                &#125;
+            &#125;
+        &#125;
+    &#125; 
+&#125;
+void 👉()
+&#123;
+    cin &gt;&gt; n; for (int i = 1; i &lt;= n; i++)&#123;cin &gt;&gt; v[i] &gt;&gt; w[i];&#125;
+    cin &gt;&gt; q; for (int i = 1; i &lt;= q; i++)&#123;cin &gt;&gt; lp[i] &gt;&gt; rp[i] &gt;&gt; mp[i]; ps[rp[i]].push_back(i);&#125;
+    solve(1 , n); for (int i = 1; i &lt;= q; i++)&#123;cout &lt;&lt; ans[i] &lt;&lt; &#39; &#39; &lt;&lt; (ans[i] ? as[i] : 0) &lt;&lt; &#39;\n&#39;;&#125;
+&#125;
+&#125;int main()
+&#123;
+    freopen(&quot;knapsack.in&quot; , &quot;r&quot; , stdin);
+    freopen(&quot;knapsack.out&quot; , &quot;w&quot; , stdout);
+    ios :: sync_with_stdio(0);
+    cin.tie(0) , cout.tie(0);
+    return 🤣::👉(),0;
+&#125;</code></pre>
+
+            
+        </div>
+    </div>
+    <div class="post-tags">
+        
+        <span class="icon">
+            <i class="fa-solid fa-tags fa-fw"></i>
+        </span>
+        
+        
+        
+        <span class="tag">
+            
+            <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #00a596">其他</a>
+        </span>
+        
+    </div>
+    <a href="/2023/11/14/OIer-Lycoris/" class="go-post">阅读全文</a>
 </div>
 
 <div class="post">
@@ -539,7 +679,7 @@ void main()
         
         <span class="tag">
             
-            <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #00bcd4">其他</a>
+            <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #00a596">其他</a>
         </span>
         
     </div>
@@ -579,7 +719,7 @@ void main()
         
         <span class="tag">
             
-            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #ff7d73">题解</a>
+            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #03a9f4">题解</a>
         </span>
         
     </div>
@@ -619,7 +759,7 @@ void main()
         
         <span class="tag">
             
-            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #ff7d73">题解</a>
+            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #00a596">题解</a>
         </span>
         
     </div>
@@ -659,7 +799,7 @@ void main()
         
         <span class="tag">
             
-            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #03a9f4">题解</a>
+            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #00bcd4">题解</a>
         </span>
         
     </div>
@@ -699,7 +839,7 @@ void main()
         
         <span class="tag">
             
-            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #03a9f4">题解</a>
+            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #00a596">题解</a>
         </span>
         
     </div>
@@ -754,7 +894,7 @@ target="_blank" rel="noopener" href="https://llingy.top">llingy</a> 提供的经
         
         <span class="tag">
             
-            <a href="/tags/%E5%85%AC%E5%91%8A/" style="color: #ffa2c4">公告</a>
+            <a href="/tags/%E5%85%AC%E5%91%8A/" style="color: #ff7d73">公告</a>
         </span>
         
     </div>

@@ -3,7 +3,7 @@
 <html lang="zh-Hans">
     <head>
         <meta charset="utf-8" />
-        <title>SP29458 AROPE2 - Alphabetic Rope2 题解 | LycoReco SN 支部</title>
+        <title>OIer Lycoris | LycoReco SN 支部</title>
         <meta name="author" content="Slongod" />
         <meta name="description" content="SlongodのBlog" />
         <meta name="keywords" content="" />
@@ -156,14 +156,14 @@
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
                 <div class="article">
     <div>
-        <h1>SP29458 AROPE2 - Alphabetic Rope2 题解</h1>
+        <h1>OIer Lycoris</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2023/11/13
+            2023/11/14
         </span>
         
         
@@ -175,7 +175,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #00a596">题解</a>
+                <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #00a596">其他</a>
             </span>
             
         </span>
@@ -183,112 +183,106 @@
     </div>
     
     <div class="content" v-pre>
-        <p>不需要可持久化。</p>
-<p>题目并没有强制在线，这启示我们可以直接将询问离线下来，每次处理到某个版本的时候回答这个版本的询问。</p>
-<p>对于字符串的维护，我们可以使用 FHQ-Treap。</p>
-<p>对于第一种操作，我们可以 <code>split</code> 出三部分，分别是 <span
-class="math inline">\([1,l-1],[l,r],[r+1,n]\)</span>，当然有些部分可能并不存在（如
-<span class="math inline">\(l=1\)</span> 的时候 <span
-class="math inline">\([1,l-1]\)</span> 就不存在）。然后再按照 <span
-class="math inline">\([l,r],[1,l-1],[r+1,n]\)</span> 的顺序
-<code>merge</code> 回去。具体见代码中的 <code>change_to_front()</code>
-函数。</p>
-<p>对于第二种操作，我们也是 <code>split</code> 出 <span
-class="math inline">\([1,l-1],[l,r],[r+1,n]\)</span> 三部分，然后按照
-<span class="math inline">\([1,l-1],[r+1,n],[l,r]\)</span> 的顺序
-<code>merge</code> 回去。具体见代码中的 <code>change_to_end()</code>
-函数。</p>
-<p>对于第三、四种操作，我们直接按照查询排名为 <span
-class="math inline">\(k\)</span> 的数的方法查询即可。具体见代码中的
-<code>find()</code> 函数。</p>
-<p>然后就做完了，比较好写，跑得也不慢。</p>
-<p>AC Code :</p>
-<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+        <p>锦木千束和井上泷奈是 西工大附中 的 OI
+选手，这是她们今天写的代码：</p>
+<pre class="cpp"><code>/*
+
+没有补题😒
+
+*/
+
+#include &lt;bits/stdc++.h&gt;
 using namespace std;
-namespace Slongod&#123;
-const int N = 1e4+7;
-
-//fhq-treap
-int root , cnt , son[N][2] , size[N]; char val[N]; mt19937 rd(time(nullptr));
-void update(int ro)&#123;size[ro] = 1 + size[son[ro][1]] + size[son[ro][0]];&#125;
-int merge(int x , int y)
+namespace 🤣&#123;
+using ll = long long;
+const int N = 2e4+7 , M = 505 , mod = 998244353 , mt = 500 , inf = 0x3f3f3f3f;
+int n , q , w[N] , lp[N] , rp[N] , mp[N] , as[N];
+int v[N] , ans[N*10] , f[N][M] , id[N][M];
+vector &lt;int&gt; ps[N];
+int pmod(int x)&#123;return x &gt;= mod ? x - mod : x;&#125;
+void solve(int lt , int rt)
 &#123;
-    if (!x or !y)&#123;return x^y;&#125;
-    if (rd() % 2) &#123;
-        son[y][1] = merge(x , son[y][1]);
-        update(y); return y;
-    &#125; else &#123;
-        son[x][0] = merge(son[x][0] , y);
-        update(x); return x;
+    if (lt &gt;= rt) &#123;
+        for (auto p : ps[lt]) &#123;
+            if (lp[p] == rp[p]) &#123;
+                if (mp[p] &gt;= w[lt]) &#123;
+                    ans[p] = v[lt];
+                    as[p] = 1;
+                &#125; else &#123;
+                    ans[p] = 0;
+                    as[p] = 0;
+                &#125;
+            &#125;
+        &#125;
+        return;
     &#125;
-&#125;
-pair &lt;int,int&gt; split(int ro , int x) //将 size&lt;=x 放到 first
-&#123;
-    if (!ro)&#123;return &#123;0 , 0&#125;;&#125;
-    if (size[son[ro][1]] &gt;= x) &#123;
-        auto p = split(son[ro][1] , x);
-        son[ro][1] = p.second; update(ro);
-        return &#123;p.first , ro&#125;;
-    &#125; else &#123;
-        auto p = split(son[ro][0] , x-size[son[ro][1]]-1);
-        son[ro][0] = p.first; update(ro);
-        return &#123;ro , p.second&#125;;
-    &#125;
-&#125;
-void change_to_front(int l , int r)
-&#123;
-    auto p = split(root , l-1);
-    auto sdp = split(p.second , r-l+1);
-    root = merge(merge(sdp.first , p.first) , sdp.second);
-&#125;
-void change_to_end(int l , int r)
-&#123;
-    auto p = split(root , l-1);
-    auto sdp = split(p.second , r-l+1);
-    root = merge(merge(p.first , sdp.second) , sdp.first);
-&#125;
-char find(int ro , int x)
-&#123;
-    if (size[son[ro][1]] &gt;= x)&#123;return find(son[ro][1] , x);&#125;
-    if (size[son[ro][1]] + 1 == x)&#123;return val[ro];&#125;
-    return find(son[ro][0] , x - size[son[ro][1]] - 1);
-&#125;
-int build(int l , int r , const char s[])
-&#123;
-    if (l &gt; r)&#123;return 0;&#125;
-    int mid = (r - l) / 2 + l;
-    int ro = ++cnt; val[ro] = s[mid];
-    son[ro][1] = build(l , mid-1 , s);
-    son[ro][0] = build(mid+1 , r , s);
-    update(ro); return ro;
-&#125;
-
-string s; int q , opt[N] , l[N] , r[N]; vector &lt;pair&lt;int,int&gt;&gt; que[N];
-void main()
-&#123;
-    cin &gt;&gt; s &gt;&gt; q;
-    root = build(0 , s.length()-1 , s.c_str());
+    int mid = (rt - lt) / 2 + lt;
+    solve(lt , mid); solve(mid+1 , rt);
     
-    for (int i = 1; i &lt;= q; i++) &#123;
-        cin &gt;&gt; opt[i];
-        if (opt[i] &lt;= 2)&#123;cin &gt;&gt; l[i] &gt;&gt; r[i]; l[i]++; r[i]++;&#125;
-        if (opt[i] == 3)&#123;cin &gt;&gt; l[i]; que[i].push_back(&#123;l[i]+1 , i&#125;);&#125;
-        if (opt[i] == 4)&#123;cin &gt;&gt; l[i] &gt;&gt; r[i]; que[l[i]].push_back(&#123;r[i]+1 , i&#125;);&#125;
+    //left
+    for (int i = 0; i &lt;= mt; i++)&#123;f[mid][i] = -inf; id[mid][i] = 0;&#125;
+    f[mid][0] = 0; id[mid][0] = 1; f[mid][w[mid]] = v[mid]; id[mid][w[mid]] = 1;
+    for (int i = mid-1; i &gt;= lt; i--) &#123;
+        for (int j = 0; j &lt;= mt; j++) &#123;
+            f[i][j] = f[i+1][j];
+            id[i][j] = id[i+1][j];
+            if (j &gt;= w[i]) &#123;
+                if (f[i][j] &lt; f[i+1][j-w[i]] + v[i]) &#123;
+                    f[i][j] = f[i+1][j-w[i]] + v[i];
+                    id[i][j] = id[i+1][j-w[i]];
+                &#125; else if (f[i][j] == f[i+1][j-w[i]] + v[i]) &#123;
+                    id[i][j] = pmod(id[i][j] + id[i+1][j-w[i]]);
+                &#125;
+            &#125;
+        &#125;
     &#125;
-
-    for (auto p : que[0])&#123;r[p.second] = find(root , p.first);&#125;
-    for (int i = 1; i &lt;= q; i++) &#123;
-        if (opt[i] == 1)&#123;change_to_front(l[i] , r[i]);&#125;
-        if (opt[i] == 2)&#123;change_to_end(l[i] , r[i]);&#125;    
-        for (auto p : que[i])&#123;r[p.second] = find(root , p.first);&#125;
-        if (opt[i] &gt;= 3)&#123;cout &lt;&lt; char(r[i]) &lt;&lt; &#39;\n&#39;;&#125;
+    //right
+    for (int i = 0; i &lt;= mt; i++)&#123;f[mid+1][i] = 0; id[mid+1][i] = 1;&#125;
+    for (int i = w[mid+1]; i &lt;= mt; i++)&#123;f[mid+1][i] = v[mid+1]; id[mid+1][i] = 1;&#125;
+    for (int i = mid+2; i &lt;= rt; i++) &#123;
+        for (int j = 0; j &lt;= mt; j++) &#123;
+            f[i][j] = f[i-1][j];
+            id[i][j] = id[i-1][j];
+            if (j &gt;= w[i]) &#123;
+                if (f[i][j] &lt; f[i-1][j-w[i]] + v[i]) &#123;
+                    f[i][j] = f[i-1][j-w[i]] + v[i];
+                    id[i][j] = id[i-1][j-w[i]];
+                &#125; else if (f[i][j] == f[i-1][j-w[i]] + v[i]) &#123;
+                    id[i][j] = pmod(id[i][j] + id[i-1][j-w[i]]);
+                &#125;
+            &#125;
+        &#125;
     &#125;
+    //merge
+    for (int i = mid+1; i &lt;= rt; i++) &#123;
+        for (auto p : ps[i]) &#123;
+            int l = lp[p] , r = i , m = mp[p];
+            if (l &lt;= mid and l &gt;= lt) &#123;
+                for (int j = 0; j &lt;= m; j++) &#123;
+                    if (f[l][j] + f[r][m-j] &gt; ans[p]) &#123;
+                        ans[p] = f[l][j] + f[r][m-j];
+                        as[p] = 1ll * id[l][j] * id[r][m-j] % mod;
+                    &#125; else if (f[l][j] + f[r][m-j] == ans[p] and ans[p]) &#123;
+                        as[p] = pmod(1ll * id[l][j] * id[r][m-j] % mod + as[p]);
+                    &#125;
+                &#125;
+            &#125;
+        &#125;
+    &#125; 
+&#125;
+void 👉()
+&#123;
+    cin &gt;&gt; n; for (int i = 1; i &lt;= n; i++)&#123;cin &gt;&gt; v[i] &gt;&gt; w[i];&#125;
+    cin &gt;&gt; q; for (int i = 1; i &lt;= q; i++)&#123;cin &gt;&gt; lp[i] &gt;&gt; rp[i] &gt;&gt; mp[i]; ps[rp[i]].push_back(i);&#125;
+    solve(1 , n); for (int i = 1; i &lt;= q; i++)&#123;cout &lt;&lt; ans[i] &lt;&lt; &#39; &#39; &lt;&lt; (ans[i] ? as[i] : 0) &lt;&lt; &#39;\n&#39;;&#125;
 &#125;
 &#125;int main()
 &#123;
+    freopen(&quot;knapsack.in&quot; , &quot;r&quot; , stdin);
+    freopen(&quot;knapsack.out&quot; , &quot;w&quot; , stdout);
     ios :: sync_with_stdio(0);
     cin.tie(0) , cout.tie(0);
-    return Slongod :: main(),0;
+    return 🤣::👉(),0;
 &#125;</code></pre>
 
     </div>
