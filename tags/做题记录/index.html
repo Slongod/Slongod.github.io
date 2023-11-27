@@ -3,7 +3,7 @@
 <html lang="zh-Hans">
     <head>
         <meta charset="utf-8" />
-        <title>AGC006D Median Pyramid Hard题解 | LycoReco SN 支部</title>
+        <title>Tags: 做题记录 | LycoReco SN 支部</title>
         <meta name="author" content="Slongod" />
         <meta name="description" content="SlongodのBlog" />
         <meta name="keywords" content="" />
@@ -34,14 +34,6 @@
 
 <script src="/js/lib/preview.js"></script>
 
-
-
-
-
-
-<script src="https://cdn.staticfile.org/waline/2.15.5/waline.min.js"></script>
-<link rel="stylesheet" href="https://cdn.staticfile.org/waline/2.15.5/waline.min.css" />
-<link rel="stylesheet" href="https://cdn.staticfile.org/waline/2.15.5/waline-meta.min.css" />
 
 
 
@@ -154,152 +146,96 @@
 </transition>
 
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
-                <div class="article">
-    <div>
-        <h1>AGC006D Median Pyramid Hard题解</h1>
-    </div>
-    <div class="info">
-        <span class="date">
-            <span class="icon">
-                <i class="fa-solid fa-calendar fa-fw"></i>
-            </span>
-            2023/9/7
+                <div id="archives">
+    
+    <div class="categories-tags">
+        
+        
+        
+        <span>
+            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="background: #ff7d73">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                题解
+            </a>
         </span>
         
         
-        <span class="tags">
-            <span class="icon">
-                <i class="fa-solid fa-tags fa-fw"></i>
-            </span>
-            
-            
-            <span class="tag">
+        
+        <span>
+            <a href="/tags/%E5%85%B6%E4%BB%96/" style="background: #00a596">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                其他
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/%E5%85%AC%E5%91%8A/" style="background: #ff7d73">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                公告
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" style="background: linear-gradient(120deg, #9abbf7 0%, #ffbbf4 100%)">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                做题记录
+            </a>
+        </span>
+        
+        
+        
+        
+        
+        <span>
+            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="background: #ffa2c4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                小故事
+            </a>
+        </span>
+        
+        
+    </div>
+    
+    <div class="timeline">
+        <div class="timeline-tail"></div>
+        <div class="timeline-content">
+            <div class="item-time">2023/11/27</div>
+            <a href="/2023/11/27/%E6%B4%9B%E8%B0%B7%E7%9C%81%E9%80%89%E8%AE%A1%E5%88%92-%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/">
+                <h3>洛谷省选计划 做题记录</h3>
+            </a>
+            <div class="info">
                 
-                <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #ff7d73">题解</a>
-            </span>
-            
-        </span>
-        
+                
+                <span class="tags">
+                    <span class="icon">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </span>
+                    
+                    
+                    <span class="tag">
+                        
+                        <a href="/tags/%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" style="color: #00bcd4">做题记录</a>
+                    </span>
+                    
+                </span>
+                
+            </div>
+        </div>
     </div>
-    
-    <div class="content" v-pre>
-        <h3 id="引入">引入</h3>
-<p>先考虑一下这个问题的简化版，如果最下面的数不是排列，而是 <span
-class="math inline">\(01\)</span> 串，应该怎么做。</p>
-<p>比如：</p>
-<p><img src="https://pic.imgdb.cn/item/64f92e01661c6c8e542f807b.jpg" style="zoom: 10%;" /></p>
-<p>我们发现，最顶上的那个数字是底部 <strong>离中心（位置 <span
-class="math inline">\(n\)</span>）最近的两个相同的数字</strong>。</p>
-<p>证明如下（方便起见，<strong>记这两个数字的位置分别是</strong> <span
-class="math inline">\(i,j(i&lt;j)\)</span> <strong>且</strong> <span
-class="math inline">\(i,j\ge n,a[i]=a[j]=0\)</span>）：</p>
-<ul>
-<li><p>若 <span class="math inline">\(i=n\)</span> 或 <span
-class="math inline">\(j=n\)</span>，则 <span
-class="math inline">\(i,j\)</span> 正上方的两列都将一直是 <span
-class="math inline">\(0\)</span>，直到顶端。</p></li>
-<li><p>若 <span class="math inline">\(i\not=n\)</span> 且 <span
-class="math inline">\(j\not=n\)</span>，<span class="math inline">\(则
-i&gt;n\)</span>，小于同理。那么由 ”<span
-class="math inline">\(i,j\)</span> 上的数字是离位置 <span
-class="math inline">\(n\)</span> 最近的两个相同的数字“ 可以知道：</p>
-<ol type="1">
-<li>子串 <span class="math inline">\([n-(i-n),i-1]\)</span> 是 <span
-class="math inline">\(0/1\)</span> 交错出现组成的。</li>
-<li><span class="math inline">\(i-1\)</span> 上的数是 <span
-class="math inline">\(1\)</span>。</li>
-</ol>
-<p>那么对于从下往上数第二行：</p>
-<ol type="1">
-<li><span class="math inline">\(i-1\)</span> 和 <span
-class="math inline">\(i\)</span> 上的数字都将是 <span
-class="math inline">\(0\)</span></li>
-<li>若<span
-class="math inline">\(i-1=n\)</span>，则可以一直通到顶端，否则由于最下面一行子串
-<span class="math inline">\([n-(i-n),i-1]\)</span> 是 <span
-class="math inline">\(0/1\)</span> 交错出现组成的，第二行的 <span
-class="math inline">\([n-(i-1-n),i-2]\)</span> 一定是 <span
-class="math inline">\(0/1\)</span> 交错出现组成的。</li>
-</ol></li>
-</ul>
-<p>于是问题又回到了上述的两种情况之一，且 <span
-class="math inline">\(i,j\)</span> 均减小 <span
-class="math inline">\(1\)</span>，于是重复若干次后一定会使得 <span
-class="math inline">\(i=n\)</span>。<span class="math inline">\(i,j\le
-n\)</span> 与上述情况类似。</p>
-<p>于是我们证明了：<strong>最顶上的那个数字是底部离中心（位置 <span
-class="math inline">\(n\)</span>）最近的两个相同的数字</strong>。</p>
-<p>若不存在两个相同且相邻的数，则对于从下往上数第 <span
-class="math inline">\(i\)</span> 行，最中间的数字 <span
-class="math inline">\(x\)</span> 为第 <span
-class="math inline">\(i-1\)</span> 行的数 <span
-class="math inline">\(y\operatorname{xor}
-1\)</span>，简单计算一下即可。</p>
-<h3 id="sol">Sol</h3>
-<p>对于这个问题，考虑二分答案。对于二分到的 <span
-class="math inline">\(x\)</span>，我们需要判断最后顶端的数 <span
-class="math inline">\(k\ge x\)</span> 或 <span
-class="math inline">\(k&lt;x\)</span>。</p>
-<p>我们遍历整个 <span class="math inline">\(a\)</span> 数组，将大于等于
-<span class="math inline">\(x\)</span> 的数的值变成 <span
-class="math inline">\(1\)</span>，小于 <span
-class="math inline">\(x\)</span> 的数的值变成 <span
-class="math inline">\(0\)</span>，于是问题转化成了对于上述的弱化版问题，判断顶端的数是否是
-<span class="math inline">\(1\)</span>。扫一遍即可。</p>
-<p>总时间复杂度 <span class="math inline">\(O(n\log n)\)</span>。</p>
-<p>AC Code：</p>
-<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
-using namespace std;
-namespace Slongod&#123;
-const int N = 3e5+7;
-int n , a[N] , p[N];
-bool check(int x)
-&#123;
-    for (int i = 1; i &lt;= 2*n-1; i++) &#123;
-        p[i] = (a[i] &gt;= x ? 1 : 0);
-    &#125;
-    for (int i = 0; i &lt; n-1; i++) &#123;
-        if (p[n+i] == p[n+i+1]) &#123;
-            return p[n+i];
-        &#125; else if (p[n-i] == p[n-i-1]) &#123;
-            return p[n-i];
-        &#125;
-    &#125;
-    return ((n&amp;1) ? p[n] : !p[n]);
-&#125;
-int main()
-&#123;
-    cin &gt;&gt; n; for (int i = 1; i &lt;= 2*n-1; i++)&#123;cin &gt;&gt; a[i];&#125;
-    int l = 1 , r = 2*n-1 , ans = 0;
-    while(l &lt;= r) &#123;
-        int mid = (r - l) / 2 + l;
-        if (!check(mid)) &#123;
-            r = mid - 1;
-        &#125; else &#123;
-            l = mid + 1;
-            ans = mid;
-        &#125;
-    &#125; cout &lt;&lt; ans &lt;&lt; &#39;\n&#39;;
-    return 0;
-&#125;
-&#125;int main()
-&#123;
-    ios :: sync_with_stdio(0);
-    cin.tie(0) , cout.tie(0);
-    return Slongod :: main();
-&#125;</code></pre>
-
-    </div>
-    
-    
-    
-    
-    
-    <div id="comment">
-        <div id="waline-container"></div>
-    </div>
-    
-    
     
 </div>
 
@@ -331,29 +267,6 @@ int main()
             
         </div>
         <script src="/js/main.js"></script>
-        
-        
-
-
-<script>
-    Waline.init({
-        el: "#waline-container",
-        serverURL: "https://blog-waline-kkoscc7ga-slongods-projects.vercel.app/",
-        commentCount: true,
-        pageview: false,
-        emoji: "https://unpkg.com/@waline/emojis@1.2.0/weibo,https://unpkg.com/@waline/emojis@1.2.0/alus,https://unpkg.com/@waline/emojis@1.2.0/bilibili,https://unpkg.com/@waline/emojis@1.2.0/qq,https://unpkg.com/@waline/emojis@1.2.0/tieba,https://unpkg.com/@waline/emojis@1.2.0/tw-emoji".split(","),
-        meta: "nick,mail,link".split(","),
-        requiredMeta: "nick".split(","),
-        lang: "zh-CN",
-        wordLimit: 0,
-        pageSize: "10",
-        login: "enable",
-        
-    });
-</script>
-
-
-
         
     </body>
 </html>
