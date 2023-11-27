@@ -2,6 +2,7 @@
 title: SP29458 AROPE2 - Alphabetic Rope2 题解
 date: 2023-11-13 10:48:46
 tags: 题解
+description: SP29458 AROPE2 - Alphabetic Rope2 题解
 ---
 
 不需要可持久化。
