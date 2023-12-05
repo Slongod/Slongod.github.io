@@ -8,6 +8,8 @@ description: SNOI前 做题记录，包含一些 洛谷省选计划 的题。
 
 # SNOI前 做题记录
 
+{% raw %}
+
 ## T402404 星辰
 
 对于一个排列 $P$，它的逆排列 $P'$ 满足 $P'{p_i}=i$，显然，对合排列的逆排列为其本身。
@@ -22,7 +24,6 @@ $$
 
 考虑第 $t$ 轮转移，实际上是先进行前缀和 $f_i=f_{i-1}+f_{i}$，然后令 $f_i=f_{i}-f_{i-t}$。考虑 $f$ 的生成函数 $F$，则实际上是：
 
-{% raw %}
 $$
 F_t=(\sum_{i=0}^{\infty}x_i)(1-x^{t})F_{t-1}=\frac{1}{1-x}(1-x^{t})F_{t-1}
 $$
@@ -35,14 +36,11 @@ $$
 考虑卢卡斯定理：
 
 $$
-{n\choose{m}}\pmod{p}={\lfloor\frac{n}{p}\rfloor\choose{\lfloor\frac{m}{p}\rfloor}}{n\operatorname{mod} p\choose{m \operatorname{mod} p}}\pmod{p}
+{n\choose{m}}\pmod{p}\equiv {\lfloor\frac{n}{p}\rfloor\choose{\lfloor\frac{m}{p}\rfloor}}{n\operatorname{mod} p\choose{m \operatorname{mod} p}}\pmod{p}
 $$
 则对于 $p=2$，${{n}\choose{m}} \equiv 1 \pmod{p}$ 当且仅当 $n\&m=m$，即 $n$ 的二进制表示是 $m$ 的超集。
 
 于是可以快速计算出  $\sum_{i=0}{{n+i-1}\choose{i}}x_i$，对于后面的乘积，由于答案对 $2$ 取模，可以用 $\text{bitset}$ 优化。
-
-
-{% endraw %}
 
 时间复杂度为 $O(\frac{nm}{w})$。
 
@@ -192,3 +190,137 @@ $$
 - 下一个 $y$ 的位置。
 
 然后用 $\text{set}$ 维护所有值的位置，同时用线段树维护一下 $pre$ 和区间最大值就行了，时间复杂度 $O(n\log n)$。
+
+----------------
+
+## P4139 上帝与集合的正确用法
+
+考虑扩展欧拉定理：
+$$
+a^x\equiv a^{x\operatorname{mod} \phi(p)+\phi(p)} \pmod{p}
+$$
+记 $t=2^{2^{2^{2^{\dots}}}}$，则：
+$$
+t\operatorname{mod} p=
+\left\{
+	\begin{array}{l}
+		&0 && p=1\\
+		& 2 ^ {t\operatorname{mod}\phi(p)+\phi(p)} &&p>1
+	\end{array}
+\right.
+$$
+由于：
+$$
+\left\{
+    \begin{array}{l}
+    	& 2|\phi(p) && p>1\\
+    	& \phi(p)<\frac{p}{2} && 2|p
+    \end{array}
+\right.
+$$
+
+
+于是上式直接计算就行了，使用线性筛，时间复杂度为 $O(P+T\log P)$。
+
+-------------
+
+## P3747 [六省联考 2017] 相逢是问候
+
+依托答辩。
+
+同上题（**P4139 上帝与集合的正确用法**），发现每个位置只会被修改 $\log$ 次，于是先算出最大的修改次数，每次对于还能被修改的暴力到叶子修改就行了。
+
+考虑修改，记：
+
+$$
+\left\{
+    \begin{array}{l}
+        f(x,k,p)=\huge c^{c^{\dots(共k个c)^{a_i}}} \large \pmod{p}\\
+        f(x,k)=\huge c^{c^{\dots(共k个c)^{a_i}}}\\
+    \end{array}
+\right.
+$$
+则：
+$$
+f(x,k,p)=
+\left\{
+    \begin{array}{l}
+    	&0 &&p=1\\
+    	&x &&k=0\\
+    	&c^{f(x,k-1,\phi(p))+[f(x,k-1)\ge\phi(p)]\times \phi(p)} &&otherwise.
+    \end{array}
+\right.
+$$
+于是计算的时候顺便返回一下 $f(x,k)$ 是否大于 $p$ 即可。在每一层 $f(x,k,p)$ 里面用快速幂，单次计算是 $O(\log^2P)$ 的，总的时间复杂度是 $O(n(\log n+\log P)\log^2P)$不能通过，发现只有 $O(\log P)$ 层，即只有这么多模数，于是预处理一下光速幂，同时记录下是否大于等于模数就可以了。光速幂可以见 [快速幂 2 LibreOJ](https://loj.ac/p/162)。
+
+-------------------------------
+
+## P1471 方差
+
+线段树上维护一下 $\sum a_i^2$ 和 $\sum a_i$ 就行了。
+
+----------------------
+
+## CF444C DZY Loves Colors
+
+分块。
+
+修改：
+
+- 对于颜色数大于 $1$ 的块，或者修改的边缘的散块，直接暴力重构。因为最多有 $n+m$ 种颜色，因此算上散块也最多重构 $O(n+m)$ 次。
+- 对于只有一种颜色的块打 $\text{tag}$。
+- 时间复杂度 $O((n+m)(B+\frac{n}{B}))$
+
+查询：
+
+- 对于散块，直接下放 $\text{tag}$ 然后查询。
+- 对于中间的块，每个块维护一个 $sum$ 表示每一个块中的权值和，直接查询。
+- 时间复杂度 $O(m(B+\frac{n}{B}))$。
+
+$B$ 取 $\sqrt{n}$ 最优，复杂度 $O((n+m)\sqrt{n})$。
+
+--------------
+
+## T404283 三元组统计（triple）
+
+记 $a_{i,j}=a_i-a_j,b,c$ 同理，则题目让计算这个东西：
+$$
+&\sum_{i=1}^n\sum_{j=i+1}^n\max(a_{i,j},b_{i,j},c_{i,j})-\min(a_{i,j},b_{i,j},c_{i,j})\\
+= &\frac{1}{2}\sum_{i,j\le n,i\not=j}\max(a_{i,j},b_{i,j},c_{i,j})-\min(a_{i,j},b_{i,j},c_{i,j})\\
+$$
+容易发现，$\max(a,b,c)-\min(a,b,c)=\frac{\max(a,b)-\min(a,b)+\max(a,c)-\min(a,c)+\max(b,c)-\min(b,c)}{2}$，即 最大值+最大值+次大值-最小值-最小值-次小值，等于 最大值+最大值-最小值-最小值。
+
+于是我们只需要计算若干个形如 $\sum_{i,j\le n,i\not=j} \max(a_i-a_j,b_i-b_j)-\min(a_i-a_j,b_i-b_j)$ 的式子。
+
+再次容易发现，当 $a_i-b_i > a_j-b_j$ 的时候，上式等于 $a_i-a_j-b_i+b_j=(a_i-b_i)-(a_j-b_j)$。即 $a_i-b_i$ 的贡献的系数为 $1$ 当且仅当 $a_i-b_i>a_j-b_j$，否则贡献系数为 $-1$。于是将所有的 $a_i-b_i$ 从小到大排序后，第 $i$ 个位置的贡献为 $(i-1-(n-i))=(2i-n-1)$。
+
+时间复杂度 $O(n\log n)$。
+
+-------------------
+
+## MXOI-20231205-A 做题掉坑(pitfall)
+
+首先缩掉所有的段，然后转一下将会寄的那一个放在最后一个。接着转化一下，记 $f_i$ 是进行了 $i$ 次操作还没有寄寄的概率，发现寄掉的期望步数 $=\sum_{i=0}f_i$，理由如下：
+
+- 在第 $i$ 次寄掉的概率是 $f_{i-1}-f_i$，而 $\sum_{i=0}f_i=\sum_{i=1} i(f_{i-1}-f_i)$ ，即寄掉的期望步数。
+
+然后这样还是不好算，考虑计算进行 $i$ 次操作还没有寄寄的方案数 $g_i$，则 $f_i=\frac{g_i}{n^i}$。
+
+设 $G_{i,j}$ 为考虑从第 $i$ 个到第 $m$ 个，选了 $j$ 次还没有寄的方案数，$a_i$ 表示第 $i$ 段的位置数，则：
+$$
+G_{i,j}=\sum_{k=0}a_i^kG_{i+1,j-k}{{j}\choose{k}}\\
+\frac{G_{i,j}}{j!}=\sum_{k=0}\frac{a_{i}^{k}}{k!}\frac{G_{i+1,j-k}}{(j-k)!}
+$$
+然后是 LRC 快乐时间，考虑 EGF，记 $H_k(x)=\sum_{i=0}^{m-k}\frac{a_k^ix^i}{i!}$，从后往前卷一下就行了，但是注意乘到第 $m-i$ 段的时候，最多选 $i$ 次不会寄奇，所以卷完要把不合法的项的系数赋成 $0$。
+
+记上文卷出来的那个东西是 $O=\sum_{i=0}\frac{o_i}{i!}x^i$，则答案是 $\sum_{i=0}\frac{o_i}{n^i}$。
+
+
+
+
+
+
+
+
+
+{% endraw %}
