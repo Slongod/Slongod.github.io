@@ -321,11 +321,153 @@ $$
 
 {% endraw %}
 
+------------------------------
 
+## P8352 [SDOI/SXOI2022] 小 N 的独立集
 
+好 VAN 的 DP 套 DP 题，是 [大哥](https://www.luogu.com.cn/user/1024338) 喜欢的类型。
 
+### 一：超级暴力
 
+最简单的方法就是暴力枚举每个点的权值，然后 DP，设 $g_{u,0/1}$ 分别表示强制不选/不强制不选 $u$ 的时候，$u$ 子树内的最大权独立集，这样单次时间复杂度 $O(n)$，总时间复杂度是 $O(k^nn)$，显然直接原地螺旋爆炸。
 
+### 二：DP 套 DP
 
+DP 套 DP，个人理解就是将内层的 DP 融入进入外层 DP 的下标，比如这道题，可以设 $f_{u,v_0,v_1}$ 表示考虑 $u$ 的子树，$g_{u,0}=v_0,g_{u,1}=v_1$ 时候的方案数，初始为 $f_{u,0,i}=1(1\le i\le k)$。考虑 $x$ 的一个儿子 $y$ 的时候，记 $h_{v0,v1}$ 是不考虑 $y$ 的时候的 $f_{x,v0,v1}$，则转移如下：
+$$
+f_{x,p0+\max(o0,o1),p1+o0}\leftarrow f_{y,o0,o1}\times h_{p0,p1}
+$$
+时间复杂度 $O(n^3k^4)$。
 
+### 三：优化 DP 套 DP
+
+考虑上述的 $v0$ 和 $v1$ 一定满足 $v1\ge v0$，且 $v1-v0\le k$，理由显然。于是可以把第三维缩掉，用 $f_{u,p0,p1}$ 表示 $v0=p0,v1=p0+p1$ 时候的方案数。转移如下：
+$$
+f_{x,p0+o0+o1,\max(p0+o0+o1,p0+p1+o0)}\leftarrow f_{v,o0,o1}\times h_{p0,p1}
+$$
+时间复杂度 $O(n^2 k^4)$，优化一下常数，就会非常不满，可以通过。
+
+------------------
+
+## P9361 [ICPC2022 Xi'an R] Contests
+
+首先，我们简记为有 $m$ 行，每行一个 $n$ 的排列。其次，答案显然不超过 $n-1$。
+
+发现跳的时候，对于第 $i$ 行一定会跳到最靠前的位置，这样显然是最优的。考虑倍增，记 $f_{k,u,i}$ 表示 $u$ 这个数，跳了至多 $2^k$ 次的时候，在第 $i$ 行的最靠前的位置是什么。预处理是 $O(nm^2\log n)$ 的。
+
+询问的时候倍增就可以了，如果跳 $2^k$ 步的时候，每一行都没有在 $y$ 前面，就让 $x$ 跳这么多步。每次跳是 $O(m^2)$ 的，复杂度 $O(qm^2\log n)$。
+
+别忘了最后统计答案的时候，如果当前的所有位置里面没有 $y$，需要给答案加 $1$（再跳一步）。
+
+感觉贴代码比较适合：
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+namespace Slongod{
+const int N = 1e5+7 , M = 6 , MX = 18;
+int n , m , q , a[M][N] , pos[N][M] , cache[M] , f[MX][N][M];
+bool check(int x[] , int y[])
+{
+    for (int i = 1; i <= m; i++) {
+        if (x[i] <= y[i]) {
+            return 1;
+        }
+    } return 0;
+}
+void init()
+{
+    memset(f , 0x3f , sizeof(f));
+    for (int i = 1; i <= m; i++) {
+        memset(cache , 0x3f , sizeof(cache));
+        for (int j = n; j >= 1; j--) {
+            for (int k = 1; k <= m; k++) {
+                cache[k] = min(cache[k] , pos[a[i][j]][k]);
+                f[0][a[i][j]][k] = min(f[0][a[i][j]][k] , cache[k]);
+            }
+        }
+    }
+    for (int o = 1; o < MX; o++) {
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                for (int k = 1; k <= m; k++) {
+                    f[o][i][k] = min(f[o][i][k] , f[o-1][a[j][f[o-1][i][j]]][k]);
+                }
+            }
+        }
+    }
+}
+void move(int x[] , int k)
+{
+    int tmp[M]; memcpy(tmp , x , sizeof(int[M]));
+    memset(x , 0x3f , sizeof(int[M]));
+    for (int i = 1; i <= m; i++) {
+        for (int j = 1; j <= m; j++) {
+            x[j] = min(x[j] , f[k][a[i][tmp[i]]][j]);
+        }
+    }
+}
+bool try_move(int x[] , int y[] , int k)
+{
+    int tmp[M]; memcpy(tmp , x , sizeof(int[M])); move(x , k);
+    if (check(x , y)) {
+        memcpy(x , tmp , sizeof(int[M]));
+        return 0;
+    } else {
+        return 1;
+    }
+}
+void main()
+{
+    cin >> n >> m;
+    for (int i = 1; i <= m; i++) {
+        for (int j = 1; j <= n; j++) {
+            cin >> a[i][j]; pos[a[i][j]][i] = j;
+        }
+    } init();
+    cin >> q;
+    for (int _i = 1 , x , y , res; _i <= q; _i++) {
+        cin >> x >> y; res = 0;
+        int now[M]; memcpy(now , pos[x] , sizeof(now));
+        if (check(now , pos[y])) {
+            cout << 1 << '\n';
+        } else {
+            for (int i = MX-1; i >= 0; i--) {
+                if (try_move(now , pos[y] , i)) {
+                    res += (1<<i);
+                }
+            }
+            move(now , 0); res += 2;
+            for (int i = 1; i <= m; i++){if (now[i] == pos[y][i]){res--; break;}}
+            cout << (res <= n ? res : -1) << '\n';
+        }
+    }
+}
+}int main()
+{
+    ios :: sync_with_stdio(0);
+    cin.tie(0) , cout.tie(0);
+    return Slongod :: main(),0;
+}
+```
+
+----------
+
+## P8594 「KDOI-02」一个仇的复
+
+{% raw %}
+
+考虑只用 $y$ 个**横着放的矩形**将 $x$ 列的 $2\times x$ 方格，分成 $j$ 个部分（不能有一个矩形同时存在于任意两个不同的部分）并填满的方案数：
+$$
+g(x,y,j)={x-1\choose j-1}{2x-2k\choose y-2k}
+$$
+第一项即枚举每一段的开始位置（第一段一定是 $1$ ，不用枚举），第二项即枚举每一个不是当前段的开始列的矩形的起始位置。
+
+回到题目来计算答案，枚举有几个竖着放的 $2\times 1$ 矩形，再枚举有几个竖着的矩形之间的间隔为空，则答案是：
+$$
+\sum_{i=0}^{k}\sum_{j=0}^{i}{i+1\choose j}g(n-i,k-i,i+1-j)
+$$
+时间复杂度 $O(V+k^2)$，取模一定要取干净。
+
+{% endraw %}
 
