@@ -287,8 +287,8 @@ $B$ 取 $\sqrt{n}$ 最优，复杂度 $O((n+m)\sqrt{n})$。
 
 记 $a_{i,j}=a_i-a_j,b,c$ 同理，则题目让计算这个东西：
 $$
-&\sum_{i=1}^n\sum_{j=i+1}^n\max(a_{i,j},b_{i,j},c_{i,j})-\min(a_{i,j},b_{i,j},c_{i,j})\\
-= &\frac{1}{2}\sum_{i,j\le n,i\not=j}\max(a_{i,j},b_{i,j},c_{i,j})-\min(a_{i,j},b_{i,j},c_{i,j})\\
+\sum_{i=1}^n\sum_{j=i+1}^n\max(a_{i,j},b_{i,j},c_{i,j})-\min(a_{i,j},b_{i,j},c_{i,j})\\
+= \frac{1}{2}\sum_{i,j\le n,i\not=j}\max(a_{i,j},b_{i,j},c_{i,j})-\min(a_{i,j},b_{i,j},c_{i,j})\\
 $$
 容易发现，$\max(a,b,c)-\min(a,b,c)=\frac{\max(a,b)-\min(a,b)+\max(a,c)-\min(a,c)+\max(b,c)-\min(b,c)}{2}$，即 最大值+最大值+次大值-最小值-最小值-次小值，等于 最大值+最大值-最小值-最小值。
 
