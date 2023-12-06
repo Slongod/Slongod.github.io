@@ -2,7 +2,7 @@
 title: SNOI前 做题记录
 date: 2023-11-27 09:08:17
 tags: 做题记录
-secret: password
+secret: 密码
 description: SNOI前 做题记录，包含一些 洛谷省选计划 的题。
 ---
 
