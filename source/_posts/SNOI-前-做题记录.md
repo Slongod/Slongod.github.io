@@ -584,7 +584,7 @@ $D$ 可以预处理，且 $F_i=\sum_{j=1}^{m}S(i,j)$，我们也只需要知道 
 
 ## AT_arc100_d [ARC100F] Colorful Sequences
 
-{% raw %}
+
 
 LRC 给讲的好 VAN 的 DP 题，应该是 [大哥](https://www.luogu.com.cn/user/1024338) 喜欢的类型。
 
@@ -592,6 +592,4 @@ LRC 给讲的好 VAN 的 DP 题，应该是 [大哥](https://www.luogu.com.cn/us
 
 - $A$ 中包含一个 $1$ 到 $k$ 的排列，不用减，$ans=ans$。
 - $A$ 中包含重复元素，分左右两边 DP，设 $f_{i,j}$ 表示连续 $i$ 个字符，最后最多有 $j$ 个不重复的数字的方案数，初始状态视 $A$ 而定。记左右两边最后得到的答案是 $f$ 和 $g$，则 $ans=ans-\sum_{i=1}^{n-m}(\sum_{j=1}^{k-1}f_{i,j})(\sum_{j=1}^{k-1} g_{n-m-i,j})$。
-- $A$ 中不包含重复元素，算出所有不包含要求的排列的序列中，任意长度为 $m$ 的不重复的序列的出现次数，记这个数字为 $sum$，则 $ans=ans-\frac{sum}{{k\choose m}m!}$。
-
-{% endraw %}
+- $A$ 中不包含重复元素，算出所有不包含要求的排列的序列中，任意长度为 $m$ 的不重复的序列的出现次数，记这个数字为 $sum$，{% raw %}则 $ans=ans-\frac{sum}{{k\choose m}m!}$。{% endraw %}
