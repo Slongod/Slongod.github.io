@@ -700,3 +700,107 @@ $$
 总时间复杂度 $O(nm)$。
 
 LRC 本题的代码 CE 了，因为被我加了一个全角空格（坏笑.jpg）
+
+----------------------
+
+因为这一个星期生病了（疑似是流感，而且我还沉迷原神，没事的时候就在攒原石等 $12$ 月 $20$ 日 $4.3$ 上半池子抽神里绫华），所以这一周没有题解。![](https://pic.imgdb.cn/item/654d99a6c458853aefd1ad77.gif)
+
+-------------------
+
+## CF1194F Crossword Expert
+
+-----------------
+
+## CF1901D Yet Another Monster Fight
+
+-----------
+
+## P5368 [PKUSC2018] 真实排名
+
+-----------
+
+## P3706 [SDOI2017] 硬币游戏
+
+-----------
+
+## P5608 [Ynoi2013] 文化课
+
+--------
+
+## P3181 [HAOI2016] 找相同字符
+
+-----------
+
+## SP2939 QTREE5 - Query on a tree V
+
+---------------
+
+## P6773 [NOI2020] 命运
+
+--------------
+
+## P8518 [IOI2021] 分糖果
+
+---------
+
+## P3643 [APIO2016] 划艇
+
+---------------
+
+## P1674 [USACO05FEB] Secret Milking Machine G
+
+----------
+
+## P2053 [SCOI2007] 修车
+
+---------
+
+## P2172 [国家集训队] 部落战争
+
+--------
+
+## CF671D Roads in Yusland
+
+--------
+
+## CF1418G Three Occurrences
+
+------
+
+## CF710F String Set Queries
+
+-------
+
+## P2424 约数和
+
+----------
+
+## CF587F Duff is Mad
+
+----------
+
+## P3645 [APIO2015] 雅加达的摩天楼
+
+--------------
+
+## CF273E Dima and Game
+
+--------
+
+## [ABC327G] Many Good Tuple Problems
+
+--------
+
+## P5901 [IOI2009] Regions
+
+---------
+
+## CF540E Infinite Inversions
+
+--------
+
+## CF1446D2 Frequency Problem (Hard Version)
+
+--------
+
+## P3215 [HNOI2011] 括号修复 / [JSOI2011]括号序列
