@@ -753,7 +753,7 @@ LRC 本题的代码 CE 了，因为被我加了一个全角空格（坏笑.jpg�
 
 直接算不好算，考虑容斥。设左上角矩形左上角的点是 $(i,j)$，这个矩形有 $x$ 行 $y$ 列，我们记 $lenx=m-j+1,leny=n-i+1$，这是每一行和每一列对应的点的数量。则整个区域的点的数量为 $sum=x\times lenx+y\times leny-x\times y$。我们钦定有 $tx$ 行 $ty$ 列不满足第二个条件，则不满足的点的数量是 $nosum(tx,ty)=tx\times lenx+ty\times leny-tx\times ty$，最终答案（这个区域的方案数）就是：
 $$
-\sum_{i=0}^{x}\sum_{j=0}^{y}{x\choose i}{y\choose j}p^{nosum(i,j)}(p+1)^{sum-nosum(i,j)}
+\sum_{i=0}^{x}\sum_{j=0}^{y}(-1)^{i+j}{x\choose i}{y\choose j}p^{nosum(i,j)}(p+1)^{sum-nosum(i,j)}
 $$
 然后就做完了，时间复杂度 $O(Tnm)$。
 
