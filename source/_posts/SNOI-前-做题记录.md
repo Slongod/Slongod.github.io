@@ -703,104 +703,113 @@ LRC 本题的代码 CE 了，因为被我加了一个全角空格（坏笑.jpg�
 
 ----------------------
 
-因为这一个星期生病了（疑似是流感，而且我还沉迷原神，没事的时候就在攒原石等 $12$ 月 $20$ 日 $4.3$ 上半池子抽神里绫华），所以这一周没有题解。![](https://pic.imgdb.cn/item/654d99a6c458853aefd1ad77.gif)
+# 这一周没有题解
+因为这一个星期生病了（疑似是流感，而且我还【数据删除】，【数据删除】石【数据删除】华，不过我从来没说过“我是【数据删除】”这句话）。![](https://pic.imgdb.cn/item/654d99a6c458853aefd1ad77.gif)
 
 -------------------
 
-## CF1194F Crossword Expert
+- CF1194F Crossword Expert
+- CF1901D Yet Another Monster Fight
+- P5368 [PKUSC2018] 真实排名
+- P3706 [SDOI2017] 硬币游戏
+- P5608 [Ynoi2013] 文化课
+- P3181 [HAOI2016] 找相同字符
+- SP2939 QTREE5 - Query on a tree V
+- P6773 [NOI2020] 命运
+- P8518 [IOI2021] 分糖果
+- P3643 [APIO2016] 划艇
+- P1674 [USACO05FEB] Secret Milking Machine G
+- P2053 [SCOI2007] 修车
+- P2172 [国家集训队] 部落战争
+- CF671D Roads in Yusland
+- CF1418G Three Occurrences
+- CF710F String Set Queries
+- P2424 约数和
+- CF587F Duff is Mad
+- P3645 [APIO2015] 雅加达的摩天楼
+- CF273E Dima and Game
+- [ABC327G] Many Good Tuple Problems
+- P5901 [IOI2009] Regions
+- CF540E Infinite Inversions
+- CF1446D2 Frequency Problem (Hard Version)
+- P3215 [HNOI2011] 括号修复 / [JSOI2011]括号序列
 
------------------
+# 新的一周，新的题解！！![](https://pic.imgdb.cn/item/654d99a6c458853aefd1ad77.gif)
 
-## CF1901D Yet Another Monster Fight
+## T405472 矩阵计数
 
------------
+对于一个点，记 $val_{i,j}$ 为其上面的数，要满足两条限制：
 
-## P5368 [PKUSC2018] 真实排名
+- $val_{i,j} \le row_i,val_{i,j} \le col_j \rightarrow val_{i,j}\le \min(row_i,col_j)$。
+- 每一行或每一列，至少存在一个数的值为 $row_i$ 或 $col_j$。
 
------------
+“对于类似的题，都可以像这一题的第一条一样，将两个或多个限制取较严格的那一个，比如 [P4229 某位歌姬的故事](https://www.luogu.com.cn/problem/P4229)。”（模拟赛讲评 by laofudasuan）
 
-## P3706 [SDOI2017] 硬币游戏
+显然将 $row,col$ 两个数组排序不会影响方案数，于是我们将它们从小到大排序。称 $val_{i,j}\le x$ 为 $x$ 控制 $(i,j)$，于是某一个数控制的区域会是一个 L 型。如下图（从省选计划课程里截的，红色、蓝色、绿色、紫色分别代表 $1,2,3,4$ 控制的区域）：
 
------------
+![PICTURE](https://pic.imgdb.cn/item/657ff95fc458853aef5fa6a5.png)
 
-## P5608 [Ynoi2013] 文化课
+显然每一个区域是独立的，于是我们可以对于一个区域，算出有多少种方案，最后乘起来就行了。一片区域对应的行和列是左上角的矩形对应的行和列。
 
---------
+直接算不好算，考虑容斥。设左上角矩形左上角的点是 $(i,j)$，这个矩形有 $x$ 行 $y$ 列，我们记 $lenx=m-j+1,leny=n-i+1$，这是每一行和每一列对应的点的数量。则整个区域的点的数量为 $sum=x\times lenx+y\times leny-x\times y$。我们钦定有 $tx$ 行 $ty$ 列不满足第二个条件，则不满足的点的数量是 $nosum(tx,ty)=tx\times lenx+ty\times leny-tx\times ty$，最终答案（这个区域的方案数）就是：
+$$
+\sum_{i=0}^{x}\sum_{j=0}^{y}{x\choose i}{y\choose j}p^{nosum(i,j)}(p+1)^{sum-nosum(i,j)}
+$$
+然后就做完了，时间复杂度 $O(Tnm)$。
 
-## P3181 [HAOI2016] 找相同字符
+----------------------
 
------------
+## T405474 树上逆序对问题
 
-## SP2939 QTREE5 - Query on a tree V
+对于一个序列，其 $\text{正着的逆序对个数}+\text{反着的逆序对个数}=\frac{len(len-1)}{2}-\text{这个序列相同的无序对格式}$。
 
----------------
+然后就树上莫队就行了，时间复杂度 $O(n\sqrt n)$，我才没有把块长写成了 $30$ 然后 T 飞呢。
 
-## P6773 [NOI2020] 命运
+----------------------
 
---------------
+## T405476 背包装物品
 
-## P8518 [IOI2021] 分糖果
+考虑那些体积为 $1$ 的物品，对于一个体积为 $1$ 的物品：
 
----------
+- 若选了偶数次，则等同于体积为 $2$ 的物品。
+- 若选了奇数次，则等同于先选了 $1$ 个，然后选了偶数次。
 
-## P3643 [APIO2016] 划艇
+于是我们可以枚举选了多少个奇数次的体积为 $1$ 的物品，则答案为：
+$$
+\sum_{i=0}^{n}[2|(k-i)]{n \choose i} {k-i+n+m-1\choose n+m-1}
+$$
+然后卢卡斯定理就行了。
 
----------------
+----------------------
 
-## P1674 [USACO05FEB] Secret Milking Machine G
+## P3736 [HAOI2016] 字符合并
 
-----------
+由于收益非负，所以对于一个串，一定是合并合并再合并直到不能合并为止，每次合并长度会减少 $k-1$，于是对于一个子串 $[l,r]$，其最后的长度一定是 $(r-l)\operatorname{mod} (k-1)+1$。
 
-## P2053 [SCOI2007] 修车
+考虑 状压+区间 DP，我们可以设 $f_{l,r,S}$ 为子串 $[l,r]$ 最终合并成了 $S$ 的方案数，其中 $S$ 是一个长为 $(r-l)\operatorname{mod} (k-1)+1$ 的 $01$ 串，可以压成一个不超过 $2^{k-1}$ 的二进制数。
 
----------
+- 对于 $(r-l)\operatorname{mod}\not =0$ 的情况，我们可以枚举最右边一位是由原串中的哪个子串合并成的，由上文关于合并的长度的讨论，我们可以得出，最右边的一位对应的原串一定是 $[r,r],[r-(k-1),r],[r-2(k-1),r]\dots$。
+- 对于 $(r-l)\operatorname{mod}=0$ 的情况，我们可以枚举它在长度缩成 $1$ 之前一步的情况 $t$，则 $t$ 也可以像 $(r-l)\operatorname{mod}\not =0$ 一样进行讨论，最后再加上从 $t$ 缩成一位的贡献。
+- 边界是 $r=l$，此时若原串中 $l$ 的位置的数字等于 $S$，则 $f_{l,r,S}=0$，否则 $f_{l,r,S}=-\infty$。
 
-## P2172 [国家集训队] 部落战争
+可以记忆化搜索，那么转移就像这样：
 
---------
+```cpp
 
-## CF671D Roads in Yusland
+    if ((r - l) % (k - 1) == 0) {
+        for (int t = 0; t < (1<<k); t++) {
+            if (c[t] == s) {
+                ll tmp = -inf;
+                for (int i = r-1; i >= l; i -= k-1) {
+                    tmp = max(tmp , dfs(l , i , (t>>1)) + dfs(i+1 , r , t&1));
+                } fnow = max(fnow , tmp + w[t]);
+            }
+        }
+    } else {
+        for (int i = r-1; i >= l; i -= k-1) {
+            fnow = max(fnow , dfs(l , i , (s>>1)) + dfs(i+1 , r , s&1));
+        }
+    } return fnow;
+```
 
---------
-
-## CF1418G Three Occurrences
-
-------
-
-## CF710F String Set Queries
-
--------
-
-## P2424 约数和
-
-----------
-
-## CF587F Duff is Mad
-
-----------
-
-## P3645 [APIO2015] 雅加达的摩天楼
-
---------------
-
-## CF273E Dima and Game
-
---------
-
-## [ABC327G] Many Good Tuple Problems
-
---------
-
-## P5901 [IOI2009] Regions
-
----------
-
-## CF540E Infinite Inversions
-
---------
-
-## CF1446D2 Frequency Problem (Hard Version)
-
---------
-
-## P3215 [HNOI2011] 括号修复 / [JSOI2011]括号序列
+时间复杂度 $O(n^2\lfloor\frac{n}{k}\rfloor2^k)$。
