@@ -813,3 +813,34 @@ $$
 ```
 
 时间复杂度 $O(n^2\lfloor\frac{n}{k}\rfloor2^k)$。
+
+------------------
+
+- P4229 某位歌姬的故事
+- P1912 [NOI2009] 诗人小G
+- T406751 Boring Queries
+- T406732 石子游戏
+- P4590 [TJOI2018] 游园会
+- CF1913F Palindromic Problem
+- P3349 [ZJOI2016] 小星星
+- CF1680F Lenient Vertex Cover
+- CF813F Bipartite Checking
+- P6272 [湖北省队互测2014] 没有人的算术
+- P6164 【模板】后缀平衡树
+- CF1198F GCD Groups 2
+- AT_arc106_e [ARC106E] Medals
+- P2619 [国家集训队] Tree I
+- P4383 [八省联考 2018] 林克卡特树
+- CF739E Gosha is hunting
+- [UCUP Stage 15E] Puzzle: Tapa（Q）
+- P9288 [ROI 2018] Innophone
+- P3810 【模板】三维偏序（陌上花开）
+- T409791 数列题
+- P4424 [HNOI/AHOI2018] 寻宝游戏
+- P4719 【模板】"动态 DP"&动态树分治
+- P4426 [HNOI/AHOI2018] 毒瘤
+- P5304 [GXOI/GZOI2019] 旅行者
+- P4438 [HNOI/AHOI2018] 道路
+- P4436 [HNOI/AHOI2018] 游戏
+- T409793 鸽子湖
+- CF1608G Alphabetic Tree
