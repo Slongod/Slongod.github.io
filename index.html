@@ -313,7 +313,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="color: #00bcd4">小故事</a>
+            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="color: #ffa2c4">小故事</a>
         </span>
         
     </div>
@@ -353,7 +353,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="color: #03a9f4">小故事</a>
+            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="color: #ff7d73">小故事</a>
         </span>
         
     </div>
@@ -397,7 +397,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #03a9f4">其他</a>
+            <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #00a596">其他</a>
         </span>
         
     </div>
@@ -405,8 +405,8 @@ mjx-container[display="true"] + br {
 </div>
 
 <div class="post">
-    <a href="/2024/01/13/SNOI-%E5%90%8E-%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/">
-        <h2 class="post-title">SNOI后做题记录</h2>
+    <a href="/2024/01/13/NOI2024-%E5%89%8D-%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/">
+        <h2 class="post-title">NOI2024前做题记录</h2>
     </a>
     <div class="category-and-date">
         
@@ -422,10 +422,98 @@ mjx-container[display="true"] + br {
     <div class="description">
         <div class="content" v-pre>
             
-            <p>好题记录：</p>
+            <blockquote>
+<p>朵朵绽放的烟火，<br />
+化作无尽的繁星闪烁。<br />
+春风再度吹过寒冷的铁索，<br />
+带走了谁的思绪，<br />
+又正在向谁诉说。</p>
+<p>童年的小翼龙 2024年2月25日</p>
+</blockquote>
+<h2 id="cf1567f-one-four-overload">CF1567F One-Four Overload</h2>
+<p>记一个被标记的单元格的度数为其四周的没有被标记的单元格的个数，则：</p>
 <ul>
-<li>CF1567F One-Four Overload</li>
+<li>若存在奇度格子，无解。</li>
+<li>对于度数为 <span class="math inline">\(2\)</span> 的格子，一定是一个
+<span class="math inline">\(1\)</span> 一个 <span
+class="math inline">\(4\)</span>，可以黑白染色，可以证明这样一定有解<a
+target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/ltzlInstallBl/solution-cf1567f">（installb
+的博客）</a>。</li>
+<li>对于度数为 <span class="math inline">\(4\)</span>
+的格子，若有一种染色方案从逆时针方向为 <span
+class="math inline">\(1,1,4,4\)</span>，则一定可以转换为一种逆时针方向为
+<span class="math inline">\(1,4,1,4\)</span> 的方案，于是就和度数为
+<span class="math inline">\(2\)</span> 的证明相同了。</li>
 </ul>
+<p>综上，若有解，黑白染色然后输出方案即可。</p>
+<h1 id="section">2024.2.25</h1>
+<h2 id="uoj461.-新年的dog划分">UOJ461. 新年的Dog划分</h2>
+<p>如果我们能够得到这张图的一个 DFS
+树，我们就可以黑白染色，然后在删掉所有左右部点之间的非树边的情况下，每次尝试删掉一条树边，如果在删掉某一条树边之后图仍然联通，说明这不是一个二分图。</p>
+<p>我们怎么 DFS 呢？考虑在 DFS 的过程中维护一下对于当前已经 DFS
+出的树，一定不在树上的边，<strong>先将它们全部删去</strong>，这可以用一个
+<code>set</code> 去维护。对于一个点 <span
+class="math inline">\(u\)</span>，我们先找出所有没有被访问过的点（这可以用一个
+<code>vis</code> 数组去维护），将它们放在一个 <code>vector</code>
+中，记为 <span class="math inline">\(t\)</span>，然后找到最小的一个
+<span class="math inline">\(i\)</span>，使得删去 <span
+class="math inline">\(t_1\dots t_{i-1}\)</span> 和 <span
+class="math inline">\(u\)</span> 之间的边之后图仍然联通，但是删去 <span
+class="math inline">\(t_1\dots t_i\)</span> 和 <span
+class="math inline">\(u\)</span> 之间的边之后图不联通。这保证了 <span
+class="math inline">\(u\)</span> 和 <span
+class="math inline">\(t_i\)</span> 之间一定有一条边，于是我们将 <span
+class="math inline">\(t_i\)</span> 作为 <span
+class="math inline">\(u\)</span> 的儿子进行 DFS。在回溯到 <span
+class="math inline">\(u\)</span> 之后仍然继续上述过程，直到找不出这样的
+<span class="math inline">\(i\)</span>。这时，我们就可以对于 <span
+class="math inline">\(\forall i\)</span>，将此时的 <span
+class="math inline">\(t_i\)</span> 与 <span
+class="math inline">\(u\)</span> 之间的边标记为<strong>不在当前 DFS
+树上</strong>，然后回溯。</p>
+<p>这样，我们就可以在 <span class="math inline">\(n \log n +
+O(n)\)</span> 的时间复杂度内找出原图的一棵 DFS 树，可以通过本题。</p>
+<h2 id="p3679-cerc2016-二分毯-bipartite-blanket">P3679 [CERC2016] 二分毯
+Bipartite Blanket</h2>
+<p>Ex Hall 定义：</p>
+<ul>
+<li>若存在一个匹配 <span class="math inline">\(X\)</span> ，左部点点集为
+<span class="math inline">\(A\)</span>，同时存在一个匹配 <span
+class="math inline">\(Y\)</span>，右部点点集为 <span
+class="math inline">\(B\)</span>。</li>
+<li>则一定存在一个匹配 <span
+class="math inline">\(Z\)</span>，使得其左右部点点集 <span
+class="math inline">\(U,V\)</span> 满足 <span class="math inline">\(A
+\subset U, B \subset V\)</span>。</li>
+</ul>
+<p>于是我们可以对于左右部点的每个集合去使用 Hall
+定理求解，最后双指针统计答案。</p>
+<p>使用 Hall 定理求解的时候，可以对于一个集合 <span
+class="math inline">\(S\)</span>，设 <span
+class="math inline">\(f(S)=[|D(S)|&lt;|S|]\)</span>，其中 <span
+class="math inline">\(D(S)\)</span>
+表示其通过边连接的对面部点的集合，于是对 <span
+class="math inline">\(f\)</span> 做一个高维前缀和就可以求得答案。</p>
+<h2 id="qoj6508.-this-is-not-an-abnormal-team">QOJ6508. This is not an
+Abnormal Team!</h2>
+<p>题意：将一张二分图划分成若干条不相交，且长度小于等于三的链。最小化孤立点的个数。在此基础上，最小化长度为
+<span class="math inline">\(3\)</span> 的链的个数。</p>
+<p>先考虑第一问，使用网络流。记网络流的源点、汇点为 <span
+class="math inline">\(S,T\)</span>，将网络流求最大匹配的连边改为 从
+<span class="math inline">\(S\)</span> 往外连边容量为 <span
+class="math inline">\(2\)</span>，往 <span
+class="math inline">\(T\)</span> 连边容量为 <span
+class="math inline">\(2\)</span>
+。注意到这样最后方案可能会是一些环或链，但是任何环或者链都可以切成若干个长度小于等于
+<span class="math inline">\(3\)</span> 的链。</p>
+<p>再考虑第二问，在第一问的基础上，我们可以给边一个费用。先将容量为
+<span class="math inline">\(2\)</span> 的边分开成 <span
+class="math inline">\(2\)</span> 条，然后将每一个点（左部或右部点）和
+<span class="math inline">\(S、T\)</span> 之间的连边中的第一条边费用设为
+<span class="math inline">\(-\infty\)</span>，第二条边费用设为 <span
+class="math inline">\(1\)</span>，然后跑
+<strong>最小费用可行流</strong>。这样，会优先使得每一个点都不是孤立点，<strong>可行流</strong>则会使得长度为
+<span class="math inline">\(3\)</span> 的链个数最小。</p>
 
             
         </div>
@@ -444,11 +532,11 @@ mjx-container[display="true"] + br {
         </span>
         
     </div>
-    <a href="/2024/01/13/SNOI-%E5%90%8E-%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" class="go-post">阅读全文</a>
+    <a href="/2024/01/13/NOI2024-%E5%89%8D-%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" class="go-post">阅读全文</a>
 </div>
 
 <div class="post">
-    <a href="/2023/11/27/SNOI-%E5%89%8D-%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/">
+    <a href="/2023/11/27/SNOI2024-%E5%89%8D-%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/">
         <h2 class="post-title">SNOI前 做题记录</h2>
     </a>
     <div class="category-and-date">
@@ -488,7 +576,7 @@ mjx-container[display="true"] + br {
         </span>
         
     </div>
-    <a href="/2023/11/27/SNOI-%E5%89%8D-%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" class="go-post">阅读全文</a>
+    <a href="/2023/11/27/SNOI2024-%E5%89%8D-%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" class="go-post">阅读全文</a>
 </div>
 
 <div class="post">
@@ -524,7 +612,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #00bcd4">其他</a>
+            <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #ff7d73">其他</a>
         </span>
         
     </div>
@@ -564,7 +652,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #ff7d73">题解</a>
+            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #ffa2c4">题解</a>
         </span>
         
     </div>
@@ -604,7 +692,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #03a9f4">其他</a>
+            <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #ffa2c4">其他</a>
         </span>
         
     </div>
@@ -644,7 +732,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #00a596">题解</a>
+            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #03a9f4">题解</a>
         </span>
         
     </div>
@@ -684,7 +772,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #00a596">题解</a>
+            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #ff7d73">题解</a>
         </span>
         
     </div>
