@@ -313,7 +313,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="color: #ffa2c4">小故事</a>
+            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="color: #00a596">小故事</a>
         </span>
         
     </div>
@@ -397,7 +397,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #00a596">其他</a>
+            <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #00bcd4">其他</a>
         </span>
         
     </div>
@@ -514,6 +514,28 @@ class="math inline">\(2\)</span> 条，然后将每一个点（左部或右部�
 class="math inline">\(1\)</span>，然后跑
 <strong>最小费用可行流</strong>。这样，会优先使得每一个点都不是孤立点，<strong>可行流</strong>则会使得长度为
 <span class="math inline">\(3\)</span> 的链个数最小。</p>
+<h2 id="cf1383f-special-edges">CF1383F Special Edges</h2>
+<p>最大流=最小割。</p>
+<p>由于 <span class="math inline">\(k\)</span>
+很小，我们可以暴力枚举哪些特殊边被割掉，将被割掉的边容量设为 <span
+class="math inline">\(0\)</span>，没被割掉的容量设为 <span
+class="math inline">\(\infty\)</span>，总共有 <span
+class="math inline">\(2^k\)</span> 种情况。询问的时候通过枚举这 <span
+class="math inline">\(2^k\)</span>
+种情况，用上述求出的最小割加上割掉的边现在的边权，求出真正的最小割即可。</p>
+<p>于是问题转化为了每次将 <span class="math inline">\(1\)</span>
+条边的边权从 <span class="math inline">\(0\)</span> 调整为 <span
+class="math inline">\(\infty\)</span>，求最大流。最开始先令所有边容量为
+<span
+class="math inline">\(0\)</span>，跑一遍最大流。对于每种情况，可以先从
+<span class="math inline">\(S-\operatorname{logbit}(S)\)</span>
+转移过来，然后再在残量网络上跑最大流，由于容量小于等于 <span
+class="math inline">\(25\)</span>，可以令 <span
+class="math inline">\(\inf=25\)</span>，然后用
+<strong>EK</strong>来求取最小割，时间复杂度 <span
+class="math inline">\(O(mw2^k+q2^k)\)</span>，其中最大边权 <span
+class="math inline">\(w\le 25\)</span>。<span
+class="math inline">\(\Huge\color{red}{卡}\color{yellow}{卡}\color{blue}{就}\color{green}{过}\color{pink}{了}\)</span></p>
 
             
         </div>
@@ -528,7 +550,7 @@ class="math inline">\(1\)</span>，然后跑
         
         <span class="tag">
             
-            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #ff7d73">题解</a>
+            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #00a596">题解</a>
         </span>
         
     </div>
@@ -612,7 +634,7 @@ class="math inline">\(1\)</span>，然后跑
         
         <span class="tag">
             
-            <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #ff7d73">其他</a>
+            <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #03a9f4">其他</a>
         </span>
         
     </div>
@@ -652,7 +674,7 @@ class="math inline">\(1\)</span>，然后跑
         
         <span class="tag">
             
-            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #ffa2c4">题解</a>
+            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #00a596">题解</a>
         </span>
         
     </div>
@@ -692,7 +714,7 @@ class="math inline">\(1\)</span>，然后跑
         
         <span class="tag">
             
-            <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #ffa2c4">其他</a>
+            <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #ff7d73">其他</a>
         </span>
         
     </div>
@@ -732,7 +754,7 @@ class="math inline">\(1\)</span>，然后跑
         
         <span class="tag">
             
-            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #03a9f4">题解</a>
+            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #00a596">题解</a>
         </span>
         
     </div>
@@ -772,7 +794,7 @@ class="math inline">\(1\)</span>，然后跑
         
         <span class="tag">
             
-            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #ff7d73">题解</a>
+            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #03a9f4">题解</a>
         </span>
         
     </div>
