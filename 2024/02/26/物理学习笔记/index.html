@@ -3,7 +3,7 @@
 <html lang="zh-Hans">
     <head>
         <meta charset="utf-8" />
-        <title>Tags: 小故事 | LycoReco SN 支部</title>
+        <title>物理学习笔记 | LycoReco SN 支部</title>
         <meta name="author" content="Slongod" />
         <meta name="description" content="SlongodのBlog" />
         <meta name="keywords" content="" />
@@ -33,6 +33,10 @@
 
 
 <script src="/js/lib/preview.js"></script>
+
+
+
+
 
 
 
@@ -146,134 +150,178 @@
 </transition>
 
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
-                <div id="archives">
-    
-    <div class="categories-tags">
-        
-        
-        
-        <span>
-            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="background: #00a596">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                题解
-            </a>
+                <div class="article">
+    <div>
+        <h1>物理学习笔记</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2024/2/26
         </span>
         
         
-        
-        <span>
-            <a href="/tags/%E5%85%B6%E4%BB%96/" style="background: #ffa2c4">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                其他
-            </a>
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="color: #00a596">学习笔记</a>
+            </span>
+            
         </span>
-        
-        
-        
-        <span>
-            <a href="/tags/%E5%85%AC%E5%91%8A/" style="background: #00bcd4">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                公告
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/tags/%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" style="background: #ffa2c4">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                做题记录
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="background: linear-gradient(120deg, #9abbf7 0%, #ffbbf4 100%)">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                小故事
-            </a>
-        </span>
-        
-        
-        
-        
-        
-        <span>
-            <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="background: #ff7d73">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                学习笔记
-            </a>
-        </span>
-        
         
     </div>
     
-    <div class="timeline">
-        <div class="timeline-tail"></div>
-        <div class="timeline-content">
-            <div class="item-time">2023/10/3</div>
-            <a href="/2023/10/03/%E5%BD%BC%E5%B2%B8%E8%8A%B1%E4%B8%8E%E4%BC%9A%E8%AF%B4%E8%AF%9D%E7%9A%84%E9%87%91%E8%A1%A8-%E7%AC%AC%E4%B8%80%E7%AB%A0/">
-                <h3>彼岸花与会说话的金表-第一章</h3>
-            </a>
-            <div class="info">
-                
-                
-                <span class="tags">
-                    <span class="icon">
-                        <i class="fa-solid fa-tags fa-fw"></i>
-                    </span>
-                    
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="color: #03a9f4">小故事</a>
-                    </span>
-                    
-                </span>
-                
-            </div>
-        </div>
+    <div class="content" v-pre>
+        <h1 id="必修一">必修一</h1>
+<h2 id="一运动匀变速直线运动">一、运动&amp;匀变速直线运动</h2>
+<h3 id="一些知识点">一些知识点</h3>
+<ol type="1">
+<li><p>位移（描述物体位置的变化） <span
+class="math inline">\(\not=\)</span> 路程。</p></li>
+<li><p>在 <span class="math inline">\(\Delta t\)</span> 时间内的位移为
+<span class="math inline">\(\Delta x\)</span>，则其速度可以表示为 <span
+class="math inline">\(v=\frac{\Delta x}{\Delta t}\)</span>。</p></li>
+<li><p>速度、加速度、位移为矢量，有大小与方向。</p></li>
+<li><p>时间间隔 <span class="math inline">\(\not=\)</span>
+时刻。</p></li>
+<li><p>瞬时速度的大小称为速率，速率是标量。</p></li>
+<li><p>速度不变的直线运动称作匀速直线运动，加速度不变的直线运动称作匀变速直线运动。</p></li>
+<li><p>一些公式及推导式，记 <span class="math inline">\(v_0\)</span>
+为初始速度，<span class="math inline">\(v\)</span> 为末速度：<br />
+<span class="math display">\[
+\begin{array}{l}
+&amp; v=v_0+at\\
+&amp; x=\frac{(v+v_0)t}{2}=v_0t+\frac{1}{2}at^2
+&amp;&amp;\text{（v-t图中的梯形面积）}\\
+&amp;v^2-v_0^2=2ax &amp;&amp;\text{（可以由上面两个推出来）}\\
+&amp;t=\frac{v_0\pm \sqrt{v_0^2+2ax}}{a}
+&amp;&amp;\text{（可以由第二个推出来）}\\
+&amp;\overline{v}=\frac{v_0+v}{2}=\frac{x}{t}\\
+&amp;\Delta x=aT^2 &amp;&amp;\text{（}\Delta
+x\text{表示匀变速直线运动中，每}T \text{秒物体的位移的差值）}
+\end{array}
+\]</span></p></li>
+</ol>
+<h3 id="一些题">一些题</h3>
+<p><strong>题目一</strong>：一质点由静止从 <span
+class="math inline">\(A\)</span> 点出发沿直线 <span
+class="math inline">\(AB\)</span> 运动，先是做加速度为 <span
+class="math inline">\(a_1\)</span> 的匀加速运动；接着又以大小为 <span
+class="math inline">\(a_2\)</span> 的加速度做匀减速运动，到达 <span
+class="math inline">\(B\)</span> 时刚好停止。若 <span
+class="math inline">\(AB\)</span> 长为 <span
+class="math inline">\(x\)</span>，求质点走完 <span
+class="math inline">\(AB\)</span> 所用时间。</p>
+<p>设匀加速运动的时间为 <span
+class="math inline">\(t_1\)</span>，匀减速运动的时间为 <span
+class="math inline">\(t_2\)</span>，速度最大时的速度为 <span
+class="math inline">\(v\)</span>，则 <span
+class="math inline">\(v=a_1t_1=a_2t_2\)</span>，即 <span
+class="math inline">\(t_1=\frac{v}{a_1},t2=\frac{v}{a_2}\)</span>。<br />
+于是有：<br />
+<span class="math display">\[
+\begin{flalign}
+x&amp;=\frac{a_1t_1^2+a_2t_2^2}{2}\\
+&amp;=\frac{1}{2}(t1+t2)v\\
+\end{flalign}
+\]</span><br />
+即：<br />
+<span class="math display">\[
+\begin{flalign}
+\frac{1}{2}(\frac{v}{a_1}+\frac{v}{a_2})v&amp;= x\\
+\frac{1}{2}(\frac{a_2v+a_1v}{a_1a_2})v&amp;= x\\
+v^2\frac{a_2+a_1}{2a_1a_2} &amp;= x\\
+v^2 &amp;= \frac{2xa_1a_2}{a_2+a_1}\\
+v &amp;= \sqrt{\frac{2xa_1a_2}{a_2+a_1}}
+\end{flalign}
+\]</span><br />
+代入上方的式子可得：<br />
+<span class="math display">\[
+\begin{flalign}
+\frac{1}{2}(t_1+t_2)\sqrt{\frac{2xa_1a_2}{a_2+a_1}}&amp;=x\\
+t_1+t_2 &amp;=\sqrt{\frac{2x(a_2+a_1)}{a_1a_2}}
+\end{flalign}
+\]</span></p>
+<p><strong>题目二</strong>：某质点做匀减速直线运动，依次经过 <span
+class="math inline">\(A,B,C\)</span> 三点，最后停在 <span
+class="math inline">\(D\)</span> 点，已知 <span
+class="math inline">\(AB=6m,BC=4m\)</span>，从 <span
+class="math inline">\(A\)</span> 到 <span
+class="math inline">\(B\)</span> 和从 <span
+class="math inline">\(B\)</span> 到 <span
+class="math inline">\(C\)</span> 两个过程中的速度变化量均为 <span
+class="math inline">\(-2m/s\)</span>，求：</p>
+<ol type="1">
+<li>质点到 <span class="math inline">\(B\)</span> 的速度大小。</li>
+<li>质点的加速度大小。</li>
+<li>质点从 <span class="math inline">\(A\)</span> 点运动到 <span
+class="math inline">\(C\)</span> 点的时间。</li>
+<li><span class="math inline">\(A,D\)</span> 间的距离</li>
+</ol>
+<p>由于质点做匀减速直线运动，且 <span
+class="math inline">\(AB\)</span>，<span
+class="math inline">\(BC\)</span> 之间的速度变化量相等，则经过 <span
+class="math inline">\(AB,BC\)</span> 的时间满足 <span
+class="math inline">\(t_{AB}=t_{BC}\)</span>，设其为 <span
+class="math inline">\(T\)</span>，则</p>
+<p>由 <span class="math inline">\(\Delta x=aT^2,\Delta v = aT\)</span>
+可知：<br />
+<span class="math display">\[
+\begin{flalign}
+\Delta x &amp;= aT^2\\
+\Delta x &amp;= \Delta v T\\
+(4-6) &amp;= -2T\\
+T &amp;= 1s
+\end{flalign}
+\]</span><br />
+于是：<br />
+<span class="math display">\[
+t_{AC}=2T=2s\\a=\frac{\Delta v}{T}=\frac{-2}{1}=-2m/s^2
+\]</span></p>
+<p>由 <span class="math inline">\(v-v_0^2=2ax\)</span> 可知：<br />
+<span class="math display">\[
+\begin{flalign}
+v_B^2-v_A^2 &amp;= 2ax\\
+v_B^2-(v_B+2)^2 &amp;= 2ax\\
+-4v_B-4 &amp;= -24\\
+v_B &amp;= 5m/s
+\end{flalign}
+\]</span><br />
+则：<br />
+<span class="math display">\[
+v_C=v_B-2=3m/s\\
+t_{CD}=\frac{\Delta v_{CD}}{a}=1.5s
+\]</span></p>
+<p>由 <span class="math inline">\(x=v_0t+\frac{1}{2}at^2\)</span>
+可知：<br />
+<span class="math display">\[
+\begin{flalign}
+x_{CD} &amp;= v_Ct_{CD}+\frac{1}{2}at_{CD}^2\\
+&amp;= 3\times 1.5+\frac{1}{2}\times (-2)\times 1.5^2\\
+&amp;=2.25m
+\end{flalign}
+\]</span><br />
+于是：<br />
+<span class="math display">\[
+x_{AD}=x_{AB}+x_{BC}+x_{CD}=12.25m
+\]</span><br />
+综上，<span
+class="math inline">\(v_B=5m/s,a=-2m/s,t_{AC}=2s,s_{AD}=x_{AD}=12.25m\)</span>。</p>
+
     </div>
     
-    <div class="timeline">
-        <div class="timeline-tail"></div>
-        <div class="timeline-content">
-            <div class="item-time">2023/9/7</div>
-            <a href="/2023/09/07/%E5%BD%BC%E5%B2%B8%E8%8A%B1%E4%B8%8E%E4%BC%9A%E8%AF%B4%E8%AF%9D%E7%9A%84%E9%87%91%E8%A1%A8-%E5%BA%8F%E7%AB%A0/">
-                <h3>彼岸花与会说话的金表-序章</h3>
-            </a>
-            <div class="info">
-                
-                
-                <span class="tags">
-                    <span class="icon">
-                        <i class="fa-solid fa-tags fa-fw"></i>
-                    </span>
-                    
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="color: #ff7d73">小故事</a>
-                    </span>
-                    
-                </span>
-                
-            </div>
-        </div>
-    </div>
+    
+    
+    
+    
+    
     
 </div>
 
@@ -305,6 +353,12 @@
             
         </div>
         <script src="/js/main.js"></script>
+        
+        
+
+
+
+
         
     </body>
 </html>
