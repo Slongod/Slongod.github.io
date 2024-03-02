@@ -171,7 +171,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #ff7d73">题解</a>
+                <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #ffa2c4">题解</a>
             </span>
             
         </span>
@@ -187,6 +187,7 @@
 又正在向谁诉说。</p>
 <p>童年的小翼龙 2024年2月25日</p>
 </blockquote>
+<p>记录了一些以前没见过的题。</p>
 <h2 id="cf1567f-one-four-overload">CF1567F One-Four Overload</h2>
 <p>记一个被标记的单元格的度数为其四周的没有被标记的单元格的个数，则：</p>
 <ul>
@@ -203,7 +204,7 @@ class="math inline">\(1,1,4,4\)</span>，则一定可以转换为一种逆时针
 <span class="math inline">\(2\)</span> 的证明相同了。</li>
 </ul>
 <p>综上，若有解，黑白染色然后输出方案即可。</p>
-<h1 id="section">2024.2.25</h1>
+<h1 id="至-2024.3.2">2024.2.25 至 2024.3.2</h1>
 <h2 id="uoj461.-新年的dog划分">UOJ461. 新年的Dog划分</h2>
 <p>如果我们能够得到这张图的一个 DFS
 树，我们就可以黑白染色，然后在删掉所有左右部点之间的非树边的情况下，每次尝试删掉一条树边，如果在删掉某一条树边之后图仍然联通，说明这不是一个二分图。</p>
@@ -232,7 +233,7 @@ class="math inline">\(u\)</span> 之间的边标记为<strong>不在当前 DFS
 O(n)\)</span> 的时间复杂度内找出原图的一棵 DFS 树，可以通过本题。</p>
 <h2 id="p3679-cerc2016-二分毯-bipartite-blanket">P3679 [CERC2016] 二分毯
 Bipartite Blanket</h2>
-<p>Ex Hall 定义：</p>
+<p><strong>Ex Hall 定理</strong>：</p>
 <ul>
 <li>若存在一个匹配 <span class="math inline">\(X\)</span> ，左部点点集为
 <span class="math inline">\(A\)</span>，同时存在一个匹配 <span
@@ -293,6 +294,301 @@ class="math inline">\(\inf=25\)</span>，然后用
 class="math inline">\(O(mw2^k+q2^k)\)</span>，其中最大边权 <span
 class="math inline">\(w\le 25\)</span>。<span
 class="math inline">\(\Huge\color{red}{卡}\color{yellow}{卡}\color{blue}{就}\color{green}{过}\color{pink}{了}\)</span></p>
+<h2 id="p3354-ioi2005-riv-河流">P3354 [IOI2005] Riv 河流</h2>
+<p>反着 DP 的题，比较少见。</p>
+<p>考虑设 <span class="math inline">\(f_{i,j,k}\)</span> 代表考虑 <span
+class="math inline">\(i\)</span> 的子树，离 <span
+class="math inline">\(i\)</span> 最近有伐木场的祖先离 <span
+class="math inline">\(i\)</span> 的距离为 <span
+class="math inline">\(j\)</span>，当前还能最多设置 <span
+class="math inline">\(k\)</span> 个伐木场的最小代价，转移显然。</p>
+<p>时间复杂度 <span class="math inline">\(O(n^2k^2)\)</span>。</p>
+<h2 id="p7295-usaco21jan-paint-by-letters-p">P7295 [USACO21JAN] Paint by
+Letters P</h2>
+<p>将方格看成点，颜色相同的点之间连边，则所有的点和边构成了一张平面图，我们每次要求的是一个子图的联通块个数。由平面图欧拉公式可知：<span
+class="math inline">\(|V|-|E|+R=C+1\)</span>，其中 <span
+class="math inline">\(V\)</span> 为点集，<span
+class="math inline">\(E\)</span> 为边集，<span
+class="math inline">\(R\)</span> 是面数（包含内部面和外部面），<span
+class="math inline">\(C\)</span>
+是联通块个数。我们询问的子图是一个矩形状物，所以用二维前缀和求出边数，点数可以直接算出，关键是面数不好算。</p>
+<p>容易发现我们只需要计算内部面的个数 <span
+class="math inline">\(R&#39;\)</span>，则答案为 <span
+class="math inline">\(|V|-|E|+R&#39;\)</span>。我们按下图对空格编号（星星是空格），则我们可以先用
+dfs 或 bfs
+求出所有的面，现在只需要判断哪些面<strong>完全</strong>在我们询问的子图中。显然，如果一个面只有一部分在我们询问的子图中，它一定会和外部面融为一体，不参与
+<span class="math inline">\(R&#39;\)</span> 的计算。</p>
+<p><img src="https://pic.imgdb.cn/item/65deecab9f345e8d03dc566b.png" alt="下图：一张网格图，连了若干条边，用标号标出了空格所属的行列" style="zoom:40%;" /></p>
+<p>我们可以对每一个面任意选出一个<strong>代表空格</strong>，我们可以先假装只要包含代表空格，这个面就全部在我们询问的子图中，这可以用二维前缀和解决。在询问的时候，我们通过遍历我们询问的子图周围的
+<span class="math inline">\(O(n)\)</span>
+个空格，来判断哪些面满足：其代表空格在询问的面之内，但是其有一部分不在询问的子图内。因为我们遍历的就是子图周围（不在子图内）的空格，所以如果这些面的代表空格在子图内，就可以给
+<span class="math inline">\(R&#39;\)</span> 减去 <span
+class="math inline">\(1\)</span>。注意若干个空格可能同属于一个面，对于这样的情况，我们只需要减去一次。</p>
+<p>时间复杂度 <span class="math inline">\(O(nm+q(n+m))\)</span>。</p>
+<h2 id="p5807-模板best-定理-which-dreamed-it">P5807 【模板】BEST 定理 |
+Which Dreamed It</h2>
+<p><strong>BEST 定理</strong>：</p>
+<p>对于一张有向欧拉图 <span
+class="math inline">\(G=\{V,E\}\)</span>，其欧拉回路个数为<br />
+<span class="math display">\[
+T_{root}(G)\times\prod_{i\in V}(d_i-1)!
+\]</span><br />
+其中 <span class="math inline">\(T_{root}(G)\)</span> 代表 <span
+class="math inline">\(G\)</span>
+的任意一点为根的根向生成树个数，可以用矩阵树定理求出；<span
+class="math inline">\(d_i\)</span> 表示 <span
+class="math inline">\(i\)</span> 的出度。</p>
+<h2 id="uoj226.-ur-15奥林匹克环城马拉松">UOJ226. 【UR
+#15】奥林匹克环城马拉松</h2>
+<p>基环树欧拉回路计数。</p>
+<p>BEST 定理给出了有向图欧拉回路计数的方式，于是我们可以先将边定向后套用
+BEST 定理。</p>
+<p><strong>定向</strong>：</p>
+<p>对于树的部分，每一条边的方向都是确定的，若这条边有 <span
+class="math inline">\(t_i\)</span> 条，则有解当且仅当 <span
+class="math inline">\(2|t_i\)</span>，且这些边一半向下，一半向上，于是我们定向后给答案乘上一个
+<span
+class="math inline">\(\displaystyle{t_i\choose\frac{t_i}{2}}\)</span>。</p>
+<p>对于环的部分，我们可以枚举绕着环逆时针或顺时针走了 <span
+class="math inline">\(k\)</span>
+圈，则由欧拉图所有点入度等于出度，我们就可以算出所有点的度数。记一条边有
+<span class="math inline">\(t_i\)</span> 条，其中 <span
+class="math inline">\(s_i\)</span> 条逆时针，则我们定向后给答案乘上一个
+<span class="math inline">\(\displaystyle{t_i\choose s_i}\)</span>。</p>
+<p><strong>计算根向生成树个数</strong>：</p>
+<p>我们可以设根是环上的某一个点，则：</p>
+<p>对于树的部分，其对生成树个数的贡献是 <span
+class="math inline">\(\displaystyle{\prod_{i}\frac{t_i}{2}}\)</span>。</p>
+<p>对于环的部分，其对生成树个数的贡献可以先对顺时针和逆时针的边的个数做一个前缀乘，然后枚举断掉一条边来算出。</p>
+<p><strong>计算答案</strong>：</p>
+<p>对于每一种逆/顺时针转了 <span class="math inline">\(k\)</span>
+圈的方案，我们记其边定向方案个数和生成树个数的乘积为 <span
+class="math inline">\(calc(k)\)</span>，此时每个点 <span
+class="math inline">\(i\)</span> 的度数为 <span
+class="math inline">\(d_i\)</span>，则答案为<br />
+<span class="math display">\[
+\sum_{k}calc(k)\prod_{i}(d_i-1)!
+\]</span><br />
+时间复杂度 <span class="math inline">\(O(n\max{t_i})\)</span>。</p>
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+using namespace std;
+namespace Slongod&#123;
+const int N = 2e3+7 , M = 1e7+7 , mod = 998244353;
+int n , m , ans , d[N] , cirank[N] , c[N] , cb[N] , rb[N] , pr[N] , sf[N] , pre[M] , inv[M]; bool vis[N];
+vector &lt;int&gt; sta , vt , g[N]; vector &lt;pair&lt;pair&lt;int,int&gt;,int&gt;&gt; edge;
+inline int qkpow(int x , int y)&#123;int s;for(s=1;y;y/=2,x=1ll*x*x%mod)&#123;if(y&amp;1)&#123;s=1ll*s*x%mod;&#125;&#125;return s;&#125;
+inline void init()
+&#123;
+    pre[0] = 1; for (int i = 1; i &lt; M; i++)&#123;pre[i] = 1ll * pre[i-1] * i % mod;&#125;
+    inv[M-1] = qkpow(pre[M-1] , mod - 2); for (int i = M - 2; i &gt;= 0; i--)&#123;inv[i] = 1ll * inv[i+1] * (i+1) % mod;&#125;
+&#125;
+inline int C(int nn , int mm)&#123;return nn &gt;= mm ? 1ll * pre[nn] * inv[mm] % mod * inv[nn-mm] % mod : 0;&#125;
+bool dfs(int u , int fa)
+&#123;
+    vis[u] = 1; sta.push_back(u);
+    for (auto v : g[u]) &#123;
+        if (v != fa) &#123;
+            if (!vis[v]) &#123;
+                if (dfs(v , u)) &#123;
+                    return true;
+                &#125;
+            &#125; else &#123;
+                sta.push_back(0);
+                do &#123;
+                    sta.pop_back();
+                    vt.push_back(sta.back());
+                &#125; while(sta.back() != v);
+                return true;
+            &#125;
+        &#125;
+    &#125; sta.pop_back(); return false;
+&#125;
+
+void main()
+&#123;
+    cin &gt;&gt; n &gt;&gt; m; init();
+    for (int i = 1 , x , y , t; i &lt;= m; i++) &#123;
+        cin &gt;&gt; x &gt;&gt; y &gt;&gt; t;
+        g[x].push_back(y); d[x] += t;
+        g[y].push_back(x); d[y] += t;
+        edge.push_back(&#123;&#123;x , y&#125; , t&#125;);
+    &#125;
+    for (int i = 1; i <= n; i++)&#123;if (d[i] & 1)&#123;cout << 0 << '\n'; return;&#125;&#125;
+
+    if (!dfs(1 , 1)) &#123; //没有环
+        ans = 1;
+        for (int i = 0; i &lt; m; i++) &#123;
+            ans = 1ll * ans * C(edge[i].second , edge[i].second / 2) % mod;
+            ans = 1ll * ans * edge[i].second / 2 % mod;
+        &#125;
+        for (int i = 1; i &lt;= n; i++) &#123;
+            ans = 1ll * ans * pre[d[i] / 2 - 1] % mod;
+        &#125;
+    &#125; else &#123;
+        ans = 0; sta = vt;
+        int cirsize = sta.size() , minn = 0x3f3f3f3f;
+        memset(cirank , -1 , sizeof(cirank));
+        for (int i = 0; i &lt; cirsize; i++)&#123;cirank[sta[i]] = i;&#125;
+        for (int i = 0; i &lt; m; i++) &#123;
+            if (~cirank[edge[i].first.first] and ~cirank[edge[i].first.second]) &#123;
+                c[(cirank[edge[i].first.first] + 1) % cirsize == cirank[edge[i].first.second] ? cirank[edge[i].first.first] : cirank[edge[i].first.second]] = edge[i].second;
+                minn = min(minn , edge[i].second);
+            &#125;
+        &#125;
+        for (int k = -minn , ok = 1 , sum = 0 , tans = 1; k &lt;= minn; k++ , ok = 1 , sum = 0 , tans = 1) &#123;
+            memset(d , 0 , sizeof(d));
+            for (int i = 0; i &lt; cirsize; i++) &#123;
+                if ((c[i] + k) &amp; 1)&#123;ok = 0; break;&#125;
+                cb[i] = (c[i] + k) / 2;
+                rb[i] = (c[i] - k) / 2;
+                tans = 1ll * tans * C(c[i] , cb[i]) % mod;
+                d[sta[i]] += cb[i]; d[sta[(i+1)%cirsize]] += rb[i];
+            &#125; if (!ok)&#123;continue;&#125;
+            for (int i = 0; i &lt; m; i++) &#123;
+                if (!~cirank[edge[i].first.first] or !~cirank[edge[i].first.second]) &#123;
+                    d[edge[i].first.first] += edge[i].second / 2;
+                    d[edge[i].first.second] += edge[i].second / 2;
+                    tans = 1ll * tans * C(edge[i].second , edge[i].second / 2) % mod;
+                    tans = 1ll * tans * edge[i].second / 2 % mod;
+                &#125;
+            &#125;
+            for (int i = 1; i &lt;= n; i++) &#123;
+                tans = 1ll * tans * pre[d[i] - 1] % mod;
+            &#125;
+            pr[0] = rb[0]; for (int i = 1; i &lt; cirsize; i++)&#123;pr[i] = 1ll * pr[i-1] * rb[i] % mod;&#125;
+            sf[cirsize-1] = cb[cirsize-1]; for (int i = cirsize-2; i &gt;= 0; i--)&#123;sf[i] = 1ll * sf[i+1] * cb[i] % mod;&#125;
+            for (int i = 0 , t = 1; i &lt; cirsize; i++ , t = 1) &#123;
+                if (i)&#123;t = 1ll * t * pr[i-1] % mod;&#125;
+                if (i != cirsize-1)&#123;t = 1ll * t * sf[i+1] % mod;&#125;
+                sum = (sum + t) % mod;
+            &#125; ans = (ans + 1ll * tans * sum) % mod;
+        &#125;
+    &#125; cout &lt;&lt; ans &lt;&lt; &#39;\n&#39;;
+&#125;
+&#125;int main()
+&#123;
+    #ifndef ONLINE_JUDGE
+    freopen(&quot;ex.in&quot; , &quot;r&quot; , stdin);
+    #endif
+    ios :: sync_with_stdio(0);
+    cin.tie(0) , cout.tie(0);
+    return Slongod :: main(),0;
+&#125;</code></pre>
+<h2 id="p3350-zjoi2016-旅行者">P3350 [ZJOI2016] 旅行者</h2>
+<p>下文中记 <span class="math inline">\(n\)</span> 为面积。</p>
+<p>考虑离线所有询问后分治矩形。对于当前矩形，每次切两维中较长的那一维，对于中线上的
+<span class="math inline">\(O(\sqrt{n})\)</span>
+个点跑最短路，然后对于每一个询问用这 <span
+class="math inline">\(\sqrt{n}\)</span>
+个点拼出路径。若询问的两点在中线的两侧，则这次的答案对于当前矩形来说一定是最优的，不再继续分治。若询问的两点在中线的一侧，则可能不跨过中线更优，继续往小矩形分治。</p>
+<p>使用堆优化的 dijkstra 最短路算法，时间复杂度 <span
+class="math inline">\(T(n)=2T(n/2)+n\sqrt{n}\log n=O(n\sqrt{n}\log
+n)\)</span>。</p>
+<h2 id="p9040-pa2021-desant-2">P9040 [PA2021] Desant 2</h2>
+<p>考虑 DP，设 <span class="math inline">\(f_i\)</span> 表示考虑前 <span
+class="math inline">\(i\)</span> 个人的最大收益，则<br />
+<span class="math display">\[
+f_i=\max\{f_{i-1},f_{i-k}+\sum_{j=i-k+1}^{i}a_j\}
+\]</span><br />
+由于 <span class="math inline">\(k\)</span> 固定，我们如果将 <span
+class="math inline">\(i\)</span> 向 <span
+class="math inline">\(i+1\)</span> 和 <span
+class="math inline">\(i+k\)</span> 连边，则整张图构成了一个 <span
+class="math inline">\(\frac{n}{k}\)</span> 行 <span
+class="math inline">\(k\)</span>
+列的网格图状物。非最后一行的最后一列有着向下一行第一列的连边。</p>
+<p>于是我们就可以像上一道题（旅行者）一样，对网格图分治。由于是有向边，直接
+DP
+会比跑最短路快得多。注意最后一列有向第一列的连边，于是我们在竖着劈第一刀之前需要先算出这些边可能影响的答案。具体地，直接以最后一列或第一列为中线跑一遍
+DP，然后对答案贡献即可。</p>
+<p>时间复杂度 <span class="math inline">\(O(n\sqrt{n})\)</span>。</p>
+<h2 id="cf850f-rainbow-balls">CF850F Rainbow Balls</h2>
+<p><strong>停时定理</strong>：对于一个状态 <span
+class="math inline">\(S\)</span>，如果能设计一个函数，使得对于 <span
+class="math inline">\(S\)</span> 的所有后继状态 <span
+class="math inline">\(S&#39;\)</span>，<span
+class="math inline">\(E[F(S&#39;)-F(S)]=-1\)</span>。对于停止的状态
+<span class="math inline">\(R\)</span>，则停止的期望步数等于 <span
+class="math inline">\(F(T)-F(R)\)</span>，其中 <span
+class="math inline">\(T\)</span> 是起始状态。</p>
+<p>对于本题，我们可以设 <span class="math inline">\(\displaystyle
+F(S)=\sum_if(a_i)\)</span>，则有<br />
+<span class="math display">\[
+\sum_{i}f(a_i)-1=\sum_{i}\frac{a_i(a_i-1)+(m-a_i)(m-a_i-1)}{m(m-1)}f(a_i)+\frac{a_i(m-a_i)}{m(m-1)}(f(a_i+1)+f(a_i-1))
+\]</span><br />
+移项并化简可得<br />
+<span class="math display">\[
+-1=\sum_{i}\frac{(a_i^2-a_im)f(a_i)-(a_i^2-a_im)f(a_i+1)+(a_i^2-ma_i)f(a_i)-(a_i^2-ma_i)f(a_i-1)}{m(m-1)}
+\]</span><br />
+令 <span class="math inline">\(g(x)=f(x)-f(x+1)\)</span>，则<br />
+<span class="math display">\[
+-1=\sum_{i}\frac{a_i(a_i-m)}{m(m-1)}(g(a_i)-g(a_i-1))\\
+\]</span><br />
+令 <span class="math inline">\(\displaystyle
+\frac{a_i(a_i-m)}{m(m-1)}(g(a_i)-g(a_i-1))=-\frac{a_i}{m}\)</span>，则<br />
+<span class="math display">\[
+g(a_i)-g(a_i-1)=\frac{1-m}{a_i-m}
+\]</span><br />
+因此<br />
+<span class="math display">\[
+g(x)=g(x-1)+\frac{1-m}{x-m}\\
+f(x)=f(x-1)-g(x-1)\\
+ans=f(m)-\sum_if(a_i)
+\]</span><br />
+令 <span
+class="math inline">\(f(0)=g(0)=0\)</span>，其他可以递推计算。对于 <span
+class="math inline">\(f(m)\)</span> 我们有：<br />
+<span class="math display">\[
+\begin{aligned}
+f(m)&amp;=-\sum_{i=0}^{m-1}\sum_{j=1}^{i}\frac{1-m}{j-m}\\
+&amp;=-\sum_{j=1}^{m-1}(m-1-j+1)\frac{1-m}{j-m}\\
+&amp;=\sum_{j=1}^{m-1}1-m\\
+&amp;=(m-1)(1-m)
+\end{aligned}
+\]</span><br />
+时间复杂度 <span class="math inline">\(O(n+\max
+a_i)\)</span>，直接快速幂会多只 <span
+class="math inline">\(\log\)</span>。</p>
+<h2 id="cf1349d-slime-and-biscuits">CF1349D Slime and Biscuits</h2>
+<p>和上道题一样。</p>
+<h2 id="cf1025g-company-acquisitions">CF1025G Company Acquisitions</h2>
+<p><strong>有些时候，加强式子的限制反而有利于推出答案</strong>。</p>
+<p>本题和前两道题大同小异，设 <span class="math inline">\(a_i\)</span>
+表示追随 <span class="math inline">\(i\)</span> 的节点数，<span
+class="math inline">\(\displaystyle F(S)=\sum_{i}f(a_i)\)</span>。</p>
+<p>假设当前有 <span class="math inline">\(m\)</span> 个已被选中的点，令
+<span class="math inline">\(f(0)=0\)</span>，我们可以得出：<br />
+<span class="math display">\[
+\begin{aligned}
+\frac{1}{m\choose2}\sum_{x=1}^{m}\sum_{y=x+1}^{m}f(x)+f(y)-\frac{1}{2}(f(x+1)+(y-1)f(0))-\frac{1}{2}(f(y+1)+(x-1)f(0))
+&amp;=-1\\
+\sum_{x=1}^{m}\sum_{y=x+1}^{m}f(x)-\frac{f(x+1)}{2}+f(y)-\frac{f(y+1)}{2}
+&amp;=-{m\choose2}\\
+\end{aligned}
+\]</span><br />
+现在式子中有 <span
+class="math inline">\(m\)</span>，不好处理。我们可以稍微加强一下限制，令<br />
+<span class="math display">\[
+\begin{aligned}
+\forall
+x,y\enspace,f(x)-\frac{f(x+1)}{2}+f(y)-\frac{f(y+1)}{2}&amp;=-1\\
+\end{aligned}
+\]</span><br />
+显然这个满足这个式子也会满足前面的式子。对于这个式子，我们只需要令 <span
+class="math inline">\(f(x)\)</span> 满足以下条件：<br />
+<span class="math display">\[
+\begin{aligned}
+f(x)-\frac{f(x+1)}{2}&amp;=\frac{1}{2}\\
+f(x+1)&amp;=2f(x)-1
+\end{aligned}
+\]</span><br />
+于是，我们就可以在 <span class="math inline">\(O(n)\)</span>
+的时间复杂度内递推出所有的 <span
+class="math inline">\(f(i)\)</span>，答案即为 <span
+class="math inline">\(\displaystyle f(n-1)-\sum_{i\in
+S}c_i\)</span>，其中 <span class="math inline">\(c_i\)</span>
+代表最开始追随 <span class="math inline">\(i\)</span> 的人数，<span
+class="math inline">\(S\)</span> 代表最开始被选定的点的集合。</p>
 
     </div>
     
