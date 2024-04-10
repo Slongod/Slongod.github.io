@@ -3,7 +3,7 @@
 <html lang="zh-Hans">
     <head>
         <meta charset="utf-8" />
-        <title>Tags: 做题记录 | LycoReco SN 支部</title>
+        <title> | LycoReco SN 支部</title>
         <meta name="author" content="Slongod" />
         <meta name="description" content="SlongodのBlog" />
         <meta name="keywords" content="" />
@@ -33,6 +33,10 @@
 
 
 <script src="/js/lib/preview.js"></script>
+
+
+
+
 
 
 
@@ -146,107 +150,119 @@
 </transition>
 
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
-                <div id="archives">
-    
-    <div class="categories-tags">
-        
-        
-        
-        <span>
-            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="background: #03a9f4">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                题解
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/tags/%E5%85%B6%E4%BB%96/" style="background: #ffa2c4">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                其他
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/tags/%E5%85%AC%E5%91%8A/" style="background: #00bcd4">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                公告
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/tags/%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" style="background: linear-gradient(120deg, #9abbf7 0%, #ffbbf4 100%)">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                做题记录
-            </a>
-        </span>
-        
-        
-        
-        
-        
-        <span>
-            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="background: #ff7d73">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                小故事
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="background: #00a596">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                学习笔记
-            </a>
+                <div class="article">
+    <div>
+        <h1></h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2024/4/10
         </span>
         
         
     </div>
     
-    <div class="timeline">
-        <div class="timeline-tail"></div>
-        <div class="timeline-content">
-            <div class="item-time">2023/11/27</div>
-            <a href="/2023/11/27/SNOI2024-%E5%89%8D-%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/">
-                <h3>SNOI前 做题记录</h3>
-            </a>
-            <div class="info">
-                
-                
-                <span class="tags">
-                    <span class="icon">
-                        <i class="fa-solid fa-tags fa-fw"></i>
-                    </span>
-                    
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" style="color: #00a596">做题记录</a>
-                    </span>
-                    
-                </span>
-                
-            </div>
-        </div>
+    <div class="content" v-pre>
+        <h2 id="题意">题意</h2>
+<p>给你 <span class="math inline">\(n\)</span>
+堆石子，甲先手，乙后手。甲每次可以从最左边非空的石子堆中取任意个，乙每次可以从最右边非空的石子堆中取任意个，不能取的人输。问甲是否有必胜策略。</p>
+<h2 id="题解">题解</h2>
+<p>先说明两点性质：</p>
+<blockquote>
+<p>性质 <span
+class="math inline">\(1\)</span>：当其它堆的石子固定的时候，当前（最左或最右）堆的石子越多，情况对于当前的先手越有利。</p>
+</blockquote>
+<p>证明：因为可以取任意多个石子，所以对于当前先手来说，石子多不会使得情况变劣，且石子少能到达的所有状态石子多的时候也都能达到，石子多能到达的状态石子少的时候不一定能达到。</p>
+<blockquote>
+<p>性质 <span class="math inline">\(2\)</span>：当前的先手只可能取 <span
+class="math inline">\(1\)</span> 个或全取完。</p>
+</blockquote>
+<p>证明：若只剩一堆，则取完当前石子堆，后手必败，一定会取完。因此，当不需要取完当前石子堆的时候，至少还剩下两堆石子，根据上述性质
+<span
+class="math inline">\(1\)</span>，令当前剩的石子越多越好，于是当前先手只取
+<span class="math inline">\(1\)</span> 个。</p>
+<p>有了这两条性质，我们就好办许多了，我们可以设立以下状态：</p>
+<ul>
+<li>设 <span class="math inline">\(f_{l,r}\)</span> 代表 <span
+class="math inline">\([l+1,r]\)</span>
+堆中的石子个数<strong>确定</strong>为题目给出的石子个数，且轮到甲操作时，当前堆
+<span class="math inline">\(l\)</span>
+<strong>至少</strong>需要多少才能使得<strong>甲必胜</strong>。</li>
+<li>设 <span class="math inline">\(g_{l,r}\)</span> 代表 <span
+class="math inline">\([l,r-1]\)</span>
+堆中的狮子个数<strong>确定</strong>为题目给出的石子个数，且轮到乙操作时，当前堆
+<span class="math inline">\(r\)</span>
+<strong>至少</strong>需要多少才能使得<strong>乙必胜</strong>。</li>
+</ul>
+<p>我们考虑 <span class="math inline">\(f\)</span> 的转移：</p>
+<ul>
+<li>当 <span class="math inline">\(a_r&lt;g_{l+1,r}\)</span>
+时，只要当前堆非空，取完即可使得<strong>甲必胜</strong>，于是 <span
+class="math inline">\(f_{l,r}=1\)</span>。</li>
+<li>当 <span class="math inline">\(a_r\ge g_{l+1,r}\)</span>
+时，双方会轮流取一个（即甲选择 <span class="math inline">\(a_l\)</span>
+减少 <span class="math inline">\(1\)</span>，乙选择 <span
+class="math inline">\(a_r\)</span> 减少 <span
+class="math inline">\(1\)</span>），直到 <span
+class="math inline">\(a_{l}&lt;f_{l,r-1}\)</span>（乙胜）或 <span
+class="math inline">\(a_r&lt;g_{l+1,r}\)</span>（甲胜）。因此，甲想要获胜，首先不能被拖入
+<span class="math inline">\(a_l=0\)</span> 且 <span
+class="math inline">\(a_r\ge g_{l+1,r}\)</span>
+的境地，并且还要保证在拖赢乙之前时刻满足 <span
+class="math inline">\(a_l\ge
+f_{l,r-1}\)</span>（否则乙就会全取完而获胜），因此可得 <span
+class="math inline">\(f_{l,r}=a_r-g_{l+1,r}+1+f_{l,r-1}\)</span>。</li>
+</ul>
+<p>即：<br />
+<span class="math display">\[
+f_{l,r}=
+\left\{
+\begin{aligned}
+&amp;1 &amp;&amp;(a_r&lt;g_{l+1,r})\\
+&amp;a_r-g_{l+1,r}+1+f_{l,r-1} &amp;&amp;(a_r\ge g_{l+1,r})
+\end{aligned}
+\right.
+\]</span><br />
+同理可得：<br />
+<span class="math display">\[
+g_{l,r}=
+\left\{
+\begin{aligned}
+&amp;1 &amp;&amp;(a_l&lt;f_{l,r-1})\\
+&amp;a_{l}-a_{l,r-1}+1+g_{l+1,r} &amp;&amp;(a_l\ge f_{l,r-1})\\
+\end{aligned}
+\right.
+\]</span><br />
+于是 <span class="math inline">\(O(n^2)\)</span>
+递推即可，代码简单。</p>
+<pre class="cpp"><code>void main()
+&#123;
+    int T; cin &gt;&gt; T;
+    while(T--) &#123;
+        cin &gt;&gt; n;
+        for (int i = 1; i &lt;= n; i++)&#123;cin &gt;&gt; a[i];&#125;
+        for (int i = 1; i &lt;= n; i++)&#123;f[i][i] = g[i][i] = 1;&#125;
+        for (int k = 2; k &lt;= n; k++) &#123;
+            for (int i = 1 , j = i + k - 1; i &lt;= n; i++ , j++) &#123;
+                if (a[j] &lt; g[i+1][j])&#123;f[i][j] = 1;&#125;
+                else&#123;f[i][j] = a[j] - g[i+1][j] + 1 + f[i][j-1];&#125;
+                if (a[i] &lt; f[i][j-1])&#123;g[i][j] = 1;&#125;
+                else&#123;g[i][j] = a[i] - f[i][j-1] + 1 + g[i+1][j];&#125;
+            &#125;
+        &#125; cout &lt;&lt; (f[1][n] &lt;= a[1] ? &quot;First\n&quot; : &quot;Second\n&quot;);
+    &#125;
+&#125;</code></pre>
+
     </div>
+    
+    
+    
+    
+    
+    
     
 </div>
 
@@ -278,6 +294,12 @@
             
         </div>
         <script src="/js/main.js"></script>
+        
+        
+
+
+
+
         
     </body>
 </html>

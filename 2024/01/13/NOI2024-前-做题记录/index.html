@@ -171,7 +171,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #ff7d73">题解</a>
+                <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #00bcd4">题解</a>
             </span>
             
         </span>
@@ -589,6 +589,77 @@ class="math inline">\(\displaystyle f(n-1)-\sum_{i\in
 S}c_i\)</span>，其中 <span class="math inline">\(c_i\)</span>
 代表最开始追随 <span class="math inline">\(i\)</span> 的人数，<span
 class="math inline">\(S\)</span> 代表最开始被选定的点的集合。</p>
+<h2 id="cf1479e-school-clubs">CF1479E School Clubs</h2>
+<p>同上。</p>
+<h2 id="p3188-hnoi2007-梦幻岛宝珠">P3188 [HNOI2007] 梦幻岛宝珠</h2>
+<p>题意：01 背包，但是容量是 <span
+class="math inline">\(2^{30}\)</span>，保证所有物品的体积表示为 <span
+class="math inline">\(a\times 2^k\)</span> 后，<span
+class="math inline">\(a\le 10\)</span>。</p>
+<p>我们先将所有物体按体积中的 <span class="math inline">\(k\)</span>
+分类，每一种分类中可以求出本类中最优方案，由 <span
+class="math inline">\(n\le 100,a\le 10\)</span>
+可知，每一类中的总容量不会大于 <span
+class="math inline">\(1000\)</span>。我们记种类 <span
+class="math inline">\(i\)</span> 中耗费 <span
+class="math inline">\(j\times 2^i\)</span> 的容量能获得的最大价值为
+<span class="math inline">\(f_{i,j}\)</span>，则对于每一类物品，<span
+class="math inline">\(f\)</span> 可以在 <span
+class="math inline">\(O(|S_i|^2V)\)</span> 的时间复杂度内用普通 01
+背包求出，其中 <span class="math inline">\(S_i\)</span>
+代表本类物品的集合，<span class="math inline">\(V\)</span> 代表 <span
+class="math inline">\(a\)</span> 的最大值。</p>
+<p>考虑从小到大枚举物品的种类，当枚举到第 <span
+class="math inline">\(i\)</span> 类的时候，我们最多只需要 <span
+class="math inline">\(1000\times 2^i\)</span>
+的容量，所以背包的总容量可以和这个数字取一个 <span
+class="math inline">\(\min\)</span>。并且对于小于 <span
+class="math inline">\(i\)</span>
+的二进制位，它们是否有值对于当前的问题是没有意义的，因为我们已经考虑完了小于
+<span class="math inline">\(i\)</span>
+的所有位，当前物品所需要的最小容量也一定是大于等于 <span
+class="math inline">\(2^i\)</span> 的。因此，我们可以设 <span
+class="math inline">\(g_{i,j}\)</span> 表示考虑前 <span
+class="math inline">\(i\)</span> 类物品，用小于等于 <span
+class="math inline">\(j\times2^i\)</span>
+的容量所能获取的最大价值，转移如下：<br />
+<span class="math display">\[
+g_{i,j}=\max_{k=0}^{\min(|S_i|V,j)}f_{i,k}+g_{i-1,(j-k)\times2+W_{i-1}}
+\]</span><br />
+其中 <span class="math inline">\(W_i\)</span> 代表 <span
+class="math inline">\(W\)</span> 的二进制表示第 <span
+class="math inline">\(i\)</span> 位上的数字。最终答案即为 <span
+class="math inline">\(g_{\log_2{W},1}\)</span>。</p>
+<h2 id="p3226-hnoi2012-集合选数">P3226 [HNOI2012] 集合选数</h2>
+<p>对于两个数，若他们质因数分解并去掉所有的 <span
+class="math inline">\(2,3\)</span>
+因子后不同，则它们不可能互相影响，我们将去掉所有 <span
+class="math inline">\(2,3\)</span>
+质因数后相等的数字称作同一类数，则我们只需要对每类数求出方案后乘起来即可。</p>
+<p>将一类数列作一个网格图，每一行的的数满足右边的数是左边数的 <span
+class="math inline">\(3\)</span> 倍，每一列的数满足是左边数的 <span
+class="math inline">\(2\)</span> 倍，就可以状压 DP 了。设 <span
+class="math inline">\(f_{i,j}\)</span> 为考虑了前 <span
+class="math inline">\(i\)</span> 行，当前行选没选的状态为 <span
+class="math inline">\(j\)</span>
+的方案数，直接枚举下一行的方案转移就行。</p>
+<p>时间复杂度上界 <span class="math inline">\(O(\log_2n\times
+\log_3^2n)\)</span>，在预处理出每一行所有的可能状态（不考虑上下两行）后，真正的计算量远远小于这个上界。</p>
+<h2 id="p6246-ioi2000-邮局">P6246 [IOI2000] 邮局</h2>
+<p>转化：钦定每一个邮局管辖一定区域，这个区域都要来这个邮局。则转化后的问题的最优解一定是原问题的最优解。</p>
+<p>于是变成了将序列划分为若干段，每一段 <span
+class="math inline">\([l,r]\)</span> 有代价 <span
+class="math inline">\(w(l,r)\)</span>，要求总代价和最小。写出 <span
+class="math inline">\(w\)</span> 的递推式：<br />
+<span class="math display">\[
+W_{l,r}=W_{l,r-1}+X_r-X_{\lfloor\frac{l+r}{2}\rfloor}
+\]</span><br />
+满足四边形不等式，于是用单调队列优化决策单调性后+WQS二分之后可以做到
+<span class="math inline">\(O(n\log n\log V)\)</span>。</p>
+<h2 id="cf1217f-forced-online-queries-problem">CF1217F Forced Online
+Queries Problem</h2>
+<p>如在线问题。</p>
+<p>根据强制在线的方式，每一次只可能影响两条不同的边，我们可以先将每一条边在可能会修改它的时间打一个时间戳，就可以对应的所有时间区间搞出来。在线段树分治到一次询问的时候，我们遍历这个答案影响的所有询问，看到底某条边在下个时间区间存在还是不存在，然后继续线段树分治即可。</p>
 
     </div>
     

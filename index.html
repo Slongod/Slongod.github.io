@@ -42,119 +42,7 @@
 
 <link rel="stylesheet" href="/css/main.css" />
 
-    <meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
-  direction: ltr;
-}
-
-mjx-container[jax="SVG"] > svg {
-  overflow: visible;
-}
-
-mjx-container[jax="SVG"][display="true"] {
-  display: block;
-  text-align: center;
-  margin: 1em 0;
-}
-
-mjx-container[jax="SVG"][justify="left"] {
-  text-align: left;
-}
-
-mjx-container[jax="SVG"][justify="right"] {
-  text-align: right;
-}
-
-g[data-mml-node="merror"] > g {
-  fill: red;
-  stroke: red;
-}
-
-g[data-mml-node="merror"] > rect[data-background] {
-  fill: yellow;
-  stroke: none;
-}
-
-g[data-mml-node="mtable"] > line[data-line] {
-  stroke-width: 70px;
-  fill: none;
-}
-
-g[data-mml-node="mtable"] > rect[data-frame] {
-  stroke-width: 70px;
-  fill: none;
-}
-
-g[data-mml-node="mtable"] > .mjx-dashed {
-  stroke-dasharray: 140;
-}
-
-g[data-mml-node="mtable"] > .mjx-dotted {
-  stroke-linecap: round;
-  stroke-dasharray: 0,140;
-}
-
-g[data-mml-node="mtable"] > svg {
-  overflow: visible;
-}
-
-[jax="SVG"] mjx-tool {
-  display: inline-block;
-  position: relative;
-  width: 0;
-  height: 0;
-}
-
-[jax="SVG"] mjx-tool > mjx-tip {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-mjx-tool > mjx-tip {
-  display: inline-block;
-  padding: .2em;
-  border: 1px solid #888;
-  font-size: 70%;
-  background-color: #F8F8F8;
-  color: black;
-  box-shadow: 2px 2px 5px #AAAAAA;
-}
-
-g[data-mml-node="maction"][data-toggle] {
-  cursor: pointer;
-}
-
-mjx-status {
-  display: block;
-  position: fixed;
-  left: 1em;
-  bottom: 1em;
-  min-width: 25%;
-  padding: .2em .4em;
-  border: 1px solid #888;
-  font-size: 90%;
-  background-color: #F8F8F8;
-  color: black;
-}
-
-foreignObject[data-mjx-xml] {
-  font-family: initial;
-  line-height: normal;
-  overflow: visible;
-}
-
-.MathJax path {
-  stroke-width: 3;
-}
-
-mjx-container[display="true"] {
-  overflow: auto hidden;
-}
-
-mjx-container[display="true"] + br {
-  display: none;
-}
-</style></head>
+    <meta name="generator" content="Hexo 6.3.0"></head>
     <body>
         <div id="layout">
             <transition name="fade">
@@ -313,7 +201,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="color: #ff7d73">小故事</a>
+            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="color: #00a596">小故事</a>
         </span>
         
     </div>
@@ -353,11 +241,130 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="color: #03a9f4">小故事</a>
+            <a href="/tags/%E5%B0%8F%E6%95%85%E4%BA%8B/" style="color: #ff7d73">小故事</a>
         </span>
         
     </div>
     <a href="/2023/09/07/%E5%BD%BC%E5%B2%B8%E8%8A%B1%E4%B8%8E%E4%BC%9A%E8%AF%B4%E8%AF%9D%E7%9A%84%E9%87%91%E8%A1%A8-%E5%BA%8F%E7%AB%A0/" class="go-post">阅读全文</a>
+</div>
+
+<div class="post">
+    <a href="/2024/04/10/%5BAGC048D%5D-Pocky-Game-%E9%A2%98%E8%A7%A3/">
+        <h2 class="post-title"></h2>
+    </a>
+    <div class="category-and-date">
+        
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2024/4/10
+        </span>
+        
+        
+    </div>
+    <div class="description">
+        <div class="content" v-pre>
+            
+            <h2 id="题意">题意</h2>
+<p>给你 <span class="math inline">\(n\)</span>
+堆石子，甲先手，乙后手。甲每次可以从最左边非空的石子堆中取任意个，乙每次可以从最右边非空的石子堆中取任意个，不能取的人输。问甲是否有必胜策略。</p>
+<h2 id="题解">题解</h2>
+<p>先说明两点性质：</p>
+<blockquote>
+<p>性质 <span
+class="math inline">\(1\)</span>：当其它堆的石子固定的时候，当前（最左或最右）堆的石子越多，情况对于当前的先手越有利。</p>
+</blockquote>
+<p>证明：因为可以取任意多个石子，所以对于当前先手来说，石子多不会使得情况变劣，且石子少能到达的所有状态石子多的时候也都能达到，石子多能到达的状态石子少的时候不一定能达到。</p>
+<blockquote>
+<p>性质 <span class="math inline">\(2\)</span>：当前的先手只可能取 <span
+class="math inline">\(1\)</span> 个或全取完。</p>
+</blockquote>
+<p>证明：若只剩一堆，则取完当前石子堆，后手必败，一定会取完。因此，当不需要取完当前石子堆的时候，至少还剩下两堆石子，根据上述性质
+<span
+class="math inline">\(1\)</span>，令当前剩的石子越多越好，于是当前先手只取
+<span class="math inline">\(1\)</span> 个。</p>
+<p>有了这两条性质，我们就好办许多了，我们可以设立以下状态：</p>
+<ul>
+<li>设 <span class="math inline">\(f_{l,r}\)</span> 代表 <span
+class="math inline">\([l+1,r]\)</span>
+堆中的石子个数<strong>确定</strong>为题目给出的石子个数，且轮到甲操作时，当前堆
+<span class="math inline">\(l\)</span>
+<strong>至少</strong>需要多少才能使得<strong>甲必胜</strong>。</li>
+<li>设 <span class="math inline">\(g_{l,r}\)</span> 代表 <span
+class="math inline">\([l,r-1]\)</span>
+堆中的狮子个数<strong>确定</strong>为题目给出的石子个数，且轮到乙操作时，当前堆
+<span class="math inline">\(r\)</span>
+<strong>至少</strong>需要多少才能使得<strong>乙必胜</strong>。</li>
+</ul>
+<p>我们考虑 <span class="math inline">\(f\)</span> 的转移：</p>
+<ul>
+<li>当 <span class="math inline">\(a_r&lt;g_{l+1,r}\)</span>
+时，只要当前堆非空，取完即可使得<strong>甲必胜</strong>，于是 <span
+class="math inline">\(f_{l,r}=1\)</span>。</li>
+<li>当 <span class="math inline">\(a_r\ge g_{l+1,r}\)</span>
+时，双方会轮流取一个（即甲选择 <span class="math inline">\(a_l\)</span>
+减少 <span class="math inline">\(1\)</span>，乙选择 <span
+class="math inline">\(a_r\)</span> 减少 <span
+class="math inline">\(1\)</span>），直到 <span
+class="math inline">\(a_{l}&lt;f_{l,r-1}\)</span>（乙胜）或 <span
+class="math inline">\(a_r&lt;g_{l+1,r}\)</span>（甲胜）。因此，甲想要获胜，首先不能被拖入
+<span class="math inline">\(a_l=0\)</span> 且 <span
+class="math inline">\(a_r\ge g_{l+1,r}\)</span>
+的境地，并且还要保证在拖赢乙之前时刻满足 <span
+class="math inline">\(a_l\ge
+f_{l,r-1}\)</span>（否则乙就会全取完而获胜），因此可得 <span
+class="math inline">\(f_{l,r}=a_r-g_{l+1,r}+1+f_{l,r-1}\)</span>。</li>
+</ul>
+<p>即：<br />
+<span class="math display">\[
+f_{l,r}=
+\left\{
+\begin{aligned}
+&amp;1 &amp;&amp;(a_r&lt;g_{l+1,r})\\
+&amp;a_r-g_{l+1,r}+1+f_{l,r-1} &amp;&amp;(a_r\ge g_{l+1,r})
+\end{aligned}
+\right.
+\]</span><br />
+同理可得：<br />
+<span class="math display">\[
+g_{l,r}=
+\left\{
+\begin{aligned}
+&amp;1 &amp;&amp;(a_l&lt;f_{l,r-1})\\
+&amp;a_{l}-a_{l,r-1}+1+g_{l+1,r} &amp;&amp;(a_l\ge f_{l,r-1})\\
+\end{aligned}
+\right.
+\]</span><br />
+于是 <span class="math inline">\(O(n^2)\)</span>
+递推即可，代码简单。</p>
+<pre class="cpp"><code>void main()
+&#123;
+    int T; cin &gt;&gt; T;
+    while(T--) &#123;
+        cin &gt;&gt; n;
+        for (int i = 1; i &lt;= n; i++)&#123;cin &gt;&gt; a[i];&#125;
+        for (int i = 1; i &lt;= n; i++)&#123;f[i][i] = g[i][i] = 1;&#125;
+        for (int k = 2; k &lt;= n; k++) &#123;
+            for (int i = 1 , j = i + k - 1; i &lt;= n; i++ , j++) &#123;
+                if (a[j] &lt; g[i+1][j])&#123;f[i][j] = 1;&#125;
+                else&#123;f[i][j] = a[j] - g[i+1][j] + 1 + f[i][j-1];&#125;
+                if (a[i] &lt; f[i][j-1])&#123;g[i][j] = 1;&#125;
+                else&#123;g[i][j] = a[i] - f[i][j-1] + 1 + g[i+1][j];&#125;
+            &#125;
+        &#125; cout &lt;&lt; (f[1][n] &lt;= a[1] ? &quot;First\n&quot; : &quot;Second\n&quot;);
+    &#125;
+&#125;</code></pre>
+
+            
+        </div>
+    </div>
+    <div class="post-tags">
+        
+        
+        
+    </div>
+    <a href="/2024/04/10/%5BAGC048D%5D-Pocky-Game-%E9%A2%98%E8%A7%A3/" class="go-post">阅读全文</a>
 </div>
 
 <div class="post">
@@ -393,7 +400,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="color: #ff7d73">学习笔记</a>
+            <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="color: #ffa2c4">学习笔记</a>
         </span>
         
     </div>
@@ -437,7 +444,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #03a9f4">其他</a>
+            <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #ffa2c4">其他</a>
         </span>
         
     </div>
@@ -521,7 +528,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" style="color: #03a9f4">做题记录</a>
+            <a href="/tags/%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" style="color: #00bcd4">做题记录</a>
         </span>
         
     </div>
@@ -561,7 +568,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #ff7d73">其他</a>
+            <a href="/tags/%E5%85%B6%E4%BB%96/" style="color: #ffa2c4">其他</a>
         </span>
         
     </div>
@@ -601,7 +608,7 @@ mjx-container[display="true"] + br {
         
         <span class="tag">
             
-            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #03a9f4">题解</a>
+            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #ff7d73">题解</a>
         </span>
         
     </div>
@@ -646,46 +653,6 @@ mjx-container[display="true"] + br {
         
     </div>
     <a href="/2023/10/11/%E3%80%90%E9%A1%B9%E7%9B%AE%E3%80%91%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86%E5%99%A8/" class="go-post">阅读全文</a>
-</div>
-
-<div class="post">
-    <a href="/2023/10/09/CF1876C-Autosynthesis-%E9%A2%98%E8%A7%A3/">
-        <h2 class="post-title">CF1876C Autosynthesis 题解</h2>
-    </a>
-    <div class="category-and-date">
-        
-        <span class="date">
-            <span class="icon">
-                <i class="fa-solid fa-calendar fa-fw"></i>
-            </span>
-            2023/10/9
-        </span>
-        
-        
-    </div>
-    <div class="description">
-        <div class="content" v-pre>
-            
-            <p>CF1876C Autosynthesis 题解</p>
-
-            
-        </div>
-    </div>
-    <div class="post-tags">
-        
-        <span class="icon">
-            <i class="fa-solid fa-tags fa-fw"></i>
-        </span>
-        
-        
-        
-        <span class="tag">
-            
-            <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #ffa2c4">题解</a>
-        </span>
-        
-    </div>
-    <a href="/2023/10/09/CF1876C-Autosynthesis-%E9%A2%98%E8%A7%A3/" class="go-post">阅读全文</a>
 </div>
 
 
