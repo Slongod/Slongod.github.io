@@ -3,7 +3,7 @@
 <html lang="zh-Hans">
     <head>
         <meta charset="utf-8" />
-        <title> | LycoReco SN 支部</title>
+        <title>じょうしょうツリー 题解 | LycoReco SN 支部</title>
         <meta name="author" content="Slongod" />
         <meta name="description" content="SlongodのBlog" />
         <meta name="keywords" content="" />
@@ -152,108 +152,150 @@
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
                 <div class="article">
     <div>
-        <h1></h1>
+        <h1>じょうしょうツリー 题解</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2024/4/11
+            2024/4/17
         </span>
         
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #ff7d73">题解</a>
+            </span>
+            
+        </span>
         
     </div>
     
     <div class="content" v-pre>
         <h2 id="题意">题意</h2>
-<p>给你 <span class="math inline">\(n\)</span>
-堆石子，甲先手，乙后手。甲每次可以从最左边非空的石子堆中取任意个，乙每次可以从最右边非空的石子堆中取任意个，不能取的人输。问甲是否有必胜策略。</p>
+<p>给你一棵树，树根为 <span class="math inline">\(1\)</span>。点 <span
+class="math inline">\(u\)</span> 有点权 <span
+class="math inline">\(c_u\)</span>，可以花费 <span
+class="math inline">\(k\)</span> 的代价使得 <span
+class="math inline">\(c_u\)</span> 加上或减去 <span
+class="math inline">\(k\)</span>，求使得整棵树满足父亲的点权严格大于儿子的点权时，需要花费的最小代价。</p>
 <h2 id="题解">题解</h2>
-<p>先说明两点性质：</p>
-<blockquote>
-<p>性质 <span
-class="math inline">\(1\)</span>：当其它堆的石子固定的时候，当前（最左或最右）堆的石子越多，情况对于当前的先手越有利。</p>
-</blockquote>
-<p>证明：因为可以取任意多个石子，所以对于当前先手来说，石子多不会使得情况变劣，且石子少能到达的所有状态石子多的时候也都能达到，石子多能到达的状态石子少的时候不一定能达到。</p>
-<blockquote>
-<p>性质 <span class="math inline">\(2\)</span>：当前的先手只可能取 <span
-class="math inline">\(1\)</span> 个或全取完。</p>
-</blockquote>
-<p>证明：若只剩一堆，则取完当前石子堆，后手必败，一定会取完。因此，当不需要取完当前石子堆的时候，至少还剩下两堆石子，根据上述性质
-<span
-class="math inline">\(1\)</span>，令当前剩的石子越多越好，于是当前先手只取
-<span class="math inline">\(1\)</span> 个。</p>
-<p>有了这两条性质，我们就好办许多了，我们可以设立以下状态：</p>
-<ul>
-<li>设 <span class="math inline">\(f_{l,r}\)</span> 代表 <span
-class="math inline">\([l+1,r]\)</span>
-堆中的石子个数<strong>确定</strong>为题目给出的石子个数，且轮到甲操作时，当前堆
-<span class="math inline">\(l\)</span>
-<strong>至少</strong>需要多少才能使得<strong>甲必胜</strong>。</li>
-<li>设 <span class="math inline">\(g_{l,r}\)</span> 代表 <span
-class="math inline">\([l,r-1]\)</span>
-堆中的狮子个数<strong>确定</strong>为题目给出的石子个数，且轮到乙操作时，当前堆
-<span class="math inline">\(r\)</span>
-<strong>至少</strong>需要多少才能使得<strong>乙必胜</strong>。</li>
-</ul>
-<p>我们考虑 <span class="math inline">\(f\)</span> 的转移：</p>
-<ul>
-<li>当 <span class="math inline">\(a_r&lt;g_{l+1,r}\)</span>
-时，只要当前堆非空，取完即可使得<strong>甲必胜</strong>，于是 <span
-class="math inline">\(f_{l,r}=1\)</span>。</li>
-<li>当 <span class="math inline">\(a_r\ge g_{l+1,r}\)</span>
-时，双方会轮流取一个（即甲选择 <span class="math inline">\(a_l\)</span>
-减少 <span class="math inline">\(1\)</span>，乙选择 <span
-class="math inline">\(a_r\)</span> 减少 <span
-class="math inline">\(1\)</span>），直到 <span
-class="math inline">\(a_{l}&lt;f_{l,r-1}\)</span>（乙胜）或 <span
-class="math inline">\(a_r&lt;g_{l+1,r}\)</span>（甲胜）。因此，甲想要获胜，首先不能被拖入
-<span class="math inline">\(a_l=0\)</span> 且 <span
-class="math inline">\(a_r\ge g_{l+1,r}\)</span>
-的境地，并且还要保证在拖赢乙之前时刻满足 <span
-class="math inline">\(a_l\ge
-f_{l,r-1}\)</span>（否则乙就会全取完而获胜），因此可得 <span
-class="math inline">\(f_{l,r}=a_r-g_{l+1,r}+1+f_{l,r-1}\)</span>。</li>
-</ul>
-<p>即：<br />
+<p>我们先给每个点的点权 <span class="math inline">\(c_u\)</span> 加上
+<span class="math inline">\(u\)</span>
+的深度之后在操作，这样就可以将题意中的<strong>严格大于</strong>变为<strong>不小于</strong>，且答案不变。下文所述的
+<span class="math inline">\(c_u\)</span> 均为这样操作后的点权。</p>
+<h3 id="算法一">算法一</h3>
+<p>我们记 <span class="math inline">\(f_{u,i}\)</span> 代表考虑完 <span
+class="math inline">\(u\)</span> 的子树，方案合法时，<span
+class="math inline">\(u\)</span> 的点权为 <span
+class="math inline">\(i\)</span> 的最小代价。记 <span
+class="math inline">\(g_{u,i}\)</span> 代表考虑完 <span
+class="math inline">\(u\)</span> 的子树，方案合法时，<span
+class="math inline">\(u\)</span> 的点权小于等于 <span
+class="math inline">\(i\)</span> 的最小代价。显然有：<br />
 <span class="math display">\[
-f_{l,r}=
-\left\{
-\begin{aligned}
-&amp;1 &amp;&amp;(a_r&lt;g_{l+1,r})\\
-&amp;a_r-g_{l+1,r}+1+f_{l,r-1} &amp;&amp;(a_r\ge g_{l+1,r})
-\end{aligned}
-\right.
+g_{u,i}=\min_{j\le i}f_{u,j}
 \]</span><br />
-同理可得：<br />
+对于节点 <span
+class="math inline">\(u\)</span>，先计算它儿子的答案，然后我们令 <span
+class="math inline">\(f_{u,i}=|i-c
+_u|\)</span>，再从它的儿子处合并，枚举 <span
+class="math inline">\(u\)</span> 的儿子 <span
+class="math inline">\(v\)</span>，则：<br />
 <span class="math display">\[
-g_{l,r}=
-\left\{
-\begin{aligned}
-&amp;1 &amp;&amp;(a_l&lt;f_{l,r-1})\\
-&amp;a_{l}-a_{l,r-1}+1+g_{l+1,r} &amp;&amp;(a_l\ge f_{l,r-1})\\
-\end{aligned}
-\right.
+f_{u,i}\leftarrow f_{u,i}+g_{v,i}
 \]</span><br />
-于是 <span class="math inline">\(O(n^2)\)</span>
-递推即可，代码简单。</p>
-<pre class="cpp"><code>void main()
+最后的答案就是 <span class="math inline">\(\displaystyle \min
+g_{1,i}\)</span>。这样我们就有了一个 <span
+class="math inline">\(O(nV)\)</span> 的做法，其中 <span
+class="math inline">\(V\)</span> 是点权范围，可以通过子任务一。</p>
+<h3 id="算法二">算法二</h3>
+<p>我们将上述的 <span class="math inline">\(f_{u,i},g_{u,i}\)</span>
+看作一个关于 <span class="math inline">\(i\)</span>
+的函数，考虑它们的函数图像长什么样子。由于给所有的 <span
+class="math inline">\(c_u\)</span>
+同时加上一个数不影响答案，我们可以先将所有的 <span
+class="math inline">\(c_u\)</span> 调整为正，则此时函数 <span
+class="math inline">\(i&lt;0\)</span>
+的部分没有意义（设最终答案中有若干个 <span
+class="math inline">\(c_u\)</span> 取了负数，显然将它们变为 <span
+class="math inline">\(0\)</span> 会更优），于是我们可以只考虑 <span
+class="math inline">\(i\ge 0\)</span> 的部分。</p>
+<p>考虑一个叶子节点 <span class="math inline">\(u\)</span> 的 <span
+class="math inline">\(f_u,g_u\)</span>。 <span
+class="math inline">\(f_u\)</span> 的函数图像与纵轴的交点函数值为 <span
+class="math inline">\(c_u\)</span>，在 <span
+class="math inline">\([0,c_u]\)</span> 的斜率为 <span
+class="math inline">\(-1\)</span>，在 <span
+class="math inline">\([c_u,+\infty]\)</span> 的斜率为 <span
+class="math inline">\(1\)</span>。由 <span
+class="math inline">\(g_u\)</span> 的定义可知，<span
+class="math inline">\(g_u\)</span> 即为 <span
+class="math inline">\(f_u\)</span> 将 <span
+class="math inline">\([c_u,+\infty]\)</span> 的斜率调整为 <span
+class="math inline">\(0\)</span> 的结果，即 <span
+class="math inline">\(g_{u,i}=f_{u,c_u}(i&gt;c_u)\)</span>。</p>
+<p>则对于一个非叶子节点 <span class="math inline">\(u\)</span>，记 <span
+class="math inline">\(f&#39;_{u,i}=|i-c_u|\)</span>，则</p>
+<p><span class="math display">\[
+f_{u}=f&#39;_u+\sum_{v\in son(u)}g_{v}
+\]</span><br />
+记 <span class="math inline">\(size_u\)</span> 是 <span
+class="math inline">\(u\)</span> 的子树大小，<span
+class="math inline">\(sum_u\)</span> 为 <span
+class="math inline">\(u\)</span>
+的子树权值和，结合上文对于叶子节点的分析可以知道 <span
+class="math inline">\(f_{u}\)</span> 与纵轴交点处的函数值为 <span
+class="math inline">\(sum_u\)</span>，斜率为 <span
+class="math inline">\(-size_u\)</span>，并且斜率一路递增至 <span
+class="math inline">\(1\)</span>，这启示我们维护 <span
+class="math inline">\(f_u\)</span>
+的拐点。同叶子节点的分析，可以得到，对于任何节点 <span
+class="math inline">\(u\)</span>，其 <span
+class="math inline">\(g_u\)</span> 都是 <span
+class="math inline">\(f_u\)</span> 删掉最后一个拐点得到的。</p>
+<p>于是我们可以用可并堆维护 <span class="math inline">\(f_u\)</span>
+的拐点，初始时，应往堆中放入两个 <span
+class="math inline">\(c_u\)</span>，代表当前函数斜率在 <span
+class="math inline">\(c_u\)</span> 处增加了 <span
+class="math inline">\(2\)</span>。在与儿子合并完后，为了向父亲贡献，我们需要将当前堆中的拐点转换为
+<span class="math inline">\(g_u\)</span> 的拐点，即弹出最大的元素。</p>
+<p>时间复杂度 <span class="math inline">\(O(n\log
+n)\)</span>，可以通过所有测试点。</p>
+<p>代码如下（具体实现的时候，我将 <span
+class="math inline">\(c_u\)</span> 都调整为了非负，这可能会导致产生
+<span class="math inline">\(i=0\)</span>
+时的拐点，但不影响正确性。其余内容与上文一样）：</p>
+<pre class="cpp"><code>using ll = long long; const int N = 1e5+7;
+int n , dep[N]; ll sum , mn , c[N];
+__gnu_pbds::priority_queue&lt;ll&gt; q[N];
+vector &lt;int&gt; g[N];
+
+void dfs(int u)
 &#123;
-    int T; cin &gt;&gt; T;
-    while(T--) &#123;
-        cin &gt;&gt; n;
-        for (int i = 1; i &lt;= n; i++)&#123;cin &gt;&gt; a[i];&#125;
-        for (int i = 1; i &lt;= n; i++)&#123;f[i][i] = g[i][i] = 1;&#125;
-        for (int k = 2; k &lt;= n; k++) &#123;
-            for (int i = 1 , j = i + k - 1; i &lt;= n; i++ , j++) &#123;
-                if (a[j] &lt; g[i+1][j])&#123;f[i][j] = 1;&#125;
-                else&#123;f[i][j] = a[j] - g[i+1][j] + 1 + f[i][j-1];&#125;
-                if (a[i] &lt; f[i][j-1])&#123;g[i][j] = 1;&#125;
-                else&#123;g[i][j] = a[i] - f[i][j-1] + 1 + g[i+1][j];&#125;
-            &#125;
-        &#125; cout &lt;&lt; (f[1][n] &lt;= a[1] ? &quot;First\n&quot; : &quot;Second\n&quot;);
-    &#125;
+    q[u].push(c[u]); q[u].push(c[u]);
+    for (auto v : g[u]) &#123;
+        dfs(v); q[u].join(q[v]);
+    &#125; q[u].pop();
+&#125;
+void main()
+&#123;
+    cin &gt;&gt; n &gt;&gt; c[1]; sum = c[1];
+    for (int i = 2 , p; i &lt;= n; i++) &#123;
+        cin &gt;&gt; p &gt;&gt; c[i]; dep[i] = dep[p] + 1;
+        c[i] += dep[i]; mn = min(mn , c[i]);
+        g[p].push_back(i); sum += c[i];
+    &#125; dfs(1);
+    while(!q[1].empty()) &#123;
+        sum -= q[1].top(); q[1].pop();
+    &#125; cout &lt;&lt; sum &lt;&lt; &#39;\n&#39;;
 &#125;</code></pre>
 
     </div>
