@@ -1,3 +1,10 @@
+---
+title: CF1842G Tenzing and Random Operations 题解
+date: 2024-04-17 00:00:00
+tags: 题解
+description: CF1842G Tenzing and Random Operations 题解
+---
+
 ## 题意
 
 给你一个长为 $n$ 的序列 $a$，操作 $m$ 次，每次在 $[1,n]$ 中随机一个 $i$，令 $\forall j>i,a_j \leftarrow a_j+v$，问 $m$ 次操作之后 $\displaystyle \prod_{i=1}^{n} a_i$ 的期望。
