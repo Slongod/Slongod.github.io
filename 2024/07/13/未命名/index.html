@@ -3,7 +3,7 @@
 <html lang="zh-Hans">
     <head>
         <meta charset="utf-8" />
-        <title>SP29458 AROPE2 - Alphabetic Rope2 题解 | LycoReco SN 支部</title>
+        <title> | LycoReco SN 支部</title>
         <meta name="author" content="Slongod" />
         <meta name="description" content="SlongodのBlog" />
         <meta name="keywords" content="" />
@@ -152,140 +152,29 @@
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
                 <div class="article">
     <div>
-        <h1>SP29458 AROPE2 - Alphabetic Rope2 题解</h1>
+        <h1></h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2023/11/13
+            2024/7/13
         </span>
         
-        
-        <span class="tags">
-            <span class="icon">
-                <i class="fa-solid fa-tags fa-fw"></i>
-            </span>
-            
-            
-            <span class="tag">
-                
-                <a href="/tags/%E9%A2%98%E8%A7%A3/" style="color: #03a9f4">题解</a>
-            </span>
-            
-        </span>
         
     </div>
     
     <div class="content" v-pre>
-        <p>不需要可持久化。</p>
-<p>题目并没有强制在线，这启示我们可以直接将询问离线下来，每次处理到某个版本的时候回答这个版本的询问。</p>
-<p>对于字符串的维护，我们可以使用 FHQ-Treap。</p>
-<p>对于第一种操作，我们可以 <code>split</code> 出三部分，分别是 <span
-class="math inline">\([1,l-1],[l,r],[r+1,n]\)</span>，当然有些部分可能并不存在（如
-<span class="math inline">\(l=1\)</span> 的时候 <span
-class="math inline">\([1,l-1]\)</span> 就不存在）。然后再按照 <span
-class="math inline">\([l,r],[1,l-1],[r+1,n]\)</span> 的顺序
-<code>merge</code> 回去。具体见代码中的 <code>change_to_front()</code>
-函数。</p>
-<p>对于第二种操作，我们也是 <code>split</code> 出 <span
-class="math inline">\([1,l-1],[l,r],[r+1,n]\)</span> 三部分，然后按照
-<span class="math inline">\([1,l-1],[r+1,n],[l,r]\)</span> 的顺序
-<code>merge</code> 回去。具体见代码中的 <code>change_to_end()</code>
-函数。</p>
-<p>对于第三、四种操作，我们直接按照查询排名为 <span
-class="math inline">\(k\)</span> 的数的方法查询即可。具体见代码中的
-<code>find()</code> 函数。</p>
-<p>然后就做完了，比较好写，跑得也不慢。</p>
-<p>AC Code :</p>
-<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
-using namespace std;
-namespace Slongod&#123;
-const int N = 1e4+7;
-
-//fhq-treap
-int root , cnt , son[N][2] , size[N]; char val[N]; mt19937 rd(time(nullptr));
-void update(int ro)&#123;size[ro] = 1 + size[son[ro][1]] + size[son[ro][0]];&#125;
-int merge(int x , int y)
-&#123;
-    if (!x or !y)&#123;return x^y;&#125;
-    if (rd() % 2) &#123;
-        son[y][1] = merge(x , son[y][1]);
-        update(y); return y;
-    &#125; else &#123;
-        son[x][0] = merge(son[x][0] , y);
-        update(x); return x;
-    &#125;
-&#125;
-pair &lt;int,int&gt; split(int ro , int x) //将 size&lt;=x 放到 first
-&#123;
-    if (!ro)&#123;return &#123;0 , 0&#125;;&#125;
-    if (size[son[ro][1]] &gt;= x) &#123;
-        auto p = split(son[ro][1] , x);
-        son[ro][1] = p.second; update(ro);
-        return &#123;p.first , ro&#125;;
-    &#125; else &#123;
-        auto p = split(son[ro][0] , x-size[son[ro][1]]-1);
-        son[ro][0] = p.first; update(ro);
-        return &#123;ro , p.second&#125;;
-    &#125;
-&#125;
-void change_to_front(int l , int r)
-&#123;
-    auto p = split(root , l-1);
-    auto sdp = split(p.second , r-l+1);
-    root = merge(merge(sdp.first , p.first) , sdp.second);
-&#125;
-void change_to_end(int l , int r)
-&#123;
-    auto p = split(root , l-1);
-    auto sdp = split(p.second , r-l+1);
-    root = merge(merge(p.first , sdp.second) , sdp.first);
-&#125;
-char find(int ro , int x)
-&#123;
-    if (size[son[ro][1]] &gt;= x)&#123;return find(son[ro][1] , x);&#125;
-    if (size[son[ro][1]] + 1 == x)&#123;return val[ro];&#125;
-    return find(son[ro][0] , x - size[son[ro][1]] - 1);
-&#125;
-int build(int l , int r , const char s[])
-&#123;
-    if (l &gt; r)&#123;return 0;&#125;
-    int mid = (r - l) / 2 + l;
-    int ro = ++cnt; val[ro] = s[mid];
-    son[ro][1] = build(l , mid-1 , s);
-    son[ro][0] = build(mid+1 , r , s);
-    update(ro); return ro;
-&#125;
-
-string s; int q , opt[N] , l[N] , r[N]; vector &lt;pair&lt;int,int&gt;&gt; que[N];
-void main()
-&#123;
-    cin &gt;&gt; s &gt;&gt; q;
-    root = build(0 , s.length()-1 , s.c_str());
-    
-    for (int i = 1; i &lt;= q; i++) &#123;
-        cin &gt;&gt; opt[i];
-        if (opt[i] &lt;= 2)&#123;cin &gt;&gt; l[i] &gt;&gt; r[i]; l[i]++; r[i]++;&#125;
-        if (opt[i] == 3)&#123;cin &gt;&gt; l[i]; que[i].push_back(&#123;l[i]+1 , i&#125;);&#125;
-        if (opt[i] == 4)&#123;cin &gt;&gt; l[i] &gt;&gt; r[i]; que[l[i]].push_back(&#123;r[i]+1 , i&#125;);&#125;
-    &#125;
-
-    for (auto p : que[0])&#123;r[p.second] = find(root , p.first);&#125;
-    for (int i = 1; i &lt;= q; i++) &#123;
-        if (opt[i] == 1)&#123;change_to_front(l[i] , r[i]);&#125;
-        if (opt[i] == 2)&#123;change_to_end(l[i] , r[i]);&#125;    
-        for (auto p : que[i])&#123;r[p.second] = find(root , p.first);&#125;
-        if (opt[i] &gt;= 3)&#123;cout &lt;&lt; char(r[i]) &lt;&lt; &#39;\n&#39;;&#125;
-    &#125;
-&#125;
-&#125;int main()
-&#123;
-    ios :: sync_with_stdio(0);
-    cin.tie(0) , cout.tie(0);
-    return Slongod :: main(),0;
-&#125;</code></pre>
+        <h1 id="未命名">未命名</h1>
+<p>冰冷，下坠与恐惧。</p>
+<p>寂静、迷失与孤独。</p>
+<p>天中有繁星闪烁，可我不知道，那是否只是我触不可及的幻想。</p>
+<p>……</p>
+<p>“果然是……，客卿……眼力……”迷迷糊糊地，一段轻盈的女声传入我的耳朵。“他看起来……晕过去……”紧接着，又有一个厚重的男声响起。我试图睁开眼睛，却感觉眼皮无比沉重。用尽全身地力气，我终于隐隐约约地看到了一个头戴帽子的女孩，皎洁的月光下，她的长发随着似有似无的轻风摆动着。“醒了！”女孩激动地说道，扭头看向一边。不等我随女孩的目光看去，一阵眩晕感又袭来。“不好，他要……”女孩的声音再度传来，紧接着，我便又陷入无边无际的黑暗。</p>
+<p>我好像坠入了深不见底的大海，无尽的寒冷裹挟着我不停地下沉。不知过了多久，一丝温暖的感觉终于传入了我已被冻僵的身躯，它在我身中四处游动，驱赶着寒冷，带着我向海面浮去。</p>
+<p>再次睁开双眼，我发现自己躺在一张床上，月光从床对面的窗户照入房间，床头边的火炉驱散着黑夜的寒冷，房间的侧面，那个头戴帽子的女孩在拿着筷子和碗，在桌上捣鼓着什么。我试图坐起来，一阵头晕却又向我袭来，刚撑起一半的身体重重地摔到了床上。听到了我发出的声响，女孩扭头看了过来。“你终于醒啦。”说着，女孩向我走来，坐在了床边的一张凳子上，火炉发出的光照在了她的脸上，柔和又灵动的光辉从她梅花状的瞳孔中映出，她穿着一身红黑相间的衣裳，长长的后摆被温暖气流轻轻带动，与她那瀑布般的棕色长发应和着，悠然，平静。“大半夜的你一个人在无妄坡干什么，怎么还晕倒了，幸亏客卿眼尖看到了你，不然你恐怕得成为咱往生堂的新客户了。”女孩说到，她的声音如蝴蝶般灵动，又好似那清晨的露珠般清澈，似春风般柔和。我再次挣扎着坐起来，察觉到了我的意图，女孩扶着我坐在了床上。“谢谢……”我张开微微颤抖的嘴唇，无力地说道。“哎呀，没事。毕竟你就躺在那里，咱怎么能不管呢。”女孩又扭头看向侧面桌子上的碗，“我请白医生给你看过了，没啥大问题，应该就是力气透支，被冻晕了。虽然不太想让他进往生堂，但是这个点也只能找他了。”指了指桌上的碗，女孩又说道：“那是白医生给你开的药，我给你弄好了，喝了就没事了。”说着，女孩起身将碗端了过来。我赶忙接过碗，将药喝了下去，可能时刚醒来的缘故吧，我感觉药什么味道都没有。喝罢，女孩又将碗放回了桌子上，重新坐在凳子上，说道：“你还没回答我的问题呢，你为什么要半夜自己去无妄坡？”我试图回忆晕倒以前的事情，却再次感到一阵头晕，只得回答道：“我忘记了……”女孩却不太吃惊，说道：“忘记了嘛。白医生倒是提到过这种症状。”沉默了一会，她又说道：“忘记自我介绍了，我是胡桃，往生堂堂主，你叫什么名字呀？”我是谁？当我试图想这件事时，脑中又传来一阵眩晕。再次收获了“忘记了”的回答后，胡桃站起了身，说道：“额，那你还是继续休息吧，早上起来可能就能想起来了。”说罢，便向门口走去。走到门口，她又转身向我说道：“提醒你一下，这里可是往生堂，所以，晚上不要到处转，小心碰到不该碰到的东西哦。”调皮地笑了一下后，胡桃便走出了房门。</p>
+<p>随着门关上的声音，我重新躺在了床上，盖好了被子，不知不觉，便再度进入了梦乡。</p>
 
     </div>
     
