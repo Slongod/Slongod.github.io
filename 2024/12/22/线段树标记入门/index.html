@@ -3,7 +3,7 @@
 <html lang="zh-Hans">
     <head>
         <meta charset="utf-8" />
-        <title>李超线段树课件 | 星空之下</title>
+        <title>线段树懒标记入门 | 星空之下</title>
         <meta name="author" content="Slongod" />
         <meta name="description" content="" />
         <meta name="keywords" content="" />
@@ -152,14 +152,14 @@
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
                 <div class="article">
     <div>
-        <h1>李超线段树课件</h1>
+        <h1>线段树懒标记入门</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2024/12/19
+            2024/12/22
         </span>
         
         
@@ -171,7 +171,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/%E8%AF%BE%E4%BB%B6/" style="color: #00bcd4">课件</a>
+                <a href="/tags/%E8%AF%BE%E4%BB%B6/" style="color: #00a596">课件</a>
             </span>
             
         </span>
@@ -180,44 +180,79 @@
     
     <div class="content" v-pre>
         <blockquote>
-<p>本文部分内容借鉴自 OI-WIKI</p>
+<p>本文部分内容借鉴自 OI-Wiki</p>
 </blockquote>
-<h2 id="引入">引入</h2>
-<p>考虑使用一个数据结构，单次 <span
-class="math inline">\(O(\log)\)</span> 地支持以下内容：</p>
+<h2 id="懒标记的含义及必要性">懒标记的含义及必要性</h2>
+<blockquote>
+<p>P3372 【模板】线段树 1<br />
+给定一个长为 <span class="math inline">\(n(n\le 10^5)\)</span>
+序列，<span class="math inline">\(m(m\le 10^5)\)</span>
+次操作，每次操作为：<br />
+- 区间 <span class="math inline">\([l,r]\)</span> 中的数每个加 <span
+class="math inline">\(k\)</span>。<br />
+- 询问区间 <span class="math inline">\([l,r]\)</span> 的区间和。</p>
+</blockquote>
+<p>考虑使用线段树完成此问题。每次修改，我们需要对在本区间内的 <span
+class="math inline">\(O(n)\)</span>
+个节点进行修改，这样的时间复杂度显然无法接受。我们发现，进行的部分修改并没有在询问中用到，因此，我们考虑引入懒标记来进行<strong>延迟修改</strong>。</p>
+<p>考虑在没有懒标记的时候，每个节点的操作序列，懒标记实际上是截断并合并了节点的一段后缀操作序列，只在访问当前节点的时候，才将这些操作的影响施加于当前节点。对于每个节点，我们除区间和外，记录以下内容：在该节点代表的区间内进行的加法，且并未对其子节点进行修改的
+<span class="math inline">\(k\)</span>
+的和。每次修改及询问，当需要访问该节点的子节点的时候，我们将这些懒标记下放（即只在必要的时候进行对子节点信息的修改），并将当前懒标记清零。</p>
+<p>在这样的情况下，我们每次对节点的修改都需要同时对记录的值，及懒标记进行修改，这就涉及到一个懒标记的合并（及操作序列的合并）问题。</p>
+<p>在本题中，由于只有区间加法，懒标记的合并是简单的。</p>
+<hr />
+<p>下面，我们来看一道更难的题目：</p>
+<blockquote>
+<p>P3373 【模板】线段树 2P3372 【模板】线段树 1<br />
+给定一个长为 <span class="math inline">\(n(n\le 10^5)\)</span>
+序列，<span class="math inline">\(m(m\le 10^5)\)</span>
+次操作，每次操作为：</p>
 <ul>
-<li><p>插入一个一次函数 <span
-class="math inline">\(y_i=k_ix+b_i\)</span>。</p></li>
-<li><p>对于一个 <span class="math inline">\(x_0\)</span>，找到一个最大的
-<span class="math inline">\(y_i=k_ix_0+b_i\)</span>，其中 <span
-class="math inline">\(1\le x_0 \le n\)</span>。</p></li>
+<li>区间 <span class="math inline">\([l,r]\)</span> 中的数每个加 <span
+class="math inline">\(k\)</span>。</li>
+<li>区间 <span class="math inline">\([l,r]\)</span> 中的每个数乘上 <span
+class="math inline">\(k\)</span>。</li>
+<li>询问区间 <span class="math inline">\([l,r]\)</span> 的区间和。</li>
 </ul>
-<p>容易发现，常规 <span class="math inline">\(O(\log)\)</span>
-的数据结构，如线段树、树状数组等无法很好地维护此内容，于是我们考虑一个新的数据结构来支持这些内容地维护。</p>
-<h2 id="做法">做法</h2>
-<p>李超线段树具有普通线段树都有的树状结构，每个节点代表一个区间 <span
-class="math inline">\([l,r]\)</span>。</p>
-<h3 id="插入">插入</h3>
-<p>考虑插入一条直线 <span class="math inline">\(f_i\)</span>：</p>
+</blockquote>
+<p>在本题中，需要处理加法，乘法的懒标记合并问题，考虑加法及乘法对于节点值、其他懒标记的影响即可。注意，在考虑对于其他懒标记的影响的时候，必须先钦定懒标记生效的顺序，然后再去考虑其二者间的影响。对于不同的顺序，影响一般是不同的。</p>
+<hr />
+<p>和上一道相似的一道题：</p>
+<blockquote>
+<p>P1253 扶苏的问题</p>
+<p>给定一个长为 <span class="math inline">\(n(n\le 10^6)\)</span>
+序列，<span class="math inline">\(m(m\le 10^6)\)</span>
+次操作，每次操作为：</p>
 <ul>
-<li>若当前节点没有线段，将当前节点的标记标为 <span
-class="math inline">\(l_i\)</span> 并返回。</li>
-<li>若当前节点有直线 <span class="math inline">\(f_j\)</span>：
-<ul>
-<li>若 <span class="math inline">\(f_i(mid)\)</span></li>
-</ul></li>
+<li>区间 <span class="math inline">\([l,r]\)</span> 中的数每个加 <span
+class="math inline">\(k\)</span>。</li>
+<li>区间 <span class="math inline">\([l,r]\)</span> 中的每个数都变为
+<span class="math inline">\(k\)</span>。</li>
+<li>询问区间 <span class="math inline">\([l,r]\)</span> 的区间和。</li>
 </ul>
-<h3 id="查询">查询</h3>
-<p>假设我们已经维护好了上述内容，则查询 <span
-class="math inline">\(x\)</span> 时我们只需从李超线段树的根一路查询到
-<span class="math inline">\([x,x]\)</span> 对应的节点即可。由树高 <span
-class="math inline">\(O(\log n)\)</span> 可知，单次查询复杂度 <span
-class="math inline">\(O(\log n)\)</span>。</p>
-<h2 id="拓展">拓展</h2>
-<p>如果插入的是线段，我们只需在线段定义域对应的 <span
-class="math inline">\(O(\log n)\)</span>
-个区间中进行上述的插入步骤即可，时间复杂度 <span
-class="math inline">\(O(\log ^2 n)\)</span>。</p>
+</blockquote>
+<p>钦定两个操作的懒标记生效顺序，考虑影响，然后合并即可。</p>
+<hr />
+<p>更难的一道题：</p>
+<blockquote>
+<p>P4314 CPU 监控</p>
+<p>给定一个长为 <span class="math inline">\(n(n\le 10^6)\)</span>
+序列，<span class="math inline">\(m(m\le 10^6)\)</span>
+次操作，每次操作为：</p>
+<ul>
+<li>区间 <span class="math inline">\([l,r]\)</span> 中的数每个加 <span
+class="math inline">\(k\)</span>。</li>
+<li>区间 <span class="math inline">\([l,r]\)</span> 中的每个数都变为
+<span class="math inline">\(k\)</span>。</li>
+<li>询问区间 <span class="math inline">\([l,r]\)</span>
+的区间最大值。</li>
+<li>询问区间 <span class="math inline">\([l,r]\)</span>
+的历史区间最大值。</li>
+</ul>
+</blockquote>
+<p>考虑在坐标系中画出每个懒标记的变化曲线，考虑什么会成为最大值，及懒标记的合并问题。</p>
+<hr />
+<p>愿此行，终抵群星。</p>
 
     </div>
     
